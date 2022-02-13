@@ -1,8 +1,6 @@
 <template id="main-page">
   <v-ons-page>
-    <v-ons-toolbar>
-      <div class="center">This Shit Works?</div>
-    </v-ons-toolbar>
+    <NavBar title="Testing"/>
 
     <p style="text-align: center">
       <v-ons-button @click="$ons.notification.alert('Hello World!')">
@@ -19,11 +17,13 @@
 
 <script>
 import MainPage from './components/MainPage.vue'
+import NavBar from './components/NavBar.vue'
 
 export default {
   name: 'App',
   components: {
-    MainPage
+    MainPage,
+    NavBar
   }
 }
 </script>

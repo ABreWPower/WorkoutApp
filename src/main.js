@@ -13,5 +13,10 @@ Vue.use(VueOnsen) // VueOnsen set here as plugin to VUE. Done automatically if a
 
 /* eslint-disable no-new */
 new Vue({
+  el: '#app',
+  data( ) {
+    return {
+    }
+  },
   render: h => h(App)
-}).$mount('#app')
+})

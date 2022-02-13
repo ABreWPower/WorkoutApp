@@ -1,5 +1,5 @@
-<template>
-  <div class="hello">
+<template id="mainpage">
+  <div>
     <h1>{{ msg }}</h1>
     <ul>
       <li><a href="" target="_blank" rel="noopener">List of Workouts</a></li>
