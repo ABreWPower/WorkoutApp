@@ -26,6 +26,7 @@
     "babel-preset-stage-2": "^6.22.0",
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.0.1",
+    "cordova-browser": "^6.0.0",
     "css-loader": "^0.28.0",
     "eslint": "^4.15.0",
     "eslint-config-standard": "^10.2.1",
@@ -68,5 +69,10 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "cordova": {
+    "platforms": [
+      "browser"
+    ]
+  }
 }
