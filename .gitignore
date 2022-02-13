@@ -1,7 +1,8 @@
 .DS_Store
 node_modules/
 platforms/
-/dist/
+/dist
+/public
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -13,6 +14,11 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
@@ -34,3 +40,15 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+
+# Apache Cordova generated files and directories
+bin/*
+plugins/*
+platforms/*
+
+node_modules
+www/index.js
+js/**/*.js
+js/**/*.js.map
+www/static/
