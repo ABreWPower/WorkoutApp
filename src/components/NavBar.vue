@@ -37,7 +37,7 @@
               </v-ons-toolbar-button>
             </div>
           </v-ons-toolbar>
-          <p style="text-align:center">
+          <p style="text-align: center">
             <slot></slot>
           </p>
         </v-ons-page>
@@ -47,25 +47,24 @@
 </template>
 
 <script>
-
 export default {
-  name: "NavBar",
+  name: 'NavBar',
   props: {
-    title: String,
+    title: String
   },
-  data: function () {
+  data: function() {
     return {
-      page: "Page one",
-      pages: ["Page one", "Page two", "Page three"],
-      openSide: false,
-    };
+      page: 'Page one',
+      pages: ['Page one', 'Page two', 'Page three'],
+      openSide: false
+    }
   },
   methods: {
-    menuAction: function () {
-      this.openSide = !this.openSide;
-    },
+    menuAction: function() {
+      this.openSide = !this.openSide
+    }
   }
-};
+}
 </script>
 
 <style scoped>

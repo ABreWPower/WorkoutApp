@@ -11,11 +11,11 @@
 </style>
 
 <script>
-import NavBar from "./components/NavBar.vue";
-import MainPage from "./components/MainPage.vue";
+import NavBar from './components/NavBar.vue'
+import MainPage from './components/MainPage.vue'
 
 export default {
-  name: "App",
+  name: 'App',
   components: { NavBar, MainPage }
-};
+}
 </script>
