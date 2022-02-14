@@ -14,7 +14,7 @@ Vue.use(VueOnsen) // VueOnsen set here as plugin to VUE. Done automatically if a
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  data( ) {
+  data() {
     return {
     }
   },
