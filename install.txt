@@ -147,3 +147,11 @@ Some next steps:
 Pro tip:
 Try "amplify add api" to create a backend API and then "amplify push" to deploy everything
 
+
+
+------------------------
+Increase inotify watches
+------------------------
+sudo nano /etc/sysctl.conf
+Add line --> fs.inotify.max_user_watches=524288
+sudo sysctl -p

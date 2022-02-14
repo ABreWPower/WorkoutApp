@@ -6,9 +6,13 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "start": "npm run dev",
+    "start-old": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "live-build": "webpack --watch --output-path=www --config build/webpack.prod.conf.js",
+    "live-watch": "nodemon --watch www --exec \"cordova prepare\" --ext html,css,js",
+    "live-serve": "live-server --watch=\"platforms/browser/www\" platforms/browser/www",
+    "start": "npm-run-all -c -n -l -p live-build live-watch live-serve"
   },
   "dependencies": {
     "onsenui": "^2.11.2",
@@ -43,7 +47,10 @@
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
+    "live-server": "^1.2.1",
     "node-notifier": "^5.1.2",
+    "nodemon": "^2.0.15",
+    "npm-run-all": "^4.1.5",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^1.2.0",
     "portfinder": "^1.0.13",
