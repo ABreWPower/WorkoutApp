@@ -51,3 +51,4 @@ www/index.js
 js/**/*.js
 js/**/*.js.map
 www/static/
+www/index.html
