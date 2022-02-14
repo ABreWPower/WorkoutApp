@@ -23,27 +23,31 @@
       </v-ons-splitter-side>
 
       <v-ons-splitter-content>
-        <v-ons-toolbar>
-          <div class="left">
-            <v-ons-toolbar-button>
-              <v-ons-icon icon="md-arrow-left"></v-ons-icon>
-            </v-ons-toolbar-button>
-          </div>
-          <div class="center">{{ title }}</div>
-          <div class="right">
-            <v-ons-toolbar-button>
-              <v-ons-icon icon="md-menu" @click="menuAction()"></v-ons-icon>
-            </v-ons-toolbar-button>
-          </div>
-        </v-ons-toolbar>
-        <p style="text-align: center">Welcome ass hat.</p>
-        <!-- <component :is="currentPage" :toggle-menu="() => (openSide = !openSide)"></component> -->
+        <v-ons-page>
+          <v-ons-toolbar>
+            <div class="left">
+              <v-ons-toolbar-button>
+                <v-ons-icon icon="md-arrow-left"></v-ons-icon>
+              </v-ons-toolbar-button>
+            </div>
+            <div class="center">{{ title }}</div>
+            <div class="right">
+              <v-ons-toolbar-button>
+                <v-ons-icon icon="md-menu" @click="menuAction()"></v-ons-icon>
+              </v-ons-toolbar-button>
+            </div>
+          </v-ons-toolbar>
+          <p style="text-align:center">
+            <slot></slot>
+          </p>
+        </v-ons-page>
       </v-ons-splitter-content>
     </v-ons-splitter>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "NavBar",
   props: {
@@ -54,13 +58,13 @@ export default {
       page: "Page one",
       pages: ["Page one", "Page two", "Page three"],
       openSide: false,
-    }
+    };
   },
   methods: {
     menuAction: function () {
       this.openSide = !this.openSide;
     },
-  },
+  }
 };
 </script>
 
