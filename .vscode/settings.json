@@ -8,5 +8,7 @@
   "javascript.format.insertSpaceAfterCommaDelimiter": false,
   "typescript.format.insertSpaceAfterCommaDelimiter": false,
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
-  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "javascript.preferences.quoteStyle": "single",
+  "vetur.format.defaultFormatter.js": "prettier-eslint"
 }
