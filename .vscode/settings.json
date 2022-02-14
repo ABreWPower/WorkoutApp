@@ -5,10 +5,14 @@
   "javascript.format.semicolons": "remove",
   "typescript.format.semicolons": "remove",
   "javascript.format.insertSpaceAfterSemicolonInForStatements": false,
-  "javascript.format.insertSpaceAfterCommaDelimiter": false,
   "typescript.format.insertSpaceAfterCommaDelimiter": false,
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
   "javascript.preferences.quoteStyle": "single",
-  "vetur.format.defaultFormatter.js": "prettier-eslint"
+  "vetur.format.defaultFormatter.js": "prettier-eslint",
+  "editor.formatOnSave": true,
+  "html.format.indentHandlebars": true,
+  "html.format.indentInnerHtml": true,
+  "html.format.wrapAttributes": "preserve-aligned",
+  "javascript.format.insertSpaceAfterCommaDelimiter": false
 }
