@@ -16,6 +16,7 @@
       <!-- <component :is="currentPage" :toggle-menu="() => (openSide = !openSide)"></component> -->
     </v-ons-splitter-content>
   </v-ons-splitter>
+
   <v-ons-toolbar>
     <div class="left">
       <v-ons-toolbar-button>
@@ -41,7 +42,7 @@ export default {
   data: function() {
     return {
       pages: ["Page one", "Page two", "Page three"],
-      openSide: true
+      openSide: false
     }
   },
   methods: {
