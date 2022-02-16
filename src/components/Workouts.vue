@@ -1,9 +1,11 @@
-<template id="mainpage">
+<template id="workouts">
   <div>
     <h1>{{ msg }}</h1>
     <ul>
       <li><a href="" target="_blank" rel="noopener">List of Workouts</a></li>
-      <li><a href="" target="_blank" rel="noopener">Create Custome Workout</a></li>
+      <li>
+        <a href="" target="_blank" rel="noopener">Create Custome Workout</a>
+      </li>
       <li><a href="" target="_blank" rel="noopener">View Exercise</a></li>
     </ul>
   </div>
@@ -11,7 +13,7 @@
 
 <script>
 export default {
-  name: 'MainPage',
+  name: 'Workouts',
   props: {
     msg: String
   }

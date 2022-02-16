@@ -18,16 +18,16 @@
 <script>
 import NavBar from './components/NavBar.vue'
 import Workouts from './components/Workouts.vue'
-import Exercises from './components/Workouts.vue'
-import Settings from './components/Workouts.vue'
-import About from './components/Workouts.vue'
-import Profile from './components/Workouts.vue'
+import Exercises from './components/Exercises.vue'
+import Settings from './components/Settings.vue'
+import About from './components/About.vue'
+import Profile from './components/Profile.vue'
 
 export default {
   name: 'App',
   data: function() {
     return {
-      page: 'Workouts',
+      page: 'Exercises',
       pages: ['Workouts', 'Exercises', 'Settings', 'About', 'Profile']
     }
   },
