@@ -1,13 +1,7 @@
 <template id="NavBar">
   <div>
     <v-ons-splitter>
-      <v-ons-splitter-side
-        swipeable
-        width="33%"
-        collapse=""
-        side="right"
-        :open.sync="openSide"
-      >
+      <v-ons-splitter-side swipeable width="33%" collapse="" side="right" :open.sync="openSide">
         <v-ons-page>
           <v-ons-list>
             <v-ons-list-item
@@ -15,10 +9,9 @@
               tappable
               :key="page"
               @click="
-                sendPage(page);
-                openSide = false;
-              "
-            >
+                sendPage(page)
+                openSide = false
+              ">
               <div class="center">{{ page }}</div>
             </v-ons-list-item>
           </v-ons-list>
