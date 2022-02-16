@@ -16,6 +16,7 @@ new Vue({
   el: '#app',
   data() {
     return {
+      
     }
   },
   render: h => h(App)

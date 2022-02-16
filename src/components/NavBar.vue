@@ -3,7 +3,7 @@
     <v-ons-splitter>
       <v-ons-splitter-side
         swipeable
-        width="150px"
+        width="33%"
         collapse=""
         side="right"
         :open.sync="openSide"
@@ -13,8 +13,11 @@
             <v-ons-list-item
               v-for="page in pages"
               tappable
-              modifier="chevron"
               :key="page"
+              @click="
+                sendPage(page);
+                openSide = false;
+              "
             >
               <div class="center">{{ page }}</div>
             </v-ons-list-item>
@@ -50,18 +53,22 @@
 export default {
   name: 'NavBar',
   props: {
-    title: String
+    title: String,
+    page: String,
+    pages: Array
   },
   data: function() {
     return {
-      page: 'Page one',
-      pages: ['Page one', 'Page two', 'Page three'],
       openSide: false
     }
   },
   methods: {
     menuAction: function() {
       this.openSide = !this.openSide
+    },
+    sendPage: function(newPage) {
+      console.log(newPage)
+      this.$emit('newPage', newPage)
     }
   }
 }
