@@ -1,6 +1,6 @@
 <template id="workoutcard">
   <div>
-    <v-ons-card>
+    <v-ons-card @click="cardClick(name)">
       <v-ons-row>
         <img v-bind:src="getImages(picture)" v-bind:alt="name" style="width: 33%" />
         <div class="title" style="width: 66%">{{ name }}</div>
@@ -22,9 +22,14 @@ export default {
   },
   methods: {
     getImages: function(pic) {
-      // var images = requires.context('../assets/', false, /\.jpeg$/) # TODO need to figure out how to get images loaded, browser don't have access to requires, maybe use webpack
+      // TODO need to figure out how to get images loaded, browser don't have access to requires, maybe use webpack
+      // var images = requires.context('../assets/', false, /\.jpeg$/)
       // return images('./' + pic)
       return null
+    },
+    cardClick: function(cardName) {
+      console.log(cardName)
+      // TODO go to the workout editor screen
     }
   }
 }
