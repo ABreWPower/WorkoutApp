@@ -7,14 +7,13 @@
 </template>
 
 <script>
+// TODO can we put an ID or something on the workout card to get rid of the duplicate keys detected message
 import WorkoutCard from './WorkoutCard.vue'
 
 export default {
   name: 'Workouts',
   components: { WorkoutCard },
-  props: {
-    msg: String
-  },
+  props: {},
   data: function() {
     return {
       workouts: {

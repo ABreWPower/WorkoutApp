@@ -18,12 +18,14 @@ import Settings from './components/Settings.vue'
 import About from './components/About.vue'
 import Profile from './components/Profile.vue'
 
+import WorkoutView from './components/WorkoutView.vue'
+
 export default {
   name: 'App',
-  components: { NavBar, Workouts, Exercises, Settings, About, Profile },
+  components: { NavBar, Workouts, Exercises, Settings, About, Profile, WorkoutView },
   data: function() {
     return {
-      page: 'Workouts',
+      page: 'WorkoutView',
       pages: ['Workouts', 'Exercises', 'Settings', 'About', 'Profile']
     }
   }
