@@ -1,20 +1,25 @@
-<template id="workoutcard">
+<template id="exercisecard">
   <div>
     <v-ons-card @click="cardClick(name)">
       <v-ons-row>
-        <img v-bind:src="getImages(picture)" v-bind:alt="name" style="width: 33%" />
-        <div class="title" style="width: 66%">{{ name }}</div>
-        <div class="content">
-          <p>{{ description }}</p>
-        </div>
+        <v-ons-col style="width: 33%">
+          <img v-bind:src="getImages(picture)" v-bind:alt="name" />
+        </v-ons-col>
+        <v-ons-col style="width: 66%">
+          <div class="title">{{ name }}</div>
+          <div class="content">
+            <p>{{ description }}</p>
+          </div>
+        </v-ons-col>
       </v-ons-row>
     </v-ons-card>
   </div>
 </template>
 
 <script>
+// Yes this file is almost exactly the same as workout card, but i didn't know if we wanted to be able to change things between the 2
 export default {
-  name: 'WorkoutCard',
+  name: 'ExerciseCard',
   props: {
     name: String,
     picture: String,
@@ -29,7 +34,7 @@ export default {
     },
     cardClick: function(cardName) {
       console.log(cardName)
-      // TODO go to the workout editor screen
+      // TODO go to the exercise view page
     }
   }
 }

@@ -33,7 +33,9 @@
     <h5>Description:</h5>
     <p>{{ workout.description }}</p>
 
-    <!-- link the exercies card component -->
+    <div v-for="exercise in workout.linkedExercises" :key="exercise">
+      <exercise-card :name="exercise.name" :picture="exercise.picture" :description="exercise.description"></exercise-card>
+    </div>
 
     <v-ons-row class="center">
       <v-ons-button style="margin: 6px 0">Start</v-ons-button>
@@ -45,9 +47,11 @@
 <script>
 // TODO will need to get the data passed to which workout this is and then pull it from the "database"
 
+import ExerciseCard from './ExerciseCard.vue'
+
 export default {
   name: 'WorkoutView',
-  components: {},
+  components: { ExerciseCard },
   props: {},
   data: function() {
     return {
@@ -60,7 +64,23 @@ export default {
         duration: 300,
         difficulty: 2,
         equipment: ['barbell', 'dumbell'],
-        linkedExercises: ['chinups', 'pullups', 'pushups']
+        linkedExercises: {
+          1: {
+            name: 'chinup',
+            description: 'pull your self up',
+            picture: '/src/assets/istockphoto-1254996126-612x612.jpg'
+          },
+          2: {
+            name: 'pullup',
+            description: 'pull your self up',
+            picture: '/src/assets/istockphoto-1254996126-612x612.jpg'
+          },
+          3: {
+            name: 'push',
+            description: 'controlled falling',
+            picture: '/src/assets/istockphoto-1254996126-612x612.jpg'
+          }
+        }
       }
     }
   },

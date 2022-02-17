@@ -2,11 +2,15 @@
   <div>
     <v-ons-card @click="cardClick(name)">
       <v-ons-row>
-        <img v-bind:src="getImages(picture)" v-bind:alt="name" style="width: 33%" />
-        <div class="title" style="width: 66%">{{ name }}</div>
-        <div class="content">
-          <p>{{ description }}</p>
-        </div>
+        <v-ons-col style="width: 33%">
+          <img v-bind:src="getImages(picture)" v-bind:alt="name" />
+        </v-ons-col>
+        <v-ons-col style="width: 66%">
+          <div class="title">{{ name }}</div>
+          <div class="content">
+            <p>{{ description }}</p>
+          </div>
+        </v-ons-col>
       </v-ons-row>
     </v-ons-card>
   </div>
