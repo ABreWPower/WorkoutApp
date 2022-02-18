@@ -155,3 +155,41 @@ Increase inotify watches
 sudo nano /etc/sysctl.conf
 Add line --> fs.inotify.max_user_watches=524288
 sudo sysctl -p
+
+
+---------------
+VueJS 3 w/ npm
+---------------
+npm init vue@latest
+
+
+✔ Project name: … webtest
+✔ Add TypeScript? … No / Yes
+✔ Add JSX Support? … No / Yes
+✔ Add Vue Router for Single Page Application development? … No / Yes
+✔ Add Pinia for state management? … No / Yes
+✔ Add Vitest for Unit Testing? … No / Yes
+✔ Add Cypress for both Unit and End-to-End testing? … No / Yes
+✔ Add ESLint for code quality? … No / Yes
+✔ Add Prettier for code formatting? … No / Yes
+
+
+
+cd webtest
+npm install
+npm run lint
+npm run dev
+
+
+
+----------------
+Bootstrap crap
+----------------
+npm install bootstrap --save-dev
+npm install sass --save-dev
+npm install postcss --save-dev
+npm install postcss-cli --save-dev
+npm install autoprefixer --save-dev
+
+npx sass --load-path node_modules --style compressed --source-map-urls=relative scss:assets/css/
+npx postcss --replace assets/css/bootstrap.css --use autoprefixer --map
