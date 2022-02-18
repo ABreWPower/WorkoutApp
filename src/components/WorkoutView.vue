@@ -7,7 +7,7 @@
       <v-on-col width="50%">
         <p>Duration: {{ workout.duration }}</p>
       </v-on-col>
-      <v-on-col width="50%">
+      <v-on-col width="50%" class="right">
         <p v-if="workout.difficulty == 0">Difficulty:</p>
         <p v-if="workout.difficulty == 1">
           Difficulty:
@@ -39,7 +39,7 @@
 
     <v-ons-row class="center">
       <v-ons-button style="margin: 6px 0">Start</v-ons-button>
-      <v-ons-button modifier="outline" style="margin: 6px 0">Edit</v-ons-button>
+      <v-ons-button modifier="light" style="margin: 6px 0">Edit</v-ons-button>
     </v-ons-row>
   </div>
 </template>
@@ -101,5 +101,12 @@ h1,
 h4,
 h5 {
   text-align: left;
+}
+v-on-col.right {
+  margin-left: auto;
+}
+
+ons-row.center {
+  justify-content: space-evenly;
 }
 </style>
