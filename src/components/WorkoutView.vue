@@ -17,7 +17,7 @@
           Difficulty:
           <ons-icon icon="star"></ons-icon>
           <ons-icon icon="star"></ons-icon>
-          <ons-icon icon="star-rate"></ons-icon>
+          <ons-icon icon="fa-star" class="far"></ons-icon>
         </p>
         <p v-if="workout.difficulty == 3">
           Difficulty:
