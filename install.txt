@@ -191,5 +191,5 @@ npm install postcss --save-dev
 npm install postcss-cli --save-dev
 npm install autoprefixer --save-dev
 
-npx sass --load-path node_modules --style compressed --source-map-urls=relative scss:assets/css/
+npx sass --load-path node_modules --style compressed --source-map-urls=relative node_modules/bootstrap/scss:assets/css/
 npx postcss --replace assets/css/bootstrap.css --use autoprefixer --map
