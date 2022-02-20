@@ -164,14 +164,14 @@ npm init vue@latest
 
 
 ✔ Project name: … webtest
-✔ Add TypeScript? … No / Yes
-✔ Add JSX Support? … No / Yes
-✔ Add Vue Router for Single Page Application development? … No / Yes
-✔ Add Pinia for state management? … No / Yes
-✔ Add Vitest for Unit Testing? … No / Yes
-✔ Add Cypress for both Unit and End-to-End testing? … No / Yes
-✔ Add ESLint for code quality? … No / Yes
-✔ Add Prettier for code formatting? … No / Yes
+✔ Add TypeScript? … No 
+✔ Add JSX Support? … No
+✔ Add Vue Router for Single Page Application development? … Yes
+✔ Add Pinia for state management? … Yes
+✔ Add Vitest for Unit Testing? … No
+✔ Add Cypress for both Unit and End-to-End testing? … No
+✔ Add ESLint for code quality? … Yes
+✔ Add Prettier for code formatting? … Yes
 
 
 
@@ -193,3 +193,6 @@ npm install autoprefixer --save-dev
 
 npx sass --load-path node_modules --style compressed --source-map-urls=relative node_modules/bootstrap/scss:assets/css/
 npx postcss --replace assets/css/bootstrap.css --use autoprefixer --map
+
+added this under main.js script tag
+    <link rel="stylesheet" href="assets/css/bootstrap.css">    
