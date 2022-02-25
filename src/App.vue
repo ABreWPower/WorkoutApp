@@ -9,6 +9,7 @@ import Exercises from './components/Exercises.vue'
 // import Profile from './components/Profile.vue'
 
 import WorkoutPage from './components/WorkoutPage.vue'
+import WorkoutEdit from './components/WorkoutEdit.vue'
 
 const page = WorkoutPage;
 const pages = [Workouts, Exercises, "Settings", "About", "Profile"];
