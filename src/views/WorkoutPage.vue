@@ -1,5 +1,5 @@
 <script setup>
-import exerciseCard from './ExerciseCard.vue'
+import exerciseCard from '../components/ExerciseCard.vue'
 
 const workout = {
   id: 1,
