@@ -11,7 +11,7 @@ import Exercises from './components/Exercises.vue'
 import WorkoutPage from './components/WorkoutPage.vue'
 import WorkoutEdit from './components/WorkoutEdit.vue'
 
-const page = WorkoutPage;
+const page = WorkoutEdit;
 const pages = [Workouts, Exercises, "Settings", "About", "Profile"];
 </script>
 
