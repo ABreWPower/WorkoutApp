@@ -8,15 +8,18 @@ import Exercises from './components/Exercises.vue'
 // import About from './components/About.vue'
 // import Profile from './components/Profile.vue'
 
-// import WorkoutView from './components/WorkoutView.vue'
+import WorkoutPage from './components/WorkoutPage.vue'
 
-const page = Exercises;
+const page = WorkoutPage;
 const pages = [Workouts, Exercises, "Settings", "About", "Profile"];
 </script>
 
 <template>
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
+      <button type="button">
+        <img src="icons/arrow-left.svg" alt="star" />
+      </button>
       <a class="navbar-brand" href="#">Workout App</a>
       <button
         class="navbar-toggler"
