@@ -1,7 +1,7 @@
 <script setup>
-import Workout1Pic from "/pic1.jpg";
-import Workout2Pic from "/pic2.jpg";
-import Workout3Pic from "/pic3.jpg";
+import Exercise1Pic from "/pic1.jpg";
+import Exercise2Pic from "/pic2.jpg";
+import Exercise3Pic from "/pic3.jpg";
 
 defineProps({
   name: {
@@ -19,7 +19,7 @@ defineProps({
 });
 
 const getImages = function () {
-  let images = [Workout1Pic, Workout2Pic, Workout3Pic];
+  let images = [Exercise1Pic, Exercise2Pic, Exercise3Pic];
   return images[Math.floor(Math.random() * images.length)];
 };
 
