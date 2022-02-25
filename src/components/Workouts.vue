@@ -1,23 +1,7 @@
-<template id="workouts">
-  <div>
-    <div v-for="workout in workouts" :key="workout">
-      <workout-card :name="workout.name" :picture="workout.picture" :description="workout.description"></workout-card>
-    </div>
-  </div>
-</template>
-
-<script>
-// TODO can we put an ID or something on the workout card to get rid of the duplicate keys detected message
+<script setup>
 import WorkoutCard from './WorkoutCard.vue'
 
-
-export default {
-  name: 'Workouts',
-  components: { WorkoutCard },
-  props: {},
-  data: function() {
-    return {
-      workouts: {
+const workouts = {
         1: {
           id: 1,
           name: 'Workout 1',
@@ -59,10 +43,16 @@ export default {
           equipment: ['barbell', 'dumbell', 'dip machine']
         }
       }
-    }
-  }
-}
 </script>
 
+<template>
+  <div>
+    <div v-for="workout in workouts" :key="workout">
+      <workout-card :name="workout.name" :picture="workout.picture" :description="workout.description"></workout-card>
+    </div>
+  </div>
+</template>
+
 <style scoped>
+
 </style>

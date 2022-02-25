@@ -1,23 +1,14 @@
-// Webpack CSS import
-import 'onsenui/css/onsenui.css'
-import 'onsenui/css/onsen-css-components.css'
+import * as bootstrap from 'bootstrap'
 
-// JS import
-import Vue from 'vue'
-import VueOnsen from 'vue-onsenui' // This imports 'onsenui', so no need to import it separately
-import App from './App.vue'
+import { createApp } from "vue";
+// import { createPinia } from "pinia";
 
-Vue.config.productionTip = false
+import App from "./App.vue";
+// import router from "./router";
 
-Vue.use(VueOnsen) // VueOnsen set here as plugin to VUE. Done automatically if a call to window.Vue exists in the startup code.
+const app = createApp(App);
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  data() {
-    return {
+// app.use(createPinia());
+// app.use(router);
 
-    }
-  },
-  render: h => h(App)
-})
+app.mount("#app");
