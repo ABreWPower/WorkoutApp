@@ -8,18 +8,22 @@ defineProps({
     type: String,
     required: true,
   },
-  picture: {
-    type: String,
-    required: false,
-  },
-  video: {
-    type: String,
+  sets: {
+    type: Number,
     required: true,
   },
-  instructions: {
-    type: String,
+  reps: {
+    type: Number,
     required: true,
   },
+  duration: {
+    type: Number,
+    required: true,
+  },
+  rest: {
+    type: Number,
+    required: true,
+  }
 });
 
 const getImages = function () {
@@ -38,17 +42,60 @@ const cardClick = function (cardName) {
     <div class="card mb-3" style="max-width: 540px">
       <div class="row g-0">
         <div class="col-md-4">
-          <!-- TODO put video if there is one otherwise picture -->
           <img
             v-bind:src="getImages(picture)"
             v-bind:alt="name"
-            class="img-fluid rounded-start"
+            class="img-fluid rounded-start smallpics"
           />
+          <h5 class="card-title">{{ name }}</h5>
+          <img src="icons/trash.svg" alt="trash" />
+          <img src="icons/three-dots-vertical.svg" alt="move" />
         </div>
         <div class="col-md-8">
           <div class="card-body">
-            <h5 class="card-title">{{ name }}</h5>
-            <p class="card-text">Instructions: {{ instructions }}</p>
+            <div class="input-group input-group-sm mb-3">
+              <span class="input-group-text" id="setsText">Sets</span>
+              <input
+                type="number"
+                :value="sets"
+                class="form-control"
+                aria-label="Number of sets to complete for this exercise: {{ name }}"
+                aria-describedby="setsText"
+              />
+            </div>
+            <div v-if="reps != null" class="input-group input-group-sm mb-3">
+              <span class="input-group-text" id="repsText">Reps</span>
+              <input
+                type="number"
+                :value="reps"
+                class="form-control"
+                aria-label="Number of reps to complete each set for this exercise: {{ name }}"
+                aria-describedby="repsText"
+              />
+            </div>
+            <div
+              v-if="duration != null"
+              class="input-group input-group-sm mb-3"
+            >
+              <span class="input-group-text" id="durationText">Duration</span>
+              <input
+                type="number"
+                :value="duration"
+                class="form-control"
+                aria-label="How long to complete each set for this exercise: {{ name }}"
+                aria-describedby="durationText"
+              />
+            </div>
+            <div class="input-group input-group-sm mb-3">
+              <span class="input-group-text" id="restText">Rest</span>
+              <input
+                type="number"
+                :value="rest"
+                class="form-control"
+                aria-label="Number of time to rest for this exercise: {{ name }}"
+                aria-describedby="restText"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -57,4 +104,13 @@ const cardClick = function (cardName) {
 </template>
 
 <style scoped>
+.smallpics {
+  width: 150px;
+}
+
+.g-0 {
+  --bs-gutter-: 0,
+  display: flex,
+  flex-wrap: wrap
+}
 </style>

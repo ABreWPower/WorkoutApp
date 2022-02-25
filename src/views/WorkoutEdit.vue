@@ -1,4 +1,6 @@
 <script setup>
+import workoutEditExerciseEdit from '../components/WorkoutEditExerciseEdit.vue'
+
 const workout = {
   id: 1,
   name: 'Workout 1',
@@ -10,6 +12,7 @@ const workout = {
   equipment: ['barbell', 'dip machine']
 }
 
+// Has extra fields that about be saved in the workout, not exercise
 const exercises = {
   1: {
     id: 1,
@@ -21,7 +24,9 @@ const exercises = {
     muscleGroup: ['chest', 'gravity manipulation'],
     reps: 10,
     duration: null,
-    equipment: ['anti-grav machine']
+    equipment: ['anti-grav machine'],
+    sets: 5,
+    rest: 30
   },
   2: {
     id: 2,
@@ -31,9 +36,11 @@ const exercises = {
     instructions: 'Chinups on a bench',
     difficulty: 3,
     muscleGroup: ['chest', 'gravity manipulation'],
-    reps: 10,
-    duration: null,
-    equipment: ['bench']
+    reps: null,
+    duration: 90,
+    equipment: ['bench'],
+    sets: 4,
+    rest: 60
   },
   3: {
     id: 3,
@@ -43,9 +50,11 @@ const exercises = {
     instructions: 'walk in circles',
     difficulty: 0,
     muscleGroup: ['chest', 'gravity manipulation'],
-    reps: 10,
-    duration: null,
-    equipment: ['ground']
+    reps: null,
+    duration: 5,
+    equipment: ['ground'],
+    sets: 3,
+    rest: 90
   },
   4: {
     id: 4,
@@ -57,7 +66,9 @@ const exercises = {
     muscleGroup: ['abs'],
     reps: 15,
     duration: null,
-    equipment: []
+    equipment: [],
+    sets: 2,
+    rest: 120
   }
 }
 </script>
@@ -90,68 +101,32 @@ const exercises = {
   </div>
 
   <h4>Description</h4>
-  <p>
-    Nullam commodo auctor sem, id pellentesque urna ultrices eleifend. Sed risus
-    enim, fermentum ac metus in, auctor gravida felis.
-  </p>
+  <input
+    type="text"
+    class="form-control"
+    id="workoutDescription"
+    :value="workout.description"
+    aria-label="Workout Description"
+  />
 
-  <div class="card mb-3" style="max-width: 540px">
-    <div class="row g-0">
-      <div class="col-md-4">
-        <img src="pic2.jpg" class="img-fluid rounded-start" alt="..." />
-      </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title">Exercise 1</h5>
-          <p class="card-text">
-            Description: Lorem ipsum dolor sitamet, consectetur adipiscing elit.
-            In a odio odio.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card mb-3" style="max-width: 540px">
-    <div class="row g-0">
-      <div class="col-md-4">
-        <img src="pic3.jpg" class="img-fluid rounded-start" alt="..." />
-      </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title">Exercise 2</h5>
-          <p class="card-text">
-            Description: Lorem ipsum dolor sitamet, consectetur adipiscing elit.
-            In a odio odio.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card mb-3" style="max-width: 540px">
-    <div class="row g-0">
-      <div class="col-md-4">
-        <img src="pic2.jpg" class="img-fluid rounded-start" alt="..." />
-      </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title">Exercise 3</h5>
-          <p class="card-text">
-            Description: Lorem ipsum dolor sitamet, consectetur adipiscing elit.
-            In a odio odio.
-          </p>
-        </div>
-      </div>
-    </div>
+  <div v-for="exercise in exercises" :key="exercise">
+    <workout-edit-exercise-edit
+      :name="exercise.name"
+      :sets="exercise.sets"
+      :reps="exercise.reps"
+      :duration="exercise.duration"
+      :rest="exercise.rest"
+    ></workout-edit-exercise-edit>
   </div>
 
   <div class="row">
     <div class="col">
-      <button type="button" class="btn btn-primary">Start</button>
+      <button type="button" class="btn btn-outline-secondary">
+        Add Exercise
+      </button>
     </div>
     <div class="col">
-      <button type="button" class="btn btn-outline-secondary">Edit</button>
+      <button type="button" class="btn btn-primary">Save</button>
     </div>
   </div>
 </template>

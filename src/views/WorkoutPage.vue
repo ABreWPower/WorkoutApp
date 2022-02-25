@@ -101,8 +101,7 @@ const exercises = {
 
   <h4>Description</h4>
   <p>
-    Nullam commodo auctor sem, id pellentesque urna ultrices eleifend. Sed risus
-    enim, fermentum ac metus in, auctor gravida felis.
+    {{ workout.description }}
   </p>
 
   <div v-for="exercise in exercises" :key="exercise">
