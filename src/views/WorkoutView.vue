@@ -66,7 +66,7 @@ const exercises = {
 
 <template>
   <h1>Workout 1</h1>
-  <img src="pic1.jpg" alt="pic1" />
+  <img src="/pic1.jpg" alt="pic1" />
 
   <div class="row align-items-start">
     <div class="col">Duration: {{ workout.duration / 60 }} min</div>
@@ -91,12 +91,7 @@ const exercises = {
   </p>
 
   <div v-for="exercise in exercises" :key="exercise">
-    <exercise-card
-      :name="exercise.name"
-      :picture="exercise.picture"
-      :video="exercise.video"
-      :instructions="exercise.instructions"
-    ></exercise-card>
+    <exercise-card :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :instructions="exercise.instructions"></exercise-card>
   </div>
 
   <div class="row">

@@ -76,54 +76,29 @@ const exercises = {
 <template>
   <div class="input-group input-group-lg">
     <span class="input-group-text" id="workoutNameLabel">Workout Name</span>
-    <input
-      type="text"
-      class="form-control"
-      id="workoutName"
-      :value="workout.name"
-      aria-label="Workout Name"
-      aria-describedby="workoutNameLabel"
-    />
+    <input type="text" class="form-control" id="workoutName" :value="workout.name" aria-label="Workout Name" aria-describedby="workoutNameLabel" />
   </div>
-  <img src="pic1.jpg" alt="pic1" />
+  <img src="/pic1.jpg" alt="pic1" />
 
   <div class="row align-items-start">
     <div class="col">
-      <button type="button" class="btn btn-outline-primary">
-        Upload Photo
-      </button>
+      <button type="button" class="btn btn-outline-primary">Upload Photo</button>
     </div>
     <div class="col">
-      <button type="button" class="btn btn-outline-warning">
-        Remove Photo
-      </button>
+      <button type="button" class="btn btn-outline-warning">Remove Photo</button>
     </div>
   </div>
 
   <h4>Description</h4>
-  <input
-    type="text"
-    class="form-control"
-    id="workoutDescription"
-    :value="workout.description"
-    aria-label="Workout Description"
-  />
+  <input type="text" class="form-control" id="workoutDescription" :value="workout.description" aria-label="Workout Description" />
 
   <div v-for="exercise in exercises" :key="exercise">
-    <workout-edit-exercise-edit
-      :name="exercise.name"
-      :sets="exercise.sets"
-      :reps="exercise.reps"
-      :duration="exercise.duration"
-      :rest="exercise.rest"
-    ></workout-edit-exercise-edit>
+    <workout-edit-exercise-edit :name="exercise.name" :sets="exercise.sets" :reps="exercise.reps" :duration="exercise.duration" :rest="exercise.rest"></workout-edit-exercise-edit>
   </div>
 
   <div class="row">
     <div class="col">
-      <button type="button" class="btn btn-outline-secondary">
-        Add Exercise
-      </button>
+      <button type="button" class="btn btn-outline-secondary">Add Exercise</button>
     </div>
     <div class="col">
       <button type="button" class="btn btn-primary">Save</button>
