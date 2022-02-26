@@ -1,0 +1,242 @@
+---------------------
+Install and setup npm
+---------------------
+
+mkdir src
+cd src
+
+sudo apt update
+sudo apt install nodejs npm
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+nvm install --lts
+
+---------------
+Install Cordova
+---------------
+
+npm install -g cordova
+
+----------------------------
+Install Project dependancies
+----------------------------
+
+npm install -g @vue/cli
+npm i -g @vue/cli-init
+
+-------------
+Start Project
+-------------
+https://medium.com/@valeriocapogna/how-to-setup-a-cordova-app-using-vue-js-8ba1315b9666
+
+cordova create workoutapp
+vue init webpack workoutapp
+
+? Target directory exists. Continue? Yes
+? Project name workoutapp
+? Project description Initial workout app
+? Author Adam Wickersham <abwicker@gmail.com>
+? Vue build standalone
+? Install vue-router? No
+? Use ESLint to lint your code? Yes
+? Pick an ESLint preset Standard
+? Set up unit tests No
+? Setup e2e tests with Nightwatch? No
+? Should we run `npm install` for you after the project has been created? (recommended) npm
+
+
+cd workoutapp
+git init
+git remote add origin https://github.com/ABreWPower/WorkoutApp.git
+
+
+make project changes
+
+
+cordova platform add browser
+
+npm run build
+cordova build browser
+cordova run browser
+
+
+-------------
+Onsen UI include
+-------------
+https://onsen.io/v2/guide/vue/
+
+npm install onsenui vue-onsenui
+
+edit page based on website
+
+npm run build
+cordova build browser
+cordova run browser
+
+
+------------------------
+Get AWS Amplify included
+------------------------
+https://aws.amazon.com/getting-started/guides/deploy-webapp-amplify/module-one/
+
+npm install -g @aws-amplify/cli
+
+amplify init
+? Enter a name for the project WorkoutApp
+The following configuration will be applied:
+
+Project information
+| Name: WorkoutApp
+| Environment: dev
+| Default editor: Visual Studio Code
+| App type: javascript
+| Javascript framework: vue
+| Source Directory Path: src
+| Distribution Directory Path: dist
+| Build Command: npm run-script build
+| Start Command: npm run-script serve
+
+? Initialize the project with the above configuration? Yes
+Using default provider  awscloudformation
+? Select the authentication method you want to use: AWS profile
+
+For more information on AWS Profiles, see:
+https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html
+
+? Please choose the profile you want to use default
+Adding backend environment dev to AWS Amplify app: d6h908z2beq52
+⠹ Initializing project in the cloud...
+
+CREATE_IN_PROGRESS amplify-workoutapp-dev-170106 AWS::CloudFormation::Stack Sun Feb 13 2022 17:01:08 GMT+0000 (Coordinated Universal Time) User Initiated
+CREATE_IN_PROGRESS AuthRole                      AWS::IAM::Role             Sun Feb 13 2022 17:01:13 GMT+0000 (Coordinated Universal Time)               
+CREATE_IN_PROGRESS UnauthRole                    AWS::IAM::Role             Sun Feb 13 2022 17:01:13 GMT+0000 (Coordinated Universal Time)               
+⠦ Initializing project in the cloud...
+
+CREATE_IN_PROGRESS DeploymentBucket AWS::S3::Bucket Sun Feb 13 2022 17:01:13 GMT+0000 (Coordinated Universal Time) 
+⠹ Initializing project in the cloud...
+
+CREATE_IN_PROGRESS UnauthRole       AWS::IAM::Role  Sun Feb 13 2022 17:01:14 GMT+0000 (Coordinated Universal Time) Resource creation Initiated
+CREATE_IN_PROGRESS AuthRole         AWS::IAM::Role  Sun Feb 13 2022 17:01:14 GMT+0000 (Coordinated Universal Time) Resource creation Initiated
+CREATE_IN_PROGRESS DeploymentBucket AWS::S3::Bucket Sun Feb 13 2022 17:01:15 GMT+0000 (Coordinated Universal Time) Resource creation Initiated
+⠧ Initializing project in the cloud...
+
+CREATE_COMPLETE UnauthRole AWS::IAM::Role Sun Feb 13 2022 17:01:26 GMT+0000 (Coordinated Universal Time) 
+CREATE_COMPLETE AuthRole   AWS::IAM::Role Sun Feb 13 2022 17:01:26 GMT+0000 (Coordinated Universal Time) 
+⠙ Initializing project in the cloud...
+
+CREATE_COMPLETE DeploymentBucket AWS::S3::Bucket Sun Feb 13 2022 17:01:36 GMT+0000 (Coordinated Universal Time) 
+⠼ Initializing project in the cloud...
+
+CREATE_COMPLETE amplify-workoutapp-dev-170106 AWS::CloudFormation::Stack Sun Feb 13 2022 17:01:39 GMT+0000 (Coordinated Universal Time) 
+✔ Successfully created initial AWS cloud resources for deployments.
+✔ Initialized provider successfully.
+Initialized your environment successfully.
+
+Your project has been successfully initialized and connected to the cloud!
+
+Some next steps:
+"amplify status" will show you what you've added already and if it's locally configured or deployed
+"amplify add <category>" will allow you to add features like user login or a backend API
+"amplify push" will build all your local backend resources and provision it in the cloud
+"amplify console" to open the Amplify Console and view your project status
+"amplify publish" will build all your local backend and frontend resources (if you have hosting category added) and provision it in the cloud
+
+Pro tip:
+Try "amplify add api" to create a backend API and then "amplify push" to deploy everything
+
+
+
+------------------------
+Increase inotify watches
+------------------------
+sudo nano /etc/sysctl.conf
+Add line --> fs.inotify.max_user_watches=524288
+sudo sysctl -p
+
+
+---------------
+VueJS 3 w/ npm
+---------------
+npm init vue@latest
+
+
+✔ Project name: … webtest
+✔ Add TypeScript? … No 
+✔ Add JSX Support? … No
+✔ Add Vue Router for Single Page Application development? … Yes
+✔ Add Pinia for state management? … Yes
+✔ Add Vitest for Unit Testing? … No
+✔ Add Cypress for both Unit and End-to-End testing? … No
+✔ Add ESLint for code quality? … Yes
+✔ Add Prettier for code formatting? … Yes
+
+
+
+cd webtest
+npm install
+npm run lint
+npm run dev
+
+
+
+----------------
+Bootstrap crap
+----------------
+npm install bootstrap --save-dev
+npm install sass --save-dev
+npm install postcss --save-dev
+npm install postcss-cli --save-dev
+npm install autoprefixer --save-dev
+
+npx sass --load-path node_modules --style compressed --source-map-urls=relative node_modules/bootstrap/scss:assets/css/
+npx postcss --replace assets/css/bootstrap.css --use autoprefixer --map
+
+added this under main.js script tag
+    <link rel="stylesheet" href="assets/css/bootstrap.css">    
+
+********************************************
+TAKE 2
+********************************************
+---------------
+VueJS 3 w/ npm
+---------------
+npm init vue@latest
+
+
+✔ Project name: … webtest
+✔ Add TypeScript? … No 
+✔ Add JSX Support? … No
+✔ Add Vue Router for Single Page Application development? … Yes
+✔ Add Pinia for state management? … Yes
+✔ Add Vitest for Unit Testing? … No
+✔ Add Cypress for both Unit and End-to-End testing? … No
+✔ Add ESLint for code quality? … Yes
+✔ Add Prettier for code formatting? … Yes
+
+cd webtest
+npm install
+npm run lint
+npm run dev
+
+----------------
+Bootstrap crap
+----------------
+npm install bootstrap
+npm install bootstrap-icons
+npm install sass --save-dev
+npm install postcss --save-dev
+npm install postcss-cli --save-dev
+npm install autoprefixer --save-dev
+
+npx sass --load-path node_modules --style compressed --source-map-urls=relative node_modules/bootstrap/scss:assets/css/
+npx postcss --replace assets/css/bootstrap.css --use autoprefixer --map
+
+added this under main.js script tag
+    <link rel="stylesheet" href="assets/css/bootstrap.css"> 
+main.js
+    import * as bootstrap from 'bootstrap'
+
+npx vite
