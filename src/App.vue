@@ -22,15 +22,7 @@ import { RouterLink, RouterView } from "vue-router";
         <i class="bi bi-arrow-left"></i>
       </button>
       <a class="navbar-brand" href="#">Workout App</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -57,8 +49,9 @@ import { RouterLink, RouterView } from "vue-router";
   </nav>
 
   <router-view />
-
-  <component v-bind:is="page"></component>
+  <div class="container">
+    <component v-bind:is="page"></component>
+  </div>
 </template>
 
 <style>

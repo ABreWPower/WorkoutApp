@@ -47,20 +47,11 @@ const workouts = {
 
 <template>
   <form class="d-flex">
-    <input
-      class="form-control me-2"
-      type="search"
-      placeholder="Search"
-      aria-label="Search"
-    />
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
     <button class="btn btn-outline-success" type="submit">Search</button>
   </form>
   <div v-for="workout in workouts" :key="workout">
-    <workout-card
-      :name="workout.name"
-      :picture="workout.picture"
-      :description="workout.description"
-    ></workout-card>
+    <workout-card :name="workout.name" :picture="workout.picture" :description="workout.description"></workout-card>
   </div>
   <button type="button" class="btn btn-outline-secondary">New Workout</button>
 </template>
