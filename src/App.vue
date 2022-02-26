@@ -19,7 +19,7 @@ import { RouterLink, RouterView } from "vue-router";
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
       <button type="button" @click="$router.go(-1)">
-        <img src="icons/arrow-left.svg" alt="star" />
+        <i class="bi bi-arrow-left"></i>
       </button>
       <a class="navbar-brand" href="#">Workout App</a>
       <button

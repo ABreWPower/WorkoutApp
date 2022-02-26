@@ -72,26 +72,12 @@ const exercises = {
     <div class="col">Duration: {{ workout.duration / 60 }} min</div>
     <div class="col">
       <div class="row align-items-start">
-        <p>Difficulty:</p>
-        <p v-if="workout.difficulty == 0">
-          <img src="icons/star.svg" alt="star" />
-          <img src="icons/star.svg" alt="star" />
-          <img src="icons/star.svg" alt="star" />
-        </p>
-        <p v-if="workout.difficulty == 1">
-          <img src="icons/star-fill.svg" alt="star" />
-          <img src="icons/star.svg" alt="star" />
-          <img src="icons/star.svg" alt="star" />
-        </p>
-        <p v-if="workout.difficulty == 2">
-          <img src="icons/star-fill.svg" alt="star" />
-          <img src="icons/star-fill.svg" alt="star" />
-          <img src="icons/star.svg" alt="star" />
-        </p>
-        <p v-if="workout.difficulty == 3">
-          <img src="icons/star-fill.svg" alt="star" />
-          <img src="icons/star-fill.svg" alt="star" />
-          <img src="icons/star-fill.svg" alt="star" />
+        <p>
+          Difficulty:
+          <span v-for="i in [0, 1, 2]" :key="i">
+            <i v-if="i < workout.difficulty" class="bi bi-star-fill"></i>
+            <i v-else class="bi bi-star"></i>
+          </span>
         </p>
       </div>
     </div>

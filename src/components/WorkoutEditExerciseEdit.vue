@@ -48,8 +48,8 @@ const cardClick = function (cardName) {
             class="img-fluid rounded-start smallpics"
           />
           <h5 class="card-title">{{ name }}</h5>
-          <img src="icons/trash.svg" alt="trash" />
-          <img src="icons/three-dots-vertical.svg" alt="move" />
+          <i class="bi bi-trash"></i>
+          <i class="bi bi-three-dots-vertical"></i>
         </div>
         <div class="col-md-8">
           <div class="card-body">
