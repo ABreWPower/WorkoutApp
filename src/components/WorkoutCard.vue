@@ -31,19 +31,15 @@ const cardClick = function (cardName) {
 
 <template>
   <div>
-    <div class="card mb-3" style="max-width: 540px">
+    <div class="card mb-3 border-secondary" style="max-width: 540px">
       <div class="row g-0">
-        <div class="col-md-4">
-          <img
-            v-bind:src="getImages(picture)"
-            v-bind:alt="name"
-            class="img-fluid rounded-start"
-          />
+        <div class="col-4 align-self-center">
+          <img v-bind:src="getImages(picture)" v-bind:alt="name" class="img-fluid rounded-start" />
         </div>
-        <div class="col-md-8">
+        <div class="col-8">
           <div class="card-body">
             <h5 class="card-title">{{ name }}</h5>
-            <p class="card-text">Description: {{ description }}</p>
+            <p class="card-text overflow-hidden" style="text-overflow: ellipsis; -webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box">Description: {{ description }}</p>
           </div>
         </div>
       </div>

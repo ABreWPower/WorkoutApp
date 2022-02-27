@@ -16,7 +16,7 @@ const workouts = {
     id: 2,
     name: 'Workout B',
     picture: 'TODO Something',
-    description: 'An old workout',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam varius tempor justo, ac cursus urna rhoncus id. Etiam id hendrerit metus, et eleifend libero. Phasellus volutpat, erat sed dignissim dignissim, tellus metus elementum mi, vitae vulputate ipsum orci a felis. Phasellus justo justo, tincidunt ac nibh suscipit, iaculis luctus nisi. Suspendisse fringilla dictum viverra. Nullam a pulvinar nisl. Fusce mattis, diam et pretium semper, ante lacus convallis diam, iaculis scelerisque massa tellus a dui. Aliquam eu leo sed metus vehicula finibus. Nam finibus, neque eget congue fringilla, turpis nisl lacinia arcu, eu porttitor tortor tellus sit amet eros. Etiam risus orci, suscipit a justo nec, suscipit placerat est. Nam imperdiet placerat aliquam.',
     user: 'default',
     duration: 300,
     difficulty: 2,
