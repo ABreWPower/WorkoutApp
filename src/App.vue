@@ -1,18 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
 
-// // import NavBar from './views/NavBar.vue'
-// import Workouts from './views/Workouts.vue'
-// import Exercises from './views/Exercises.vue'
-// // import Settings from './views/Settings.vue'
-// // import About from './views/About.vue'
-// // import Profile from './views/Profile.vue'
-
-// import WorkoutPage from './views/WorkoutPage.vue'
-// import WorkoutEdit from './views/WorkoutEdit.vue'
-
-// const page = WorkoutEdit;
-// const pages = [Workouts, Exercises, "Settings", "About", "Profile"];
 </script>
 
 <template>
@@ -26,7 +14,6 @@ import { RouterLink, RouterView } from "vue-router";
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!-- <div class="navbar-nav mr-auto"> -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <router-link to="/">Workouts</router-link>
@@ -34,7 +21,7 @@ import { RouterLink, RouterView } from "vue-router";
           <li class="nav-item">
             <router-link to="/exercises">Exercises</router-link>
           </li>
-          <!-- Temp itesm -->
+          <!-- Temp items -->
           <li class="nav-item">
             <router-link to="/workoutview">Workout View</router-link>
           </li>
