@@ -34,9 +34,8 @@ import { RouterLink, RouterView } from "vue-router";
     </div>
   </nav>
 
-  <router-view />
   <div class="container">
-    <component v-bind:is="page"></component>
+    <router-view />
   </div>
 </template>
 
