@@ -1,5 +1,5 @@
 <script setup>
-import exerciseCard from '../components/ExerciseCard.vue'
+import cardView from '../components/CardView.vue'
 
 const workout = {
   id: 1,
@@ -91,7 +91,7 @@ const exercises = {
   </p>
 
   <div v-for="exercise in exercises" :key="exercise">
-    <exercise-card :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :instructions="exercise.instructions"></exercise-card>
+    <card-view :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :instructions="exercise.instructions"></card-view>
   </div>
 
   <div class="row">

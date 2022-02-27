@@ -1,5 +1,5 @@
 <script setup>
-import WorkoutCard from '../components/WorkoutCard.vue'
+import cardView from '../components/CardView.vue'
 
 const workouts = {
   1: {
@@ -82,15 +82,15 @@ const workouts = {
   </form>
   <!-- height: calc(100% vertical height - Nav bar (56px) - Search bar (38px) - New workout btn (38px) - IDK-DIK (16px) - Card margin (0.5rem) - Toolbar margin (0.5rem) -->
   <div style="position: relative; height: calc(100vh - 56px - 38px - 38px - 16px - 0.5rem - 0.5rem); margin-top: 0.5rem; overflow: auto">
-    <div v-for="workout in workouts" :key="workout" class="workout-card">
-      <workout-card :name="workout.name" :picture="workout.picture" :description="workout.description"></workout-card>
+    <div v-for="workout in workouts" :key="workout" class="card-view">
+      <card-view :name="workout.name" :picture="workout.picture" :description="workout.description"></card-view>
     </div>
   </div>
   <button type="button" class="btn btn-outline-secondary mt-2">New Workout</button>
 </template>
 
 <style scoped>
-div.workout-card:last-child div.card {
+div.card-view:last-child div.card {
   margin-bottom: 0 !important;
 }
 </style>

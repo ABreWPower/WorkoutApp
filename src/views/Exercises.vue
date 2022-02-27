@@ -1,5 +1,5 @@
 <script setup>
-import exerciseCard from '../components/ExerciseCard.vue'
+import cardView from '../components/CardView.vue'
 
 const exercises = {
   1: {
@@ -55,21 +55,11 @@ const exercises = {
 
 <template>
   <form class="d-flex">
-    <input
-      class="form-control me-2"
-      type="search"
-      placeholder="Search"
-      aria-label="Search"
-    />
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
     <button class="btn btn-outline-success" type="submit">Search</button>
   </form>
   <div v-for="exercise in exercises" :key="exercise">
-    <exercise-card
-      :name="exercise.name"
-      :picture="exercise.picture"
-      :video="exercise.video"
-      :instructions="exercise.instructions"
-    ></exercise-card>
+    <card-view :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :instructions="exercise.instructions"></card-view>
   </div>
   <button type="button" class="btn btn-outline-secondary">New Exercise</button>
 </template>

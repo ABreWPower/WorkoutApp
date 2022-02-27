@@ -11,6 +11,10 @@ defineProps({
   picture: {
     type: String,
     required: true,
+  },  
+  video: {
+    type: String,
+    required: false,
   },
   description: {
     type: String,
@@ -32,6 +36,7 @@ const cardClick = function (cardName) {
 <template>
   <div class="card mb-3 border-secondary" style="max-height: 8em">
     <div class="row g-0">
+      <!-- TODO put video if there is one otherwise picture -->
       <div class="col-4 align-self-center">
         <img v-bind:src="getImages(picture)" v-bind:alt="name" class="img-fluid rounded-start w-100" style="max-height: 8em; max-width: 180px" />
       </div>
