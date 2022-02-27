@@ -41,6 +41,36 @@ const workouts = {
     duration: 700,
     difficulty: 3,
     equipment: ['barbell', 'dumbell', 'dip machine']
+  },
+  5:{
+    id: 4,
+    name: 'Workout 5',
+    picture: 'TODO Something',
+    description: 'IDK',
+    user: 'default',
+    duration: 700,
+    difficulty: 3,
+    equipment: ['barbell', 'dumbell', 'dip machine']
+  },
+  6:{
+    id: 4,
+    name: 'Workout 5',
+    picture: 'TODO Something',
+    description: 'IDK',
+    user: 'default',
+    duration: 700,
+    difficulty: 3,
+    equipment: ['barbell', 'dumbell', 'dip machine']
+  },
+  7:{
+    id: 4,
+    name: 'Workout 5',
+    picture: 'TODO Something',
+    description: 'IDK',
+    user: 'default',
+    duration: 700,
+    difficulty: 3,
+    equipment: ['barbell', 'dumbell', 'dip machine']
   }
 }
 </script>
@@ -50,11 +80,17 @@ const workouts = {
     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
     <button class="btn btn-outline-success" type="submit">Search</button>
   </form>
-  <div v-for="workout in workouts" :key="workout">
-    <workout-card :name="workout.name" :picture="workout.picture" :description="workout.description"></workout-card>
+  <!-- height: calc(100% vertical height - Nav bar (56px) - Search bar (38px) - New workout btn (38px) - IDK-DIK (16px) - Card margin (0.5rem) - Toolbar margin (0.5rem) -->
+  <div style="position: relative; height: calc(100vh - 56px - 38px - 38px - 16px - 0.5rem - 0.5rem); margin-top: 0.5rem; overflow: auto">
+    <div v-for="workout in workouts" :key="workout" class="workout-card">
+      <workout-card :name="workout.name" :picture="workout.picture" :description="workout.description"></workout-card>
+    </div>
   </div>
-  <button type="button" class="btn btn-outline-secondary">New Workout</button>
+  <button type="button" class="btn btn-outline-secondary mt-2">New Workout</button>
 </template>
 
 <style scoped>
+div.workout-card:last-child div.card {
+  margin-bottom: 0 !important;
+}
 </style>

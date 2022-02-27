@@ -4,7 +4,7 @@ import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary mb-2">
     <div class="container-fluid">
       <button type="button" @click="$router.go(-1)">
         <i class="bi bi-arrow-left"></i>
