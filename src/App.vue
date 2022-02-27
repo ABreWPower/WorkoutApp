@@ -30,7 +30,6 @@ import { RouterLink, RouterView } from "vue-router";
           </li>
           <!-- temp items end -->
         </ul>
-        <!-- </div> -->
       </div>
     </div>
   </nav>
