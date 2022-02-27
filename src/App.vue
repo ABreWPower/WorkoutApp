@@ -4,11 +4,15 @@ import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
+  <!-- TODO close dropdown menu after a selection -->
+  <!-- TODO need to get the back button to match the rest of the nav bar -->
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary mb-2">
     <div class="container-fluid">
-      <button type="button" @click="$router.go(-1)">
-        <i class="bi bi-arrow-left"></i>
-      </button>
+      <div class="mx-3">
+        <button type="button" @click="$router.go(-1)">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+      </div>
       <a class="navbar-brand" href="#">Workout App</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
