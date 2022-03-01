@@ -1,5 +1,10 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
+import { RouterLink, RouterView } from "vue-router"
+import  { watch } from "vue"
+
+watch('$route', (to, from) => {
+  console.log({to, from})
+})
 
 </script>
 
@@ -9,7 +14,7 @@ import { RouterLink, RouterView } from "vue-router";
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary mb-2">
     <div class="container-fluid">
       <div class="mx-3">
-        <button type="button" @click="$router.go(-1)">
+        <button class="navbar-toggler" type="button" @click="$router.go(-1)">
           <i class="bi bi-arrow-left"></i>
         </button>
       </div>

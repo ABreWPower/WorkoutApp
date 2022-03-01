@@ -11,7 +11,7 @@ const exercises = {
     difficulty: 3,
     muscleGroup: ['chest', 'gravity manipulation'],
     reps: 10,
-    duration: null,
+    duration: 0,
     equipment: ['anti-grav machine']
   },
   2: {
@@ -23,7 +23,7 @@ const exercises = {
     difficulty: 3,
     muscleGroup: ['chest', 'gravity manipulation'],
     reps: 10,
-    duration: null,
+    duration: 0,
     equipment: ['bench']
   },
   3: {
@@ -35,7 +35,7 @@ const exercises = {
     difficulty: 0,
     muscleGroup: ['chest', 'gravity manipulation'],
     reps: 10,
-    duration: null,
+    duration: 0,
     equipment: ['ground']
   },
   4: {
@@ -47,7 +47,7 @@ const exercises = {
     difficulty: 1,
     muscleGroup: ['abs'],
     reps: 15,
-    duration: null,
+    duration: 0,
     equipment: []
   },
   5: {
@@ -59,7 +59,7 @@ const exercises = {
     difficulty: 1,
     muscleGroup: ['abs'],
     reps: 15,
-    duration: null,
+    duration: 0,
     equipment: []
   },
   6: {
@@ -71,7 +71,7 @@ const exercises = {
     difficulty: 1,
     muscleGroup: ['abs'],
     reps: 15,
-    duration: null,
+    duration: 0,
     equipment: []
   },
   7: {
@@ -83,7 +83,7 @@ const exercises = {
     difficulty: 1,
     muscleGroup: ['abs'],
     reps: 15,
-    duration: null,
+    duration: 0,
     equipment: []
   }
 }

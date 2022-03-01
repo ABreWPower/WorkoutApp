@@ -63,7 +63,7 @@ const cardClick = function (cardName) {
                 aria-describedby="setsText"
               />
             </div>
-            <div v-if="reps != null" class="input-group input-group-sm mb-3">
+            <div v-if="reps != 0" class="input-group input-group-sm mb-3">
               <span class="input-group-text" id="repsText">Reps</span>
               <input
                 type="number"
@@ -74,7 +74,7 @@ const cardClick = function (cardName) {
               />
             </div>
             <div
-              v-if="duration != null"
+              v-if="duration != 0"
               class="input-group input-group-sm mb-3"
             >
               <span class="input-group-text" id="durationText">Duration</span>

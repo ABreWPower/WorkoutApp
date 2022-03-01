@@ -22,7 +22,7 @@ const exercises = {
     difficulty: 3,
     muscleGroup: ['chest', 'gravity manipulation'],
     reps: 10,
-    duration: null,
+    duration: 0,
     equipment: ['anti-grav machine']
   },
   2: {
@@ -34,7 +34,7 @@ const exercises = {
     difficulty: 3,
     muscleGroup: ['chest', 'gravity manipulation'],
     reps: 10,
-    duration: null,
+    duration: 0,
     equipment: ['bench']
   },
   3: {
@@ -46,7 +46,7 @@ const exercises = {
     difficulty: 0,
     muscleGroup: ['chest', 'gravity manipulation'],
     reps: 10,
-    duration: null,
+    duration: 0,
     equipment: ['ground']
   },
   4: {
@@ -58,7 +58,55 @@ const exercises = {
     difficulty: 1,
     muscleGroup: ['abs'],
     reps: 15,
-    duration: null,
+    duration: 0,
+    equipment: []
+  },
+  5: {
+    id: 4,
+    name: 'Exercise 5',
+    picture: 'TODO Something',
+    video: 'TODO Something',
+    instructions: 'Crunches on the floor',
+    difficulty: 1,
+    muscleGroup: ['abs'],
+    reps: 15,
+    duration: 0,
+    equipment: []
+  }  ,
+  6: {
+    id: 4,
+    name: 'Exercise 5',
+    picture: 'TODO Something',
+    video: 'TODO Something',
+    instructions: 'Crunches on the floor',
+    difficulty: 1,
+    muscleGroup: ['abs'],
+    reps: 15,
+    duration: 0,
+    equipment: []
+  }  ,
+  7: {
+    id: 4,
+    name: 'Exercise 5',
+    picture: 'TODO Something',
+    video: 'TODO Something',
+    instructions: 'Crunches on the floor',
+    difficulty: 1,
+    muscleGroup: ['abs'],
+    reps: 15,
+    duration: 0,
+    equipment: []
+  },
+  8: {
+    id: 4,
+    name: 'Exercise 5',
+    picture: 'TODO Something',
+    video: 'TODO Something',
+    instructions: 'Crunches on the floor',
+    difficulty: 1,
+    muscleGroup: ['abs'],
+    reps: 15,
+    duration: 0,
     equipment: []
   }
 }
@@ -66,7 +114,7 @@ const exercises = {
 
 <template>
   <h1>Workout 1</h1>
-  <img src="/pic1.jpg" alt="pic1" />
+  <!-- <img src="/pic1.jpg" alt="pic1" style="max-width: 100vw" /> -->
 
   <div class="row align-items-start">
     <div class="col">Duration: {{ workout.duration / 60 }} min</div>
@@ -91,7 +139,7 @@ const exercises = {
   </p>
 
   <div v-for="exercise in exercises" :key="exercise">
-    <card-view :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :instructions="exercise.instructions"></card-view>
+    <card-view :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :description="exercise.instructions"></card-view>
   </div>
 
   <div class="row">
