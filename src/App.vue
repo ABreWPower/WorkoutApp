@@ -30,17 +30,18 @@ watch(routeObj, () => {
           <li class="nav-item">
             <p>Workout App</p>
           </li>
-          <li class="nav-item" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+          <!-- data-bs-toggle="collapse" data-bs-target=".navbar-collapse"  broke the links -->
+          <li class="nav-item">
             <router-link to="/">Workouts</router-link>
           </li>
-          <li class="nav-item" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+          <li class="nav-item">
             <router-link to="/exercises">Exercises</router-link>
           </li>
           <!-- Temp items -->
-          <li class="nav-item" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+          <li class="nav-item">
             <router-link to="/workoutview">Workout View</router-link>
           </li>
-          <li class="nav-item" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+          <li class="nav-item">
             <router-link to="/workoutedit">Workout Edit</router-link>
           </li>
           <!-- temp items end -->
