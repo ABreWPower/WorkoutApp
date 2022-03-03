@@ -20,7 +20,8 @@ watch(routeObj, () => {
           <i class="bi bi-arrow-left"></i>
         </button>
       </div>
-      <a class="navbar-brand" href="#">{{ pageTitle }}</a>
+      <!-- <a class="navbar-brand" href="#">{{ pageTitle }}</a> -->
+      <h2>{{ pageTitle }}</h2>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -57,7 +58,8 @@ watch(routeObj, () => {
 /* @import "@/assets/base.css"; */
 
 a,
-p {
+p,
+h2 {
   color: white;
 }
 </style>
