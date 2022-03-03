@@ -1,11 +1,13 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router"
-import  { watch } from "vue"
+import { RouterLink, RouterView, useRoute } from "vue-router"
+import  { ref, watch } from "vue"
 
-watch('$route', (to, from) => {
-  console.log({to, from})
+const routeObj = useRoute()
+const pageTitle = ref('Workout App')
+watch(routeObj, () => {
+  console.log(routeObj.name)
+  pageTitle.value = routeObj.name
 })
-
 </script>
 
 <template>
@@ -18,7 +20,7 @@ watch('$route', (to, from) => {
           <i class="bi bi-arrow-left"></i>
         </button>
       </div>
-      <a class="navbar-brand" href="#">Workout App</a>
+      <a class="navbar-brand" href="#">{{ pageTitle }}</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
