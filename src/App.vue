@@ -27,6 +27,9 @@ watch(routeObj, () => {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
+            <p>Workout App</p>
+          </li>
+          <li class="nav-item">
             <router-link to="/">Workouts</router-link>
           </li>
           <li class="nav-item">
@@ -53,7 +56,8 @@ watch(routeObj, () => {
 <style>
 /* @import "@/assets/base.css"; */
 
-a {
+a,
+p {
   color: white;
 }
 </style>
