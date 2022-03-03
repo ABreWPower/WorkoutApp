@@ -5,7 +5,7 @@ import  { ref, watch } from "vue"
 const routeObj = useRoute()
 const pageTitle = ref('Workout App')
 watch(routeObj, () => {
-  console.log(routeObj.name)
+  // console.log(routeObj.name)
   pageTitle.value = routeObj.name
 })
 </script>
@@ -29,17 +29,17 @@ watch(routeObj, () => {
           <li class="nav-item">
             <p>Workout App</p>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
             <router-link to="/">Workouts</router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
             <router-link to="/exercises">Exercises</router-link>
           </li>
           <!-- Temp items -->
-          <li class="nav-item">
+          <li class="nav-item" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
             <router-link to="/workoutview">Workout View</router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
             <router-link to="/workoutedit">Workout Edit</router-link>
           </li>
           <!-- temp items end -->
