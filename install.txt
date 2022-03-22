@@ -227,12 +227,13 @@ Bootstrap crap
 npm install bootstrap
 npm install bootstrap-icons
 npm install sass --save-dev
-npm install postcss --save-dev
-npm install postcss-cli --save-dev
-npm install autoprefixer --save-dev
+Vite handles the Xed lines
+X npm install postcss --save-dev
+X npm install postcss-cli --save-dev
+X npm install autoprefixer --save-dev
 
-npx sass --load-path node_modules --style compressed --source-map-urls=relative node_modules/bootstrap/scss:assets/css/
-npx postcss --replace assets/css/bootstrap.css --use autoprefixer --map
+X npx sass --load-path node_modules --style compressed --source-map-urls=relative node_modules/bootstrap/scss:assets/css/
+X npx postcss --replace assets/css/bootstrap.css --use autoprefixer --map
 
 added this under main.js script tag
     <link rel="stylesheet" href="assets/css/bootstrap.css"> 
