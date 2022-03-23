@@ -47,6 +47,7 @@ type MuscleGroup {
 
 type WorkoutLog {
   ID: ID!
+  user: User
   workout: Workout!
   totalduration: Int
   starteddatetime: Int
@@ -55,6 +56,7 @@ type WorkoutLog {
 
 type WorkoutLogExercise {
   ID: ID!
+  workoutlog: WorkoutLog
   exercise: Exercise!
   sets: Int
   reps: Int
@@ -78,10 +80,23 @@ type Query {
 
 type Mutation {
   addUser(name: String!, email: String, avatar: String): User
-  addWorkout(name: String!, picture: String, description: String, user: ID): Workout
-  addExercise(name: String!, )
+  updateUser(ID: ID!, name: String, email: String, avatar: String): User
+
+  addWorkout(name: String!, picture: String, description: String, user: Int, exercises: [Exercise]): Workout # Need to do voodoo magic to calculate duration, difficulty, and equipment needed
+  updateWorkout(ID: ID!, name: String, picture: String, description: String, user: Int, exercises: [Exercise]): Workout # Need to do voodoo magic to calculate duration, difficulty, and equipment needed
+
+  addExercise(name: String!, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment])
+  updateExercise(ID: ID!, name: String, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment])
+
   addEquipment(name: String!, icon: String): Equipment
+  updateEquipment(ID: ID!, name: String, icon: String): Equipment
+
   addMuscleGroup(name: String!, picture: String): MuscleGroup
-  addWorkoutLog(workout: Workout!, totalduration: Int, starteddatetime: Int): WorkoutLog
-  addWorkoutLogExercise(exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int)
+  updateMuscleGroup(ID: ID!, name: String, picture: String): MuscleGroup
+
+  addWorkoutLog(user: Int, workout: Workout!, totalduration: Int, starteddatetime: Int, exercises: [WorkoutLogExercise]): WorkoutLog
+  updateWorkoutLog(ID: ID!, user: Int, workout: Workout, totalduration: Int, starteddatetime: Int, exercises: [WorkoutLogExercise]): WorkoutLog
+  
+  addWorkoutLogExercise(workoutlog: Int, exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int): WorkoutLogExercise
+  updateWorkoutLogExercise(ID: ID!, workoutlog: Int, exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int): WorkoutLogExercise
 }
