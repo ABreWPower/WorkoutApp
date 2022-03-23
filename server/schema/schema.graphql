@@ -1,14 +1,67 @@
-type Book {
+type User {
   ID: ID
-  Title: String
-  Authors: [Author]
+  name: String
+  email: String
+  avatar: String
 }
 
-type Author {
+type Workout {
   ID: ID
-  Name: String
-  Books: [Book]
+  name: String
+  picture: String
+  description: String
+  user: User
+  duration: Int
+  difficulty: Int
+  equipment: [Equipment]
+  exercises: [Exercise]
 }
+
+type Exercise {
+  ID: ID
+  name: String
+  video: String
+  picture: String
+  instructions: String
+  difficulty: String
+  musclegroups: [MuscleGroup]
+  reps: Int
+  duration: Int
+  equipment: [Equipment]
+}
+
+type Equipment {
+  ID: ID
+  name: String
+  icon: String
+}
+
+type MuscleGroup {
+  ID: ID
+  name: String
+  picture: String
+}
+
+type WorkoutLog {
+  ID: ID
+  workout: Workout
+  totalduration: Int
+  starteddatetime: Int
+  exercises: [WorkoutLogExercise]
+}
+
+type WorkoutLogExercise {
+  ID: ID
+  exercise: Exercise
+  sets: Int
+  reps: Int
+  duration: Int
+  rest: Int
+  weight: Int
+  actualduration: Int
+}
+
+
 
 type Query {
   books: [Book]

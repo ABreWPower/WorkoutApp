@@ -242,4 +242,5 @@ main.js
 
 npx vite
 
-need to manuall create a RDS instance
+need to manually create a RDS instance
+Need to add your vpc to the lambda function created by serverless deploy
