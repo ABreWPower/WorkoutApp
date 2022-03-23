@@ -47,11 +47,11 @@ type MuscleGroup {
 
 type WorkoutLog {
   ID: ID!
-  user: User
+  user: User!
   workout: Workout!
   totalduration: Int
   starteddatetime: Int
-  exercises: [WorkoutLogExercise]
+  wlexercises: [WorkoutLogExercise]
 }
 
 type WorkoutLogExercise {
@@ -78,25 +78,25 @@ type Query {
 }
 
 
-type Mutation {
-  addUser(name: String!, email: String, avatar: String): User
-  updateUser(ID: ID!, name: String, email: String, avatar: String): User
+# type Mutation {
+#   addUser(name: String!, email: String, avatar: String): User
+#   updateUser(ID: ID!, name: String, email: String, avatar: String): User
 
-  addWorkout(name: String!, picture: String, description: String, user: Int, exercises: [Exercise]): Workout # Need to do voodoo magic to calculate duration, difficulty, and equipment needed
-  updateWorkout(ID: ID!, name: String, picture: String, description: String, user: Int, exercises: [Exercise]): Workout # Need to do voodoo magic to calculate duration, difficulty, and equipment needed
+#   addWorkout(name: String!, picture: String, description: String, user: Int, exercises: [Exercise]): Workout # Need to do voodoo magic to calculate duration, difficulty, and equipment needed
+#   updateWorkout(ID: ID!, name: String, picture: String, description: String, user: Int, exercises: [Exercise]): Workout # Need to do voodoo magic to calculate duration, difficulty, and equipment needed
 
-  addExercise(name: String!, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment])
-  updateExercise(ID: ID!, name: String, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment])
+#   addExercise(name: String!, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment]): Exercise
+#   updateExercise(ID: ID!, name: String, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment]): Exercise
 
-  addEquipment(name: String!, icon: String): Equipment
-  updateEquipment(ID: ID!, name: String, icon: String): Equipment
+#   addEquipment(name: String!, icon: String): Equipment
+#   updateEquipment(ID: ID!, name: String, icon: String): Equipment
 
-  addMuscleGroup(name: String!, picture: String): MuscleGroup
-  updateMuscleGroup(ID: ID!, name: String, picture: String): MuscleGroup
+#   addMuscleGroup(name: String!, picture: String): MuscleGroup
+#   updateMuscleGroup(ID: ID!, name: String, picture: String): MuscleGroup
 
-  addWorkoutLog(user: Int, workout: Workout!, totalduration: Int, starteddatetime: Int, exercises: [WorkoutLogExercise]): WorkoutLog
-  updateWorkoutLog(ID: ID!, user: Int, workout: Workout, totalduration: Int, starteddatetime: Int, exercises: [WorkoutLogExercise]): WorkoutLog
+#   addWorkoutLog(user: Int, workout: Workout!, totalduration: Int, starteddatetime: Int, wlexercises: [WorkoutLogExercise]): WorkoutLog
+#   updateWorkoutLog(ID: ID!, user: Int, workout: Workout, totalduration: Int, starteddatetime: Int, wlexercises: [WorkoutLogExercise]): WorkoutLog
   
-  addWorkoutLogExercise(workoutlog: Int, exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int): WorkoutLogExercise
-  updateWorkoutLogExercise(ID: ID!, workoutlog: Int, exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int): WorkoutLogExercise
-}
+#   addWorkoutLogExercise(workoutlog: Int, exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int): WorkoutLogExercise
+#   updateWorkoutLogExercise(ID: ID!, workoutlog: Int, exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int): WorkoutLogExercise
+# }
