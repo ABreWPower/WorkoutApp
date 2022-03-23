@@ -241,3 +241,5 @@ main.js
     import * as bootstrap from 'bootstrap'
 
 npx vite
+
+need to manuall create a RDS instance
