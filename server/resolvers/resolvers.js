@@ -1,13 +1,14 @@
 const mysql = require('mysql')
+require('dotenv').config()
 
 const connectSQLDB = function () {
   console.log("connectSQLDB()...")
   let retVal = mysql.createConnection({
-    host: '',
+    host: process.env.HOST,
     port: 3306,
-    user: '',
-    password: '',
-    database: ''
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DB
   })
   retVal.on('error', function (err) {
     console.log("It's dead, Jim...", err)
