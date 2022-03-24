@@ -127,17 +127,17 @@ console.log(querySQLDB("SELECT * FROM user").then(result => result))
 
 querySQLDB(`
   INSERT INTO equipment (name)
-            VALUES ("Dumbbell")
+                 VALUES ("Dumbbell")
 `)
 
 querySQLDB(`
   INSERT INTO equipment (name)
-            VALUES ("Bench")
+                 VALUES ("Bench")
 `)
 
 querySQLDB(`
   INSERT INTO equipment (name)
-            VALUES ("Treadmill")
+                 VALUES ("Treadmill")
 `)
 
 console.log(querySQLDB("SELECT * FROM equipment").then(result => result))
@@ -148,27 +148,27 @@ console.log(querySQLDB("SELECT * FROM equipment").then(result => result))
 
 querySQLDB(`
   INSERT INTO musclegroup (name)
-            VALUES ("Chest")
+                   VALUES ("Chest")
 `)
 
 querySQLDB(`
   INSERT INTO musclegroup (name)
-            VALUES ("Abs")
+                   VALUES ("Abs")
 `)
 
 querySQLDB(`
   INSERT INTO musclegroup (name)
-            VALUES ("Quadriceps")
+                   VALUES ("Quadriceps")
 `)
 
 querySQLDB(`
   INSERT INTO musclegroup (name)
-            VALUES ("Tricep")
+                   VALUES ("Tricep")
 `)
 
 querySQLDB(`
   INSERT INTO musclegroup (name)
-            VALUES ("Bicep")
+                   VALUES ("Bicep")
 `)
 
 console.log(querySQLDB("SELECT * FROM musclegroup").then(result => result))
@@ -179,32 +179,32 @@ console.log(querySQLDB("SELECT * FROM musclegroup").then(result => result))
 
 querySQLDB(`
   INSERT INTO exercise (name, instructions, difficulty, musclegroups, reps, duration, equipment)
-            VALUES ("Chinup", "Pull your self up on a bar", 2, "[1, 2]", 10, null, "[1]")
+                VALUES ("Chinup", "Pull your self up on a bar", 2, "[1, 2]", 10, null, "[1]")
 `)
 
 querySQLDB(`
   INSERT INTO exercise (name, instructions, difficulty, musclegroups, reps, duration, equipment)
-            VALUES ("Pullup", "Pull your self up on a bar", 3, "[1, 2]", 15, null, "[2]")
+                VALUES ("Pullup", "Pull your self up on a bar", 3, "[1, 2]", 15, null, "[2]")
 `)
 
 querySQLDB(`
   INSERT INTO exercise (name, instructions, difficulty, musclegroups, reps, duration, equipment)
-            VALUES ("Pushup", "Push off of the ground", 1, "[1, 2]", 20, null, "[3]")
+                VALUES ("Pushup", "Push off of the ground", 1, "[1, 2]", 20, null, "[3]")
 `)
 
 querySQLDB(`
   INSERT INTO exercise (name, instructions, difficulty, musclegroups, reps, duration, equipment)
-            VALUES ("Bicep Curl", "Curl arms up holding a bar or dumbbell", 2, "[1, 4]", 12, null, "[1, 2]")
+                VALUES ("Bicep Curl", "Curl arms up holding a bar or dumbbell", 2, "[1, 4]", 12, null, "[1, 2]")
 `)
 
 querySQLDB(`
   INSERT INTO exercise (name, instructions, difficulty, musclegroups, reps, duration, equipment)
-            VALUES ("Skull Crusher", "lower weight near your head while on bench", 2, "[1, 5]", 8, null, "[1, 2]")
+                VALUES ("Skull Crusher", "lower weight near your head while on bench", 2, "[1, 5]", 8, null, "[1, 2]")
 `)
 
 querySQLDB(`
   INSERT INTO exercise (name, instructions, difficulty, musclegroups, reps, duration, equipment)
-            VALUES ("Plank", "On elbow and toes with body straight out", 2, null, null, 60, null)
+                VALUES ("Plank", "On elbow and toes with body straight out", 2, null, null, 60, null)
 `)
 
 console.log(querySQLDB("SELECT * FROM exercise").then(result => result))
@@ -214,18 +214,35 @@ console.log(querySQLDB("SELECT * FROM exercise").then(result => result))
 // ***************
 
 querySQLDB(`
-  INSERT INTO workout (name, description, user)
-            VALUES ("John Smith", "john.smith@email.com")
+  INSERT INTO workout (name, description, user, duration, difficulty, equipment, exercises)
+               VALUES ("Workout 1", "Lots of workouts", 1, 90, 2, "[1, 2]", "[1, 2, 3, 4, 5]")
 `)
+
+querySQLDB(`
+  INSERT INTO workout (name, description, user, duration, difficulty, equipment, exercises)
+               VALUES ("Super B", "Hard workout", 2, 60, 3, "[2, 3]", "[1, 3, 5, 2]")
+`)
+
+querySQLDB(`
+  INSERT INTO workout (name, description, user, duration, difficulty, equipment, exercises)
+               VALUES ("Short", "Small number of exercies", 3, 30, 1, "[1, 3]", "[6, 2, 4]")
+`)
+
 
 console.log(querySQLDB("SELECT * FROM workout").then(result => result))
 
-
-console.log(querySQLDB("SELECT * FROM exercise").then(result => result))
-
+// *****************
+// Create workoutlog
+// *****************
 
 console.log(querySQLDB("SELECT * FROM workoutlog").then(result => result))
+
+// *************************
+// Create workoutlogexercise
+// *************************
+
 console.log(querySQLDB("SELECT * FROM workoutlogexercise").then(result => result))
+
 
 
 console.log("finished building the sql environment")
