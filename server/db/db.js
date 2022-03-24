@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const connectSQLDB = function () {
   console.log("connectSQLDB()...")
-  console.log(process.env.HOST, process.env.USER, process.env.PASSWORD, process.env.DB)
+  console.log(process.env.HOST, process.env.DBUSER, process.env.PASSWORD, process.env.DB)
   let retVal = mysql.createConnection({
     host: process.env.HOST,
     port: 3306,
@@ -20,9 +20,9 @@ const connectSQLDB = function () {
 const querySQLDB = sql => {
   let connection = connectSQLDB()
   return new Promise((resolve, reject) => connection.query(sql, (error, results, fields) => {
-    console.log('querySQLDB error', error)
+    // console.log('querySQLDB error', error)
     console.log('querySQLDB results', results)
-    console.log('querySQLDB fields', fields)
+    // console.log('querySQLDB fields', fields)
     if (error) reject(error)
     else resolve(results)
   }))

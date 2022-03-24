@@ -173,7 +173,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/apollo-lambda/dev/1648124642945-2022-03-24T12:24:02.945Z/apollo-lambda.zip"
+                "S3Key": "serverless/apollo-lambda/dev/1648129363702-2022-03-24T13:42:43.702Z/apollo-lambda.zip"
               },
               "Handler": "server.graphqlHandler",
               "Runtime": "nodejs14.x",
@@ -191,14 +191,14 @@
               "WorkoutappLogGroup"
             ]
           },
-          "WorkoutappLambdaVersionXUimuJ23rSnq5u78k6HZX0uwQPugY6zqdGeLkOLA704": {
+          "WorkoutappLambdaVersionyTxm6BzKIhXHcMB4lhccO3Zp5S7oPm0sITYgueA": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "WorkoutappLambdaFunction"
               },
-              "CodeSha256": "8275PQurOndgodRS94yBp9w2KNfLTwW67glWkDvc8sc="
+              "CodeSha256": "0qdkgutdmamwd9Rrx4Ku0rrfwmxcHtuxLFcGNsYeiuI="
             }
           },
           "ApiGatewayRestApi": {
@@ -359,7 +359,7 @@
               "WorkoutappLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1648124640343": {
+          "ApiGatewayDeployment1648129361079": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -423,7 +423,7 @@
           "WorkoutappLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "WorkoutappLambdaVersionXUimuJ23rSnq5u78k6HZX0uwQPugY6zqdGeLkOLA704"
+              "Ref": "WorkoutappLambdaVersionyTxm6BzKIhXHcMB4lhccO3Zp5S7oPm0sITYgueA"
             },
             "Export": {
               "Name": "sls-apollo-lambda-dev-WorkoutappLambdaFunctionQualifiedArn"
@@ -599,7 +599,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "WorkoutappLambdaVersionXUimuJ23rSnq5u78k6HZX0uwQPugY6zqdGeLkOLA704"
+        "versionLogicalId": "WorkoutappLambdaVersionyTxm6BzKIhXHcMB4lhccO3Zp5S7oPm0sITYgueA"
       }
     },
     "configValidationMode": "warn",
@@ -617,7 +617,7 @@
     "artifact": "/home/adam/src/workoutapp/server/.serverless/apollo-lambda.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/apollo-lambda/dev/1648124642945-2022-03-24T12:24:02.945Z",
+    "artifactDirectoryName": "serverless/apollo-lambda/dev/1648129363702-2022-03-24T13:42:43.702Z",
     "artifact": "apollo-lambda.zip"
   }
 }

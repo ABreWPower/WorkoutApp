@@ -2,14 +2,14 @@
 # user, workout, exercise, equipment, musclegroup, workoutlog, workoutlogexercise
 
 type User {
-  ID: ID!
+  id: ID!
   name: String!
   email: String
   avatar: String
 }
 
 type Workout {
-  ID: ID!
+  id: ID!
   name: String!
   picture: String
   description: String
@@ -21,12 +21,12 @@ type Workout {
 }
 
 type Exercise {
-  ID: ID!
+  id: ID!
   name: String!
   video: String
   picture: String
   instructions: String
-  difficulty: String
+  difficulty: Int
   musclegroups: [MuscleGroup]
   reps: Int
   duration: Int
@@ -34,19 +34,19 @@ type Exercise {
 }
 
 type Equipment {
-  ID: ID!
+  id: ID!
   name: String!
   icon: String
 }
 
 type MuscleGroup {
-  ID: ID!
+  id: ID!
   name: String!
   picture: String
 }
 
 type WorkoutLog {
-  ID: ID!
+  id: ID!
   user: User!
   workout: Workout!
   totalduration: Int
@@ -55,7 +55,7 @@ type WorkoutLog {
 }
 
 type WorkoutLogExercise {
-  ID: ID!
+  id: ID!
   workoutlog: WorkoutLog
   exercise: Exercise!
   sets: Int
@@ -82,23 +82,23 @@ type Mutation {
   setupdb(idk: String): User
 
 #   addUser(name: String!, email: String, avatar: String): User
-#   updateUser(ID: ID!, name: String, email: String, avatar: String): User
+#   updateUser(id: ID!, name: String, email: String, avatar: String): User
 
 #   addWorkout(name: String!, picture: String, description: String, user: Int, exercises: [Exercise]): Workout # Need to do voodoo magic to calculate duration, difficulty, and equipment needed
-#   updateWorkout(ID: ID!, name: String, picture: String, description: String, user: Int, exercises: [Exercise]): Workout # Need to do voodoo magic to calculate duration, difficulty, and equipment needed
+#   updateWorkout(id: ID!, name: String, picture: String, description: String, user: Int, exercises: [Exercise]): Workout # Need to do voodoo magic to calculate duration, difficulty, and equipment needed
 
 #   addExercise(name: String!, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment]): Exercise
-#   updateExercise(ID: ID!, name: String, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment]): Exercise
+#   updateExercise(id: ID!, name: String, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment]): Exercise
 
 #   addEquipment(name: String!, icon: String): Equipment
-#   updateEquipment(ID: ID!, name: String, icon: String): Equipment
+#   updateEquipment(id: ID!, name: String, icon: String): Equipment
 
 #   addMuscleGroup(name: String!, picture: String): MuscleGroup
-#   updateMuscleGroup(ID: ID!, name: String, picture: String): MuscleGroup
+#   updateMuscleGroup(id: ID!, name: String, picture: String): MuscleGroup
 
 #   addWorkoutLog(user: Int, workout: Workout!, totalduration: Int, starteddatetime: Int, wlexercises: [WorkoutLogExercise]): WorkoutLog
-#   updateWorkoutLog(ID: ID!, user: Int, workout: Workout, totalduration: Int, starteddatetime: Int, wlexercises: [WorkoutLogExercise]): WorkoutLog
+#   updateWorkoutLog(id: ID!, user: Int, workout: Workout, totalduration: Int, starteddatetime: Int, wlexercises: [WorkoutLogExercise]): WorkoutLog
   
 #   addWorkoutLogExercise(workoutlog: Int, exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int): WorkoutLogExercise
-#   updateWorkoutLogExercise(ID: ID!, workoutlog: Int, exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int): WorkoutLogExercise
+#   updateWorkoutLogExercise(id: ID!, workoutlog: Int, exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int): WorkoutLogExercise
 }

@@ -17,40 +17,40 @@ const resolvers = {
   },
   Workout: {
     user(parent) {
-      return querySQLDB({ sql: "SELECT * FROM user WHERE ID = ?", values: parent.ID }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM user WHERE ID = ?", values: parent.id }).then(result => result)
     },
     equipment(parent) {
-      return querySQLDB({ sql: "SELECT * FROM equipment WHERE ID = ?", values: parent.ID }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM equipment WHERE ID = ?", values: parent.id }).then(result => result)
     },
     exercises(parent) {
-      return querySQLDB({ sql: "SELECT * FROM exercise WHERE ID = ?", values: parent.ID }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM exercise WHERE ID = ?", values: parent.id }).then(result => result)
     }
   },
   Exercise: {
     musclegroups(parent) {
-      return querySQLDB({ sql: "SELECT * FROM musclegroup WHERE ID = ?", values: parent.ID }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM musclegroup WHERE ID = ?", values: parent.id }).then(result => result)
     },
     equipment(parent) {
-      return querySQLDB({ sql: "SELECT * FROM equipment WHERE ID = ?", values: parent.ID }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM equipment WHERE ID = ?", values: parent.id }).then(result => result)
     }
   },
   WorkoutLog: {
     user(parent) {
-      return querySQLDB({ sql: "SELECT * FROM user WHERE ID = ?", values: parent.ID }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM user WHERE ID = ?", values: parent.id }).then(result => result)
     },
     workout(parent) {
-      return querySQLDB({ sql: "SELECT * FROM workout WHERE ID = ?", values: parent.ID }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM workout WHERE ID = ?", values: parent.id }).then(result => result)
     },
     wlexercises(parent) {
-      return querySQLDB({ sql: "SELECT * FROM workoutlogexercise WHERE ID = ?", values: parent.ID }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM workoutlogexercise WHERE ID = ?", values: parent.id }).then(result => result)
     }
   },
   WorkoutLogExercise: {
     workoutlog(parent) {
-      return querySQLDB({ sql: "SELECT * FROM workoutlog WHERE ID = ?", values: parent.ID }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM workoutlog WHERE ID = ?", values: parent.id }).then(result => result)
     },
     exercise(parent) {
-      return querySQLDB({ sql: "SELECT * FROM exercise WHERE ID = ?", values: parent.ID }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM exercise WHERE ID = ?", values: parent.id }).then(result => result)
     }
   },
   Mutation: {
@@ -63,7 +63,7 @@ const resolvers = {
 
   // Book: {
   //   Authors(parent) {
-  //     return querySQLDB({ sql: "SELECT author.* FROM author_book INNER JOIN author ON author_book.authorID = author.ID WHERE author_book.bookID = ?", values: parent.ID }).then(result => result)
+  //     return querySQLDB({ sql: "SELECT author.* FROM author_book INNER JOIN author ON author_book.authorID = author.id WHERE author_book.bookID = ?", values: parent.id }).then(result => result)
   //   }
   // },
   // Mutation: {
