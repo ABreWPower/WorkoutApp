@@ -26,3 +26,6 @@ const querySQLDB = sql => {
     else resolve(results)
   }))
 }
+
+exports.connectSQLDB = connectSQLDB
+exports.querySQLDB = querySQLDB

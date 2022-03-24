@@ -1,5 +1,4 @@
-require('./db.js')
-require('dotenv').config()
+const { connectSQLDB, querySQLDB } = require('../db/db.js')
 
 // TODO make a resolver and mutation that sets up the database for initial testing
 // TODO make one that clears tables to clean up
@@ -54,19 +53,17 @@ const resolvers = {
       return querySQLDB({ sql: "SELECT * FROM exercise WHERE ID = ?", values: parent.ID }).then(result => result)
     }
   },
-  // Mutation: {
-  // }
+  Mutation: {
+    setupdb: () => {
+      return require('../db/setupdb.js')
+    }
+  }
 
 
-  
+
   // Book: {
   //   Authors(parent) {
   //     return querySQLDB({ sql: "SELECT author.* FROM author_book INNER JOIN author ON author_book.authorID = author.ID WHERE author_book.bookID = ?", values: parent.ID }).then(result => result)
-  //   }
-  // },
-  // Author: {
-  //   Books(parent) {
-  //     return querySQLDB({ sql: "SELECT book.* FROM author_book INNER JOIN book ON author_book.bookID = book.ID WHERE author_book.authorID = ?", values: parent.ID }).then(result => result)
   //   }
   // },
   // Mutation: {

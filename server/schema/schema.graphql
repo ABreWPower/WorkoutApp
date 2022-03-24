@@ -78,7 +78,9 @@ type Query {
 }
 
 
-# type Mutation {
+type Mutation {
+  setupdb(idk: String): User
+
 #   addUser(name: String!, email: String, avatar: String): User
 #   updateUser(ID: ID!, name: String, email: String, avatar: String): User
 
@@ -99,4 +101,4 @@ type Query {
   
 #   addWorkoutLogExercise(workoutlog: Int, exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int): WorkoutLogExercise
 #   updateWorkoutLogExercise(ID: ID!, workoutlog: Int, exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int): WorkoutLogExercise
-# }
+}
