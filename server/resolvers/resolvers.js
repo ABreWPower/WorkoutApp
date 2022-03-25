@@ -20,45 +20,57 @@ const resolvers = {
       return querySQLDB({ sql: "SELECT * FROM user WHERE ID = ?", values: parent.user }).then(result => result[0])
     },
     equipment(parent) {
-      console.log("parent", parent)
       let returnObj = []
       parent.equipment.forEach(element => {
-        console.log("element", element)
         returnObj.push(querySQLDB({ sql: "SELECT * FROM equipment WHERE ID = ?", values: element }).then(result => result[0]))
       });
-      console.log(returnObj)
       return returnObj
-
     },
     exercises(parent) {
-      return querySQLDB({ sql: "SELECT * FROM exercise WHERE ID = ?", values: parent.id }).then(result => result)
+      let returnObj = []
+      parent.equipment.forEach(element => {
+        returnObj.push(querySQLDB({ sql: "SELECT * FROM exercise WHERE ID = ?", values: element }).then(result => result[0]))
+      });
+      return returnObj
     }
   },
   Exercise: {
     musclegroups(parent) {
-      return querySQLDB({ sql: "SELECT * FROM musclegroup WHERE ID = ?", values: parent.id }).then(result => result)
+      let returnObj = []
+      parent.equipment.forEach(element => {
+        returnObj.push(querySQLDB({ sql: "SELECT * FROM musclegroup WHERE ID = ?", values: element }).then(result => result[0]))
+      });
+      return returnObj
     },
     equipment(parent) {
-      return querySQLDB({ sql: "SELECT * FROM equipment WHERE ID = ?", values: parent.id }).then(result => result)
+      let returnObj = []
+      parent.equipment.forEach(element => {
+        returnObj.push(querySQLDB({ sql: "SELECT * FROM equipment WHERE ID = ?", values: element }).then(result => result[0]))
+      });
+      return returnObj
     }
   },
   WorkoutLog: {
     user(parent) {
-      return querySQLDB({ sql: "SELECT * FROM user WHERE ID = ?", values: parent.id }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM user WHERE ID = ?", values: parent.user }).then(result => result[0])
     },
     workout(parent) {
-      return querySQLDB({ sql: "SELECT * FROM workout WHERE ID = ?", values: parent.id }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM workout WHERE ID = ?", values: parent.workout }).then(result => result[0])
     },
     wlexercises(parent) {
-      return querySQLDB({ sql: "SELECT * FROM workoutlogexercise WHERE ID = ?", values: parent.id }).then(result => result)
+      let returnObj = []
+      parent.equipment.forEach(element => {
+        returnObj.push(querySQLDB({ sql: "SELECT * FROM workoutlogexercise WHERE ID = ?", values: element }).then(result => result[0]))
+      });
+      return returnObj
     }
   },
   WorkoutLogExercise: {
     workoutlog(parent) {
-      return querySQLDB({ sql: "SELECT * FROM workoutlog WHERE ID = ?", values: parent.id }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM workoutlog WHERE ID = ?", values: parent.workoutlog }).then(result => result[0])
     },
     exercise(parent) {
-      return querySQLDB({ sql: "SELECT * FROM exercise WHERE ID = ?", values: parent.id }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM exercise WHERE ID = ?", values: parent.exercise }).then(result => result[0])
     }
   },
   Mutation: {
