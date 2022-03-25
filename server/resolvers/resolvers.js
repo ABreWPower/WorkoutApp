@@ -17,7 +17,7 @@ const resolvers = {
   },
   Workout: {
     user(parent) {
-      return querySQLDB({ sql: "SELECT * FROM user WHERE ID = ?", values: parent.id }).then(result => result)
+      return querySQLDB({ sql: "SELECT * FROM user WHERE ID = ?", values: parent.user }).then(result => result[0])
     },
     equipment(parent) {
       return querySQLDB({ sql: "SELECT * FROM equipment WHERE ID = ?", values: parent.id }).then(result => result)

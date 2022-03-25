@@ -8,6 +8,7 @@ const typeDefs = readFileSync('./schema/schema.graphql').toString('utf-8')
 // definition and your set of resolvers.
 const server = new ApolloServer({ typeDefs, resolvers });
 
-require('./db/setupdb.js')
+// Only for test purposes when using node server
+// require('./db/setupdb.js')
 
 exports.graphqlHandler = server.createHandler();
