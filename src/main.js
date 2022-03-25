@@ -2,6 +2,7 @@ import * as bootstrap from 'bootstrap'
 import 'bootstrap/scss/bootstrap.scss'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
+// Setup Vue components
 import { createApp } from "vue";
 // import { createPinia } from "pinia";
 
