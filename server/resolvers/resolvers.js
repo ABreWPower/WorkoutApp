@@ -76,33 +76,23 @@ const resolvers = {
   Mutation: {
     setupdb: () => {
       return require('../db/setupdb.js')
-    }
+    },
+    addUser: (parent, { name, email, avatar }) => {
+      return querySQLDB({ sql: "INSERT into user (name, email, avatar) VALUES (?, ?, ?)", values: [name, email, avatar] }).then(
+        result => querySQLDB({ sql: "SELECT * FROM user WHERE ID = ?", values: result.insertId }).then(result => result[0])
+      )
+    },
+    addEquipment: (parent, { name, icon }) => {
+      return querySQLDB({ sql: "INSERT into equipment (name, icon) VALUES (?, ?)", values: [name, icon] }).then(
+        result => querySQLDB({ sql: "SELECT * FROM equipment WHERE ID = ?", values: result.insertId }).then(result => result[0])
+      )
+    },
+    addMuscleGroup: (parent, { name, picture }) => {
+      return querySQLDB({ sql: "INSERT into musclegroup (name, picture) VALUES (?, ?)", values: [name, picture] }).then(
+        result => querySQLDB({ sql: "SELECT * FROM musclegroup WHERE ID = ?", values: result.insertId }).then(result => result[0])
+      )
+    },
   }
-
-
-
-  // Book: {
-  //   Authors(parent) {
-  //     return querySQLDB({ sql: "SELECT author.* FROM author_book INNER JOIN author ON author_book.authorID = author.id WHERE author_book.bookID = ?", values: parent.id }).then(result => result)
-  //   }
-  // },
-  // Mutation: {
-  //   addBook: (parent, { title }) => {
-  //     return querySQLDB({ sql: "INSERT into book (Title) VALUES (?)", values: title }).then(
-  //       result => querySQLDB({ sql: "SELECT * FROM book WHERE ID = ?", values: result.insertId }).then(result => result[0])
-  //     )
-  //   },
-  //   addAuthor: (parent, { name }) => {
-  //     return querySQLDB({ sql: "INSERT into author (Name) VALUES (?)", values: name }).then(
-  //       result => querySQLDB({ sql: "SELECT * FROM author WHERE ID = ?", values: result.insertId }).then(result => result[0])
-  //     )
-  //   },
-  //   addAuthorToBook: (parent, { bookID, authorID }) => {
-  //     return querySQLDB({ sql: "INSERT into author_book (bookID, authorID) VALUES (?, ?)", values: [bookID, authorID] }).then(
-  //       result => querySQLDB({ sql: "SELECT * FROM book WHERE ID = ?", values: bookID }).then(result => result[0])
-  //     )
-  //   }
-  // }
 }
 
 exports.resolvers = resolvers

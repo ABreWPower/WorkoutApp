@@ -81,7 +81,7 @@ type Query {
 type Mutation {
   setupdb(idk: String): User
 
-#   addUser(name: String!, email: String, avatar: String): User
+  addUser(name: String!, email: String, avatar: String): User
 #   updateUser(id: ID!, name: String, email: String, avatar: String): User
 
 #   addWorkout(name: String!, picture: String, description: String, user: Int, exercises: [Exercise]): Workout # Need to do voodoo magic to calculate duration, difficulty, and equipment needed
@@ -90,10 +90,10 @@ type Mutation {
 #   addExercise(name: String!, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment]): Exercise
 #   updateExercise(id: ID!, name: String, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment]): Exercise
 
-#   addEquipment(name: String!, icon: String): Equipment
+  addEquipment(name: String!, icon: String): Equipment
 #   updateEquipment(id: ID!, name: String, icon: String): Equipment
 
-#   addMuscleGroup(name: String!, picture: String): MuscleGroup
+  addMuscleGroup(name: String!, picture: String): MuscleGroup
 #   updateMuscleGroup(id: ID!, name: String, picture: String): MuscleGroup
 
 #   addWorkoutLog(user: Int, workout: Workout!, totalduration: Int, starteddatetime: Int, wlexercises: [WorkoutLogExercise]): WorkoutLog
