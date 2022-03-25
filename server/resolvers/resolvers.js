@@ -20,7 +20,15 @@ const resolvers = {
       return querySQLDB({ sql: "SELECT * FROM user WHERE ID = ?", values: parent.user }).then(result => result[0])
     },
     equipment(parent) {
-      return querySQLDB({ sql: "SELECT * FROM equipment WHERE ID = ?", values: parent.id }).then(result => result)
+      console.log("parent", parent)
+      let returnObj = []
+      parent.equipment.forEach(element => {
+        console.log("element", element)
+        returnObj.push(querySQLDB({ sql: "SELECT * FROM equipment WHERE ID = ?", values: element }).then(result => result[0]))
+      });
+      console.log(returnObj)
+      return returnObj
+
     },
     exercises(parent) {
       return querySQLDB({ sql: "SELECT * FROM exercise WHERE ID = ?", values: parent.id }).then(result => result)
