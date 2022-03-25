@@ -235,11 +235,15 @@ console.log(querySQLDB("SELECT * FROM workout").then(result => result))
 // Create workoutlog
 // *****************
 
+// TODO make the defualt data for test purposes here
+
 console.log(querySQLDB("SELECT * FROM workoutlog").then(result => result))
 
 // *************************
 // Create workoutlogexercise
 // *************************
+
+// TODO make the defualt data for test purposes here
 
 console.log(querySQLDB("SELECT * FROM workoutlogexercise").then(result => result))
 

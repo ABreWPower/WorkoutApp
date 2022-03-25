@@ -92,6 +92,7 @@ const resolvers = {
         result => querySQLDB({ sql: "SELECT * FROM musclegroup WHERE ID = ?", values: result.insertId }).then(result => result[0])
       )
     },
+    // TODO need to make the rest of the adds and then all of the updates
   }
 }
 
