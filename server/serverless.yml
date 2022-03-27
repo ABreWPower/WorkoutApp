@@ -4,6 +4,7 @@ service: apollo-lambda
 provider:
   name: aws
   runtime: nodejs14.x
+  profile: adam
 functions:
   workoutapp:
     # this is formatted as <FILENAME>.<HANDLER>
