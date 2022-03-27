@@ -75,7 +75,8 @@ const resolvers = {
   },
   Mutation: {
     setupdb: () => {
-      return require('../db/setupdb.js')
+      require('../db/setupdb.js')
+      return querySQLDB("SELECT * FROM user").then(result => result)
     },
     addUser: (parent, { name, email, avatar }) => {
       return querySQLDB({ sql: "INSERT into user (name, email, avatar) VALUES (?, ?, ?)", values: [name, email, avatar] }).then(
@@ -89,7 +90,7 @@ const resolvers = {
     },
     addMuscleGroup: (parent, { name, picture }) => {
       return querySQLDB({ sql: "INSERT into musclegroup (name, picture) VALUES (?, ?)", values: [name, picture] }).then(
-        result => querySQLDB({ sql: "SELECT * FROM musclegroup WHERE id = ?", values: result.insertid }).then(result => result[0])
+        result => querySQLDB({ sql: "SELECT * FROM musclegroup WHERE id =BB ?", values: result.insertid }).then(result => result[0])
       )
     },
     // TODO need to make the rest of the adds and then all of the updates
