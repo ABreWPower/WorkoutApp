@@ -16,7 +16,6 @@ const typeDefs = readFileSync('./schema/schema.graphql').toString('utf-8')
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const server = new ApolloServer({ typeDefs, resolvers });
-console.log(server)
 
 // Only for test purposes when using node server
 // require('./db/setupdb.js')
