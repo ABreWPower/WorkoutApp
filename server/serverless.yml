@@ -9,6 +9,8 @@ functions:
   workoutapp:
     # this is formatted as <FILENAME>.<HANDLER>
     handler: server.graphqlHandler
+    environment: 
+      MODE: whatever
     events:
     - http:
         path: /
