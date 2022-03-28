@@ -13,7 +13,7 @@ watch(routeObj, () => {
 <template>
   <!-- TODO close dropdown menu after a selection -->
   <!-- TODO need to get the back button to match the rest of the nav bar -->
-  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary mb-2">
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary mb-2" style="color: white; padding: 20px">
     <div class="container-fluid">
       <div class="mx-3">
         <button class="navbar-toggler" type="button" @click="$router.go(-1)">
@@ -21,7 +21,7 @@ watch(routeObj, () => {
         </button>
       </div>
       <!-- <a class="navbar-brand" href="#">{{ pageTitle }}</a> -->
-      <h2>{{ pageTitle }}</h2>
+      <h2 style="color: white; padding: 20px">{{ pageTitle }}</h2>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -32,17 +32,17 @@ watch(routeObj, () => {
           </li>
           <!-- data-bs-toggle="collapse" data-bs-target=".navbar-collapse"  broke the links -->
           <li class="nav-item">
-            <router-link to="/">Workouts</router-link>
+            <router-link to="/" style="color: white; padding: 20px">Workouts</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/exercises">Exercises</router-link>
+            <router-link to="/exercises" style="color: white; padding: 20px">Exercises</router-link>
           </li>
           <!-- Temp items -->
           <li class="nav-item">
-            <router-link to="/workoutview">Workout View</router-link>
+            <router-link to="/workoutview" style="color: white; padding: 20px">Workout View</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/workoutedit">Workout Edit</router-link>
+            <router-link to="/workoutedit" style="color: white; padding: 20px">Workout Edit</router-link>
           </li>
           <!-- temp items end -->
         </ul>
@@ -58,9 +58,9 @@ watch(routeObj, () => {
 <style>
 /* @import "@/assets/base.css"; */
 
-a,
+/* a,
 p,
 h2 {
   color: white;
-}
+} */
 </style>
