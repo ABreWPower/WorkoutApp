@@ -6,8 +6,6 @@ else {
   require('dotenv').config({ path: './local.env' })
 }
 
-console.log(process.env.HOST, process.env.DBUSER, process.env.PASSWORD, process.env.DB)
-
 const connectSQLDB = function () {
   console.log("connectSQLDB()...")
   // console.log(process.env.HOST, process.env.DBUSER, process.env.PASSWORD, process.env.DB)
