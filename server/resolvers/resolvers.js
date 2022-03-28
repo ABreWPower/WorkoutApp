@@ -7,7 +7,7 @@ const { connectSQLDB, querySQLDB } = require('../db/db.js')
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
   Query: {
-    users: () => querySQLDB("SELECT * FROM user").then(result => result),
+    users: () => querySQLDB("SELECT * FROM users").then(result => result),
     workouts: () => querySQLDB("SELECT * FROM workout").then(result => result),
     equipment: () => querySQLDB("SELECT * FROM equipment").then(result => result),
     musclegroups: () => querySQLDB("SELECT * FROM musclegroup").then(result => result),
@@ -17,7 +17,7 @@ const resolvers = {
   },
   Workout: {
     user(parent) {
-      return querySQLDB({ sql: "SELECT * FROM user WHERE id = ?", values: parent.user }).then(result => result[0])
+      return querySQLDB({ sql: "SELECT * FROM users WHERE id = ?", values: parent.user }).then(result => result[0])
     },
     equipment(parent) {
       let returnObj = []
@@ -52,7 +52,7 @@ const resolvers = {
   },
   WorkoutLog: {
     user(parent) {
-      return querySQLDB({ sql: "SELECT * FROM user WHERE id = ?", values: parent.user }).then(result => result[0])
+      return querySQLDB({ sql: "SELECT * FROM users WHERE id = ?", values: parent.user }).then(result => result[0])
     },
     workout(parent) {
       return querySQLDB({ sql: "SELECT * FROM workout WHERE id = ?", values: parent.workout }).then(result => result[0])
@@ -76,11 +76,11 @@ const resolvers = {
   Mutation: {
     setupdb: () => {
       require('../db/setupdb.js')
-      return querySQLDB("SELECT * FROM user").then(result => result)
+      return querySQLDB("SELECT * FROM users").then(result => result)
     },
     addUser: (parent, { name, email, avatar }) => {
-      return querySQLDB({ sql: "INSERT into user (name, email, avatar) VALUES (?, ?, ?)", values: [name, email, avatar] }).then(
-        result => querySQLDB({ sql: "SELECT * FROM user WHERE id = ?", values: result.insertid }).then(result => result[0])
+      return querySQLDB({ sql: "INSERT into users (name, email, avatar) VALUES (?, ?, ?)", values: [name, email, avatar] }).then(
+        result => querySQLDB({ sql: "SELECT * FROM users WHERE id = ?", values: result.insertid }).then(result => result[0])
       )
     },
     addEquipment: (parent, { name, icon }) => {
