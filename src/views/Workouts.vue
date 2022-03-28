@@ -144,9 +144,6 @@ client.query({
 </template>
 
 <style scoped>
-p {
-  color: black!; /* Figure out how to fix app.vue overriding this */
-}
 div.card-view:last-child div.card {
   margin-bottom: 0 !important;
 }
