@@ -1,8 +1,5 @@
 const { connectSQLDB, querySQLDB } = require('../db/db.js')
 
-// TODO make a resolver and mutation that sets up the database for initial testing
-// TODO make one that clears tables to clean up
-
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
@@ -34,19 +31,23 @@ const resolvers = {
       return returnObj
     }
   },
-  Exercise: {
+  Exercise: { // TODO fix the rest of them to match these examples
     musclegroups(parent) {
       let returnObj = []
-      parent.equipment.forEach(element => {
-        returnObj.push(querySQLDB({ sql: "SELECT * FROM musclegroup WHERE id = ?", values: element }).then(result => result[0]))
-      });
+      if (parent.musclegroups != null) {
+        parent.musclegroups.forEach(element => {
+          returnObj.push(querySQLDB({ sql: "SELECT * FROM musclegroup WHERE id = ?", values: element }).then(result => result[0]))
+        })
+      }
       return returnObj
     },
     equipment(parent) {
       let returnObj = []
-      parent.equipment.forEach(element => {
-        returnObj.push(querySQLDB({ sql: "SELECT * FROM equipment WHERE id = ?", values: element }).then(result => result[0]))
-      });
+      if (parent.equipment != null) {
+        parent.equipment.forEach(element => {
+          returnObj.push(querySQLDB({ sql: "SELECT * FROM equipment WHERE id = ?", values: element }).then(result => result[0]))
+        })
+      }
       return returnObj
     }
   },
