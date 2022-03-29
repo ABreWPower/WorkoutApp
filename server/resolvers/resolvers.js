@@ -18,16 +18,21 @@ const resolvers = {
     },
     equipment(parent) {
       let returnObj = []
-      parent.equipment.forEach(element => {
-        returnObj.push(querySQLDB({ sql: "SELECT * FROM equipment WHERE id = ?", values: element }).then(result => result[0]))
-      });
+      if (parent.equipment != null) {
+        parent.equipment.forEach(element => {
+          returnObj.push(querySQLDB({ sql: "SELECT * FROM equipment WHERE id = ?", values: element }).then(result => result[0]))
+        })
+      }
       return returnObj
     },
     exercises(parent) {
       let returnObj = []
-      parent.equipment.forEach(element => {
-        returnObj.push(querySQLDB({ sql: "SELECT * FROM exercise WHERE id = ?", values: element }).then(result => result[0]))
-      });
+      console.log(parent)
+      if (parent.exercises != null) {
+        parent.exercises.forEach(element => {
+          returnObj.push(querySQLDB({ sql: "SELECT * FROM exercise WHERE id = ?", values: element }).then(result => result[0]))
+        })
+      }
       return returnObj
     }
   },
@@ -60,9 +65,11 @@ const resolvers = {
     },
     wlexercises(parent) {
       let returnObj = []
-      parent.equipment.forEach(element => {
-        returnObj.push(querySQLDB({ sql: "SELECT * FROM workoutlogexercise WHERE id = ?", values: element }).then(result => result[0]))
-      });
+      if (parent.workoutlogexercise != null) {
+        parent.workoutlogexercise.forEach(element => {
+          returnObj.push(querySQLDB({ sql: "SELECT * FROM workoutlogexercise WHERE id = ?", values: element }).then(result => result[0]))
+        })
+      }
       return returnObj
     }
   },
