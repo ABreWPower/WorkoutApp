@@ -14,30 +14,27 @@ const routes = [
   {
     path: '/',
     name: 'Workouts',
+    meta: { navigatable: true },
     component: Workouts
   },
   {
     path: '/exercises',
     name: 'Exercises',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    meta: { navigatable: true },
     component: () => import('../views/Exercises.vue')
   },
   {
     path: '/workoutview',
     name: 'Workout View',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    meta: { navigatable: false }, // TODO make sure that this doesn't show up on the drop down menu
+    props: { workoutid: null },
     component: () => import('../views/WorkoutView.vue')
   },
   {
     path: '/workoutedit',
     name: 'Workout Edit',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    meta: { navigatable: false }, // TODO make sure that this doesn't show up on the drop down menu
+    props: { workoutid: null },
     component: () => import('../views/WorkoutEdit.vue')
   }
 ]

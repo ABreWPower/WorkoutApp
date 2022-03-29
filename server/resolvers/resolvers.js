@@ -5,7 +5,15 @@ const { connectSQLDB, querySQLDB } = require('../db/db.js')
 const resolvers = {
   Query: {
     users: () => querySQLDB("SELECT * FROM users").then(result => result),
-    workouts: () => querySQLDB("SELECT * FROM workout").then(result => result),
+    // workouts: (parent, args) => {
+    //   console.log("parent", parent)
+    //   console.log("args", args.id)
+    //   querySQLDB({ sql: "SELECT * FROM workout WHERE id like ?", values: args.id }).then(result => {
+    //     console.log("results", result)
+    //     return result
+    //   })
+    // },
+    workouts: (parent, args) => querySQLDB({ sql: "SELECT * FROM workout WHERE id like ?", values: args.id }).then(result => result),
     equipment: () => querySQLDB("SELECT * FROM equipment").then(result => result),
     musclegroups: () => querySQLDB("SELECT * FROM musclegroup").then(result => result),
     exercises: () => querySQLDB("SELECT * FROM exercise").then(result => result),

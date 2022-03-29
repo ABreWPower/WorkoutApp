@@ -36,7 +36,6 @@ client.query({
   workouts.value = structuredClone(result.data.workouts)
   console.log("workouts", workouts)
 })
-
 </script>
 
 <template>
@@ -47,7 +46,7 @@ client.query({
   <!-- height: calc(100% vertical height - Nav bar (56px) - Search bar (38px) - New workout btn (38px) - IDK-DIK (16px) - Card margin (0.5rem) - Toolbar margin (0.5rem) -->
   <div style="position: relative; height: calc(100vh - 56px - 38px - 38px - 16px - 0.5rem - 0.5rem); margin-top: 0.5rem; overflow: auto">
     <div v-for="workout in workouts" :key="workout" class="card-view">
-      <card-view :name="workout.name" :picture="workout.picture" :description="workout.description"></card-view>
+      <card-view :name="workout.name" :picture="workout.picture" :description="workout.description" :workoutid="workout.id"></card-view>
     </div>
   </div>
   <button type="button" class="btn btn-outline-secondary mt-2">New Workout</button>

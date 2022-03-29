@@ -1,16 +1,18 @@
 <script setup>
-import Workout1Pic from "/pic1.jpg";
-import Workout2Pic from "/pic2.jpg";
-import Workout3Pic from "/pic3.jpg";
+import router from "../router/router.js"
 
-defineProps({
+import Workout1Pic from "/pic1.jpg"
+import Workout2Pic from "/pic2.jpg"
+import Workout3Pic from "/pic3.jpg"
+
+const props = defineProps({
   name: {
     type: String,
     required: true,
   },
   picture: {
     type: String,
-    required: true,
+    required: false,
   },  
   video: {
     type: String,
@@ -20,17 +22,29 @@ defineProps({
     type: String,
     required: true,
   },
-});
+  workoutid: {
+    type: String,
+    required: false,
+  },
+  exerciseid: {
+    type: String,
+    required: false,
+  }
+})
 
 const getImages = function () {
   let images = [Workout1Pic, Workout2Pic, Workout3Pic];
   return images[Math.floor(Math.random() * images.length)];
-};
+}
 
-const cardClick = function (cardName) {
-  console.log(cardName);
-  // TODO go to the workout editor screen
-};
+const cardClick = () => {  
+  if (props.workoutid != null) {
+    console.log("props.workoutid", props.workoutid)
+    router.push({ name: 'Workout View', params: { workoutid: props.workoutid } })
+    console.log("after router push")
+  }
+  console.log("props.exerciseid", props.exerciseid)
+}
 </script>
 
 <template>
@@ -44,6 +58,7 @@ const cardClick = function (cardName) {
         <div class="card-body">
           <h5 class="card-title">{{ name }}</h5>
           <p class="card-text overflow-hidden" style="text-overflow: ellipsis; -webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box">Description: {{ description }}</p>
+          <a href="#" class="stretched-link" @click="cardClick"></a>
         </div>
       </div>
     </div>

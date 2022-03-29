@@ -69,7 +69,7 @@ type WorkoutLogExercise {
 
 type Query {
   users: [User]
-  workouts: [Workout]
+  workouts(id: ID): [Workout]
   equipment: [Equipment]
   musclegroups: [MuscleGroup]
   exercises: [Exercise]
