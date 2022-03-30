@@ -23,9 +23,9 @@ const connectSQLDB = function () {
   return retVal
 }
 
-const querySQLDB = sql => {
+const querySQLDB = (sql, values) => {
   let connection = connectSQLDB()
-  return new Promise((resolve, reject) => connection.query(sql, (error, results, fields) => {
+  return new Promise((resolve, reject) => connection.execute(sql, values, (error, results, fields) => {
     // console.log('querySQLDB error', error)
     // console.log('querySQLDB results', results)
     // console.log('querySQLDB fields', fields)

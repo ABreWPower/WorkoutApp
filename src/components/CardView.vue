@@ -43,7 +43,11 @@ const cardClick = () => {
     router.push({ name: 'Workout View', params: { workoutid: props.workoutid } })
     console.log("after router push")
   }
-  console.log("props.exerciseid", props.exerciseid)
+  if (props.exerciseid != null) {
+    console.log("props.exerciseid", props.exerciseid)
+    router.push({ name: 'Exercise View', params: { exerciseid: props.exerciseid } })
+    console.log("after router push")
+  }
 }
 </script>
 

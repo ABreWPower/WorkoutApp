@@ -3,7 +3,7 @@ import { persistCache, LocalStorageWrapper } from 'apollo3-cache-persist';
 
 // Setup apollo client:
 const cache = new InMemoryCache()
-export let forceNetworkJQL = false
+export let forceNetworkJQL = true
 
 persistCache({
   cache,
