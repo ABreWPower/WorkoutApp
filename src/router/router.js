@@ -14,26 +14,22 @@ const routes = [
   {
     path: '/',
     name: 'Workouts',
-    meta: { navigatable: true },
     component: Workouts
   },
   {
     path: '/exercises',
     name: 'Exercises',
-    meta: { navigatable: true },
     component: () => import('../views/Exercises.vue')
   },
   {
     path: '/workoutview',
     name: 'Workout View',
-    meta: { navigatable: false }, // TODO make sure that this doesn't show up on the drop down menu
     props: { workoutid: null },
     component: () => import('../views/WorkoutView.vue')
   },
   {
     path: '/workoutedit',
     name: 'Workout Edit',
-    meta: { navigatable: false }, // TODO make sure that this doesn't show up on the drop down menu
     props: { workoutid: null },
     component: () => import('../views/WorkoutEdit.vue')
   }

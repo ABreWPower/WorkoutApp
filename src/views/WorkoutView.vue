@@ -5,12 +5,12 @@ import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { ref } from "vue"
 
-const route = useRoute()
-console.log("workoutid from router", route.params.workoutid)
+const routeObj = useRoute()
+console.log("workoutid from router", routeObj.params.workoutid)
 
 let getWorkout = gql`
   query Query {
-    workouts(id: ${route.params.workoutid}) {
+    workouts(id: ${routeObj.params.workoutid}) {
       id
       name
       picture
@@ -60,12 +60,12 @@ client.query({
   fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
 })
 .then(result => {
-  console.log("results", result)
+  // console.log("results", result)
   workout.value = structuredClone(result.data.workouts[0])
-  console.log("workouts", workout)
-  console.log("workout.equipment", result.data.workouts[0].equipment)
+  // console.log("workouts", workout)
+  // console.log("workout.equipment", result.data.workouts[0].equipment)
   result.data.workouts[0].equipment.forEach(element => {
-    console.log("equipment", element)
+    // console.log("equipment", element)
     equipment.value.push(element.name)
   })
 })

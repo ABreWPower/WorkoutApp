@@ -38,9 +38,9 @@ watch(routeObj, () => {
             <router-link to="/exercises" style="color: white; padding-left: 20px; padding-right 20px;">Exercises</router-link>
           </li>
           <!-- Temp items -->
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <router-link to="/workoutview" style="color: white; padding-left: 20px; padding-right 20px;">Workout View</router-link>
-          </li>
+          </li> -->
           <li class="nav-item">
             <router-link to="/workoutedit" style="color: white; padding-left: 20px; padding-right 20px;">Workout Edit</router-link>
           </li>
