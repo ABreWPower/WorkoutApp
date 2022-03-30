@@ -69,21 +69,6 @@ client.query({
     equipment.value.push(element.name)
   })
 })
-
-[
-    {
-        "__typename": "Equipment",
-        "id": "1",
-        "name": "Dumbbell",
-        "icon": null
-    },
-    {
-        "__typename": "Equipment",
-        "id": "2",
-        "name": "Bench",
-        "icon": null
-    }
-]
 </script>
 
 <template>
