@@ -41,7 +41,7 @@ const resolvers = {
     },
     exercises(parent) {
       let returnObj = []
-      console.log(parent)
+      // console.log(parent)
       if (parent.exercises != null) {
         parent.exercises.forEach(element => {
           returnObj.push(querySQLDB("SELECT * FROM exercise WHERE id = ?", [element]).then(result => result[0]))

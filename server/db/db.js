@@ -6,21 +6,26 @@ else {
   require('dotenv').config({ path: './local.env' })
 }
 
+var mysqlConnection = null
+
 const connectSQLDB = function () {
-  console.log("connectSQLDB()...")
+
   // console.log(process.env.HOST, process.env.DBUSER, process.env.PASSWORD, process.env.DB)
-  let retVal = mysql.createConnection({
-    host: process.env.HOST,
-    port: 3306,
-    user: process.env.DBUSER,
-    password: process.env.PASSWORD,
-    database: process.env.DB,
-    multipleStatements: true
-  })
-  retVal.on('error', function (err) {
-    console.log("It's dead, Jim...", err)
-  })
-  return retVal
+  if (mysqlConnection == null) {
+    console.log("creating connection to MySQL")
+    mysqlConnection = mysql.createConnection({
+      host: process.env.HOST,
+      port: 3306,
+      user: process.env.DBUSER,
+      password: process.env.PASSWORD,
+      database: process.env.DB,
+      multipleStatements: true
+    })
+    mysqlConnection.on('error', function (err) {
+      console.log("It's dead, Jim...", err)
+    })
+  }
+  return mysqlConnection
 }
 
 const querySQLDB = (sql, values) => {
