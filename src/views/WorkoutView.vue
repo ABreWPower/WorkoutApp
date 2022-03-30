@@ -63,14 +63,27 @@ client.query({
   console.log("results", result)
   workout.value = structuredClone(result.data.workouts[0])
   console.log("workouts", workout)
-  console.log("workout.equipment", workout.equipment)
-  workout.equipment.forEach(element => {
+  console.log("workout.equipment", result.data.workouts[0].equipment)
+  result.data.workouts[0].equipment.forEach(element => {
     console.log("equipment", element)
-    equipment.push(element.name)
+    equipment.value.push(element.name)
   })
 })
 
-
+[
+    {
+        "__typename": "Equipment",
+        "id": "1",
+        "name": "Dumbbell",
+        "icon": null
+    },
+    {
+        "__typename": "Equipment",
+        "id": "2",
+        "name": "Bench",
+        "icon": null
+    }
+]
 
 
 
@@ -190,7 +203,7 @@ client.query({
   <!-- <img src="/pic1.jpg" alt="pic1" style="max-width: 100vw" /> -->
 
   <div class="row align-items-start">
-    <div class="col">Duration: {{ workout.duration / 60 }} min</div>
+    <div class="col">Duration: {{ workout.duration / 60 }} hours</div>
     <div class="col">
       <div class="row align-items-start">
         <p>
@@ -212,7 +225,7 @@ client.query({
   </p>
 
   <div v-for="exercise in workout.exercises" :key="exercise">
-    <card-view :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :description="exercise.instructions"></card-view>
+    <card-view :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :description="exercise.instructions" :exerciseid="exercise.id"></card-view>
   </div>
 
   <div class="row">
