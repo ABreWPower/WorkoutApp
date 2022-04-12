@@ -13,7 +13,7 @@ const connectSQLDB = function () {
   // console.log(process.env.HOST, process.env.DBUSER, process.env.PASSWORD, process.env.DB)
   if (mysqlConnection == null) {
     console.log("creating connection to MySQL")
-    mysqlConnection = mysql.createConnection({
+    mysqlConnection = mysql.createPool({
       host: process.env.HOST,
       port: 3306,
       user: process.env.DBUSER,
