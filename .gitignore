@@ -30,3 +30,4 @@ public/icons
 *.njsproj
 *.sln
 *.sw?
+*.bak
