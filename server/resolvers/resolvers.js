@@ -40,14 +40,21 @@ const resolvers = {
         WHERE w.id=?`, [parent.id])
     },
     exercises(parent) {
-      let returnObj = []
-      // console.log(parent)
-      if (parent.exercises != null) {
-        parent.exercises.forEach(element => {
-          returnObj.push(querySQLDB("SELECT * FROM exercise WHERE id = ?", [element]).then(result => result[0]))
-        })
-      }
-      return returnObj
+      return querySQLDB(`SELECT DISTINCT exercise.*
+        FROM exercise
+          INNER JOIN workout_exercise ON exercise.id = workout_exercise.exerciseid
+            INNER JOIN workout ON workout_exercise.workoutid = workout.id
+        WHERE workout.id = ?`, [parent.id])
+    },
+    difficulty(parent) {
+      return querySQLDB(`SELECT exercise.difficulty AS difficulty
+        FROM exercise
+          INNER JOIN workout_exercise ON exercise.id = workout_exercise.exerciseid
+            INNER JOIN workout ON workout_exercise.workoutid = workout.id
+        WHERE workout.id = ?
+        GROUP BY exercise.difficulty
+        ORDER BY count(exercise.difficulty) DESC
+        LIMIT 1`, [parent.id]).then(result => result[0].difficulty)
     }
   },
   Exercise: { // TODO fix the rest of them to match these examples
