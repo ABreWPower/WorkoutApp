@@ -31,13 +31,13 @@ const resolvers = {
       return querySQLDB("SELECT * FROM users WHERE id = ?", [parent.user]).then(result => result[0])
     },
     equipment(parent) {
-      let returnObj = []
-      if (parent.equipment != null) {
-        parent.equipment.forEach(element => {
-          returnObj.push(querySQLDB("SELECT * FROM equipment WHERE id = ?", [element]).then(result => result[0]))
-        })
-      }
-      return returnObj
+      return querySQLDB(`SELECT DISTINCT eq.*
+        FROM equipment AS eq
+          INNER JOIN exercise_equipment AS ee ON eq.id = ee.equipmentid
+            INNER JOIN exercise AS ex ON ee.exerciseid = ex.id
+            INNER JOIN workout_exercise AS we ON ex.id = we.exerciseid
+            INNER JOIN workout AS w on we.workoutid = w.id
+        WHERE w.id=?`, [parent.id])
     },
     exercises(parent) {
       let returnObj = []
