@@ -59,22 +59,18 @@ const resolvers = {
   },
   Exercise: { // TODO fix the rest of them to match these examples
     musclegroups(parent) {
-      let returnObj = []
-      if (parent.musclegroups != null) {
-        parent.musclegroups.forEach(element => {
-          returnObj.push(querySQLDB("SELECT * FROM musclegroup WHERE id = ?", [element]).then(result => result[0]))
-        })
-      }
-      return returnObj
+      return querySQLDB(`SELECT DISTINCT musclegroup.*
+        FROM musclegroup
+          INNER JOIN exercise_musclegroup ON musclegroup.id = exercise_musclegroup.musclegroupid
+            INNER JOIN exercise ON exercise_musclegroup.exerciseid = exercise.id
+        WHERE exercise.id = ?`, [parent.id])
     },
     equipment(parent) {
-      let returnObj = []
-      if (parent.equipment != null) {
-        parent.equipment.forEach(element => {
-          returnObj.push(querySQLDB("SELECT * FROM equipment WHERE id = ?", [element]).then(result => result[0]))
-        })
-      }
-      return returnObj
+      return querySQLDB(`SELECT DISTINCT equipment.*
+        FROM equipment
+          INNER JOIN exercise_equipment ON equipment.id = exercise_equipment.equipmentid
+            INNER JOIN exercise ON exercise_equipment.exerciseid = exercise.id
+        WHERE exercise.id = ?`, [parent.id])
     }
   },
   WorkoutLog: {
