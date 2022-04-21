@@ -103,19 +103,19 @@ const resolvers = {
       require('../db/setupdb.js')
       return querySQLDB("SELECT * FROM users").then(result => result)
     },
-    addUser: (parent, { name, email, avatar }) => {
+    addUser: (parent, { name = null, email = null, avatar = null }) => {
       return querySQLDB("INSERT into users (name, email, avatar) VALUES (?, ?, ?)", [name, email, avatar]).then(
-        result => querySQLDB("SELECT * FROM users WHERE id = ?", [result.insertid]).then(result => result[0])
+        result => querySQLDB("SELECT * FROM users WHERE id = ?", [result.insertId]).then(result => result[0])
       )
     },
-    addEquipment: (parent, { name, icon }) => {
+    addEquipment: (parent, { name = null, icon = null }) => {
       return querySQLDB("INSERT into equipment (name, icon) VALUES (?, ?)", [name, icon]).then(
-        result => querySQLDB("SELECT * FROM equipment WHERE id = ?", [result.insertid]).then(result => result[0])
+        result => querySQLDB("SELECT * FROM equipment WHERE id = ?", [result.insertId]).then(result => result[0])
       )
     },
-    addMuscleGroup: (parent, { name, picture }) => {
+    addMuscleGroup: (parent, { name = null, picture = null }) => {
       return querySQLDB("INSERT into musclegroup (name, picture) VALUES (?, ?)", [name, picture]).then(
-        result => querySQLDB("SELECT * FROM musclegroup WHERE id =BB ?", [result.insertid]).then(result => result[0])
+        result => querySQLDB("SELECT * FROM musclegroup WHERE id = ?", [result.insertId]).then(result => result[0])
       )
     },
     // TODO need to make the rest of the adds and then all of the updates
