@@ -1,75 +1,40 @@
 <script setup>
 import workoutEditExerciseEdit from '../components/WorkoutEditExerciseEdit.vue'
+import { client } from  "../scripts/connectGraphQL.js"
+import { gql } from "@apollo/client/core";
 
-const workout = {
-  id: 1,
-  name: 'Workout 1',
+var workout = {
+  id: null,
+  name: 'New Workout',
   picture: 'TODO Something',
   description: 'A new workout',
-  user: 'default',
-  duration: 1800,
-  difficulty: 1,
-  equipment: ['barbell', 'dip machine']
+  user: 0
 }
 
-// Has extra fields that about be saved in the workout, not exercise
-const exercises = {
-  1: {
-    id: 1,
-    name: 'Exercise 1',
-    picture: 'TODO Something',
-    video: 'TODO Something',
-    instructions: 'Pushups while standing on the celling',
-    difficulty: 3,
-    muscleGroup: ['chest', 'gravity manipulation'],
-    reps: 10,
-    duration: 0,
-    equipment: ['anti-grav machine'],
-    sets: 5,
-    rest: 30
-  },
-  2: {
-    id: 2,
-    name: 'Exercise B',
-    picture: 'TODO Something',
-    video: 'TODO Something',
-    instructions: 'Chinups on a bench',
-    difficulty: 3,
-    muscleGroup: ['chest', 'gravity manipulation'],
-    reps: 0,
-    duration: 90,
-    equipment: ['bench'],
-    sets: 4,
-    rest: 60
-  },
-  3: {
-    id: 3,
-    name: 'Exercise 3C',
-    picture: 'TODO Something',
-    video: 'TODO Something',
-    instructions: 'walk in circles',
-    difficulty: 0,
-    muscleGroup: ['chest', 'gravity manipulation'],
-    reps: 0,
-    duration: 5,
-    equipment: ['ground'],
-    sets: 3,
-    rest: 90
-  },
-  4: {
-    id: 4,
-    name: 'Exercise 5',
-    picture: 'TODO Something',
-    video: 'TODO Something',
-    instructions: 'Crunches on the floor',
-    difficulty: 1,
-    muscleGroup: ['abs'],
-    reps: 15,
-    duration: 0,
-    equipment: [],
-    sets: 2,
-    rest: 120
+let updateWorkout = gql`
+  mutation Mutation($name: String!, $description: String, $user: Int) {
+    addWorkout(name: $name, description: $description, user: $user) {
+      id
+    }
   }
+` 
+
+// const workouts = ref([])
+
+const saveWorkoutClick = () => {
+  console.log("before save workout")
+
+  client.mutate({
+    mutation: updateWorkout,
+    variables: workout
+  })
+  .then(result => {
+    console.log("results", result)
+    // workouts.value = structuredClone(result.data.workouts)
+    console.log("workouts", workouts)
+  })
+
+  console.log("after save workout")
 }
 </script>
 
@@ -101,7 +66,7 @@ const exercises = {
       <button type="button" class="btn btn-outline-secondary">Add Exercise</button>
     </div>
     <div class="col">
-      <button type="button" class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-primary" @click="saveWorkoutClick()">Save</button>
     </div>
   </div>
 </template>

@@ -46,6 +46,7 @@ const resolvers = {
             INNER JOIN workout ON workout_exercise.workoutid = workout.id
         WHERE workout.id = ?`, [parent.id])
     },
+    // TODO add in duration
     difficulty(parent) {
       return querySQLDB(`SELECT exercise.difficulty AS difficulty
         FROM exercise
@@ -118,16 +119,16 @@ const resolvers = {
         result => querySQLDB("SELECT * FROM musclegroup WHERE id = ?", [result.insertId]).then(result => result[0])
       )
     },
-    addWorkout: (parent,{name = null, picture = null, description = null, user = null, duration = null, exercise = []}) => {
-      return querySQLDB("INSERT into workout (name, picture, description, user, duration) VALUES (?, ?, ?, ?, ?)", [name, picture, description, user, duration])
-        .then(function(result) {
+    addWorkout: (parent, { name = null, picture = null, description = null, user = null, exercise = [] }) => {
+      return querySQLDB("INSERT into workout (name, picture, description, user) VALUES (?, ?, ?, ?)", [name, picture, description, user])
+        .then(function (result) {
           let workoutid = result.insertId
           exercise.forEach(element => {
             querySQLDB("INSERT into workout_exercise (workoutid, exerciseid) VALUES (?, ?)", [workoutid, element])
           })
           return querySQLDB("SELECT * FROM workout WHERE id = ?", [workoutid]).then(result => result[0])
         }
-      )
+        )
     }
     // TODO need to make the rest of the adds and then all of the updates
   }

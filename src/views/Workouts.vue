@@ -3,6 +3,7 @@ import cardView from '../components/CardView.vue'
 import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { ref } from "vue"
+import router from "../router/router.js"
 
 let getWorkouts = gql`
   query Query {
@@ -11,16 +12,6 @@ let getWorkouts = gql`
       name
       picture
       description
-      user {
-        id
-      }
-      duration
-      difficulty
-      equipment {
-        id
-        name
-        icon
-      }
     }
   }
 ` 
@@ -36,6 +27,12 @@ client.query({
   workouts.value = structuredClone(result.data.workouts)
   console.log("workouts", workouts)
 })
+
+const newWorkoutClick = () => {
+    console.log("before new workout")
+    router.push({ name: 'Workout Edit' })
+    console.log("after router push for new workout")
+}
 </script>
 
 <template>
@@ -49,7 +46,7 @@ client.query({
       <card-view :name="workout.name" :picture="workout.picture" :description="workout.description" :workoutid="workout.id"></card-view>
     </div>
   </div>
-  <button type="button" class="btn btn-outline-secondary mt-2">New Workout</button>
+  <button type="button" class="btn btn-outline-secondary mt-2" @click="newWorkoutClick()">New Workout</button>
 </template>
 
 <style scoped>
