@@ -2,6 +2,7 @@
 import workoutEditExerciseEdit from '../components/WorkoutEditExerciseEdit.vue'
 import { client } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
+import router from "../router/router.js"
 
 var workout = {
   id: null,
@@ -36,6 +37,13 @@ const saveWorkoutClick = () => {
 
   console.log("after save workout")
 }
+
+const addExerciseClick = () => {
+  console.log("add exercise click")
+
+  router.push({ name: 'Exercises' })
+}
+
 </script>
 
 <template>
@@ -63,7 +71,7 @@ const saveWorkoutClick = () => {
 
   <div class="row">
     <div class="col">
-      <button type="button" class="btn btn-outline-secondary">Add Exercise</button>
+      <button type="button" class="btn btn-outline-secondary" @click="addExerciseClick()">Add Exercise</button>
     </div>
     <div class="col">
       <button type="button" class="btn btn-primary" @click="saveWorkoutClick()">Save</button>
