@@ -2,14 +2,24 @@
 import workoutEditExerciseEdit from '../components/WorkoutEditExerciseEdit.vue'
 import { client } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
+import { useRoute } from 'vue-router'
 import router from "../router/router.js"
+
+const routeObj = useRoute()
+console.log("router params", routeObj.params)
 
 var workout = {
   id: null,
-  name: 'New Workout',
-  picture: 'TODO Something',
-  description: 'A new workout',
+  name: null,
+  picture: null,
+  description: null,
+  exercises: [],
   user: 0
+}
+
+if(routeObj.params.workout !== undefined) {
+  workout = JSON.parse(routeObj.params.workout)
+  console.log("workout", workout)
 }
 
 let updateWorkout = gql`
@@ -21,6 +31,7 @@ let updateWorkout = gql`
 ` 
 
 // const workouts = ref([])
+//TODO save button is broken; fix it!
 
 const saveWorkoutClick = () => {
   console.log("before save workout")
@@ -40,8 +51,15 @@ const saveWorkoutClick = () => {
 
 const addExerciseClick = () => {
   console.log("add exercise click")
+  console.log("workout", workout)
 
-  router.push({ name: 'Exercises' })
+  router.push({ 
+    name: 'Exercises',
+    params: {
+      mode: "AddExerciseToWorkout",
+      workout: JSON.stringify(workout)
+    }
+  })
 }
 
 </script>
@@ -49,7 +67,7 @@ const addExerciseClick = () => {
 <template>
   <div class="input-group input-group-lg">
     <span class="input-group-text" id="workoutNameLabel">Workout Name</span>
-    <input type="text" class="form-control" id="workoutName" :value="workout.name" aria-label="Workout Name" aria-describedby="workoutNameLabel" />
+    <input type="text" class="form-control" id="workoutName" v-model="workout.name" aria-label="Workout Name" aria-describedby="workoutNameLabel" />
   </div>
   <img src="/pic1.jpg" alt="pic1" />
 
@@ -63,7 +81,7 @@ const addExerciseClick = () => {
   </div>
 
   <h4>Description</h4>
-  <input type="text" class="form-control" id="workoutDescription" :value="workout.description" aria-label="Workout Description" />
+  <input type="text" class="form-control" id="workoutDescription" v-model="workout.description" aria-label="Workout Description" />
 
   <div v-for="exercise in exercises" :key="exercise">
     <workout-edit-exercise-edit :name="exercise.name" :sets="exercise.sets" :reps="exercise.reps" :duration="exercise.duration" :rest="exercise.rest"></workout-edit-exercise-edit>

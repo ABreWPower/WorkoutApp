@@ -1,8 +1,19 @@
 <script setup>
 import cardView from '../components/CardView.vue'
 import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
+import { useRoute } from 'vue-router'
 import { gql } from "@apollo/client/core";
 import { ref } from "vue"
+import router from "../router/router.js"
+
+const routeObj = useRoute()
+console.log("router params", routeObj.params)
+
+let workout = null
+if(routeObj.params.workout !== undefined) {
+  workout = JSON.parse(routeObj.params.workout)
+  console.log("workout", workout)
+}
 
 let getExercises = gql`
   query Query {
@@ -41,6 +52,20 @@ client.query({
   console.log("exercises", exercises)
 })
 
+const cardClick = function(exerciseid) {
+  return function() {
+    console.log("card click", exerciseid)
+    workout.exercises.push(exerciseid)
+
+    router.push({
+      name: "Workout Edit",
+      params: {
+        workout: JSON.stringify(workout)
+      }
+    })
+  }
+}
+
 </script>
 
 <template>
@@ -51,7 +76,7 @@ client.query({
   <!-- height: calc(100% vertical height - Nav bar (56px) - Search bar (38px) - New exercise btn (38px) - IDK-DIK (16px) - Card margin (0.5rem) - Toolbar margin (0.5rem) -->
   <div style="position: relative; height: calc(100vh - 56px - 38px - 38px - 16px - 0.5rem - 0.5rem); margin-top: 0.5rem; overflow: auto">
     <div v-for="exercise in exercises" :key="exercise">
-      <card-view :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :description="exercise.instructions" :exerciseid="exercise.id"></card-view>
+      <card-view :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :description="exercise.instructions" :exerciseid="exercise.id" :click-handler="cardClick(exercise.id)"></card-view>
     </div>
   </div>
   <button type="button" class="btn btn-outline-secondary">New Exercise</button>

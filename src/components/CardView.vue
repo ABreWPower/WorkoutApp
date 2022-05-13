@@ -29,6 +29,10 @@ const props = defineProps({
   exerciseid: {
     type: String,
     required: false,
+  },
+  clickHandler: {
+    type: Function,
+    required: false,
   }
 })
 
@@ -37,16 +41,21 @@ const getImages = function () {
   return images[Math.floor(Math.random() * images.length)];
 }
 
-const cardClick = () => {  
-  if (props.workoutid != null) {
-    console.log("props.workoutid", props.workoutid)
-    router.push({ name: 'Workout View', params: { workoutid: props.workoutid } })
-    console.log("after router push")
-  }
-  if (props.exerciseid != null) {
-    console.log("props.exerciseid", props.exerciseid)
-    router.push({ name: 'Exercise View', params: { exerciseid: props.exerciseid } })
-    console.log("after router push")
+const cardClick = () => {
+  if(props.clickHandler !== undefined) {
+    props.clickHandler()
+  } else {
+
+    if (props.workoutid != null) {
+      console.log("props.workoutid", props.workoutid)
+      router.push({ name: 'Workout View', params: { workoutid: props.workoutid } })
+      console.log("after router push")
+    }
+    if (props.exerciseid != null) {
+      console.log("props.exerciseid", props.exerciseid)
+      router.push({ name: 'Exercise View', params: { exerciseid: props.exerciseid } })
+      console.log("after router push")
+    }
   }
 }
 </script>
