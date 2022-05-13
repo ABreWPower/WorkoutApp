@@ -62,7 +62,8 @@ const addExerciseClick = () => {
   })
 }
 
-// TODO display 
+// TODO display exercises
+// TODO Allow for updating (maybe if have ID)
 
 </script>
 
@@ -85,7 +86,7 @@ const addExerciseClick = () => {
   <h4>Description</h4>
   <input type="text" class="form-control" id="workoutDescription" v-model="workout.description" aria-label="Workout Description" />
 
-  <div v-for="exercise in exercises" :key="exercise">
+  <div v-for="exercise in workout.exercises" :key="exercise">
     <workout-edit-exercise-edit :name="exercise.name" :sets="exercise.sets" :reps="exercise.reps" :duration="exercise.duration" :rest="exercise.rest"></workout-edit-exercise-edit>
   </div>
 
