@@ -3,6 +3,7 @@ import workoutEditExerciseEdit from '../components/WorkoutEditExerciseEdit.vue'
 import { client } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { useRoute } from 'vue-router'
+import { ref } from "vue"
 import router from "../router/router.js"
 
 const routeObj = useRoute()
@@ -30,8 +31,7 @@ let updateWorkout = gql`
   }
 ` 
 
-// const workouts = ref([])
-//TODO save button is broken; fix it!
+const savedWorkoutID = ref()
 
 const saveWorkoutClick = () => {
   console.log("before save workout")
@@ -42,8 +42,8 @@ const saveWorkoutClick = () => {
   })
   .then(result => {
     console.log("results", result)
-    // workouts.value = structuredClone(result.data.workouts)
-    console.log("workouts", workouts)
+    savedWorkoutID.value = result.data.addWorkout.id
+    console.log("savedWorkoutID", savedWorkoutID.value)
   })
 
   console.log("after save workout")
@@ -61,6 +61,8 @@ const addExerciseClick = () => {
     }
   })
 }
+
+// TODO display 
 
 </script>
 
