@@ -23,7 +23,7 @@ if(routeObj.params.workout !== undefined) {
   console.log("workout", workout)
 }
 
-let updateWorkout = gql`
+let addWorkout = gql`
   mutation Mutation($name: String!, $description: String, $user: Int) {
     addWorkout(name: $name, description: $description, user: $user) {
       id
@@ -37,7 +37,7 @@ const saveWorkoutClick = () => {
   console.log("before save workout")
 
   client.mutate({
-    mutation: updateWorkout,
+    mutation: addWorkout,
     variables: workout
   })
   .then(result => {
@@ -62,7 +62,6 @@ const addExerciseClick = () => {
   })
 }
 
-// TODO display exercises
 // TODO Allow for updating (maybe if have ID)
 
 </script>

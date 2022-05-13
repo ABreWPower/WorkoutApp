@@ -119,16 +119,41 @@ const resolvers = {
         result => querySQLDB("SELECT * FROM musclegroup WHERE id = ?", [result.insertId]).then(result => result[0])
       )
     },
-    addWorkout: (parent, { name = null, picture = null, description = null, user = null, exercise = [] }) => {
+    addWorkout: (parent, { name = null, picture = null, description = null, user = null, exercises = [] }) => {
       return querySQLDB("INSERT into workout (name, picture, description, user) VALUES (?, ?, ?, ?)", [name, picture, description, user])
         .then(function (result) {
           let workoutid = result.insertId
-          exercise.forEach(element => {
+          exercises.forEach(element => {
             querySQLDB("INSERT into workout_exercise (workoutid, exerciseid) VALUES (?, ?)", [workoutid, element])
           })
           return querySQLDB("SELECT * FROM workout WHERE id = ?", [workoutid]).then(result => result[0])
-        }
-        )
+        })
+    },
+    updateWorkout: (parent, { id = null, name = null, picture = null, description = null, user = null, exercises = [] }) => {
+      console.log("starting update function")
+      let workoutid = id
+      return querySQLDB("UPDATE workout SET name = ?, picture = ?, description = ?, user = ? WHERE ID = ?", [name, picture, description, user, id])
+        .then(function () {
+          console.log("workout id is: ", workoutid)
+          // delete all element containing workout id
+          return querySQLDB("DELETE from workout_exercise WHERE workoutid = ?", [workoutid])
+        })
+        .then(function () {
+          // then re-add the new ones
+          console.log("having real fun now, before inserts", exercises)
+          let inserts = []
+          exercises.forEach(element => {
+            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid) VALUES (?, ?)", [workoutid, element]))
+            console.log(`INSERT into workout_exercise (workoutid, exerciseid) VALUES (${workoutid}, ${element})`)
+          })
+          // return promise all
+          return Promise.all(inserts)
+        })
+        .then(function () {
+          console.log("before return data")
+          return querySQLDB("SELECT * FROM workout WHERE id = ?", [workoutid]).then(result => result[0])
+        })
+
     }
     // TODO need to make the rest of the adds and then all of the updates
   }
