@@ -15,7 +15,7 @@ var workout = {
   picture: null,
   description: null,
   exercises: [],
-  user: 0
+  user: 1
 }
 
 if(routeObj.params.workout !== undefined) {
@@ -24,8 +24,8 @@ if(routeObj.params.workout !== undefined) {
 }
 
 let addWorkout = gql`
-  mutation Mutation($name: String!, $description: String, $user: Int) {
-    addWorkout(name: $name, description: $description, user: $user) {
+  mutation Mutation($name: String!, $description: String, $user: Int, $exercises: [Int]) {
+    addWorkout(name: $name, description: $description, user: $user, exercises: $exercises) {
       id
     }
   }
@@ -34,7 +34,7 @@ let addWorkout = gql`
 const savedWorkoutID = ref()
 
 const saveWorkoutClick = () => {
-  console.log("before save workout")
+  console.log("before save workout", workout)
 
   client.mutate({
     mutation: addWorkout,

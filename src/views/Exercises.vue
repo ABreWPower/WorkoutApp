@@ -55,7 +55,7 @@ client.query({
 const cardClick = function(exerciseid) {
   return function() {
     console.log("card click", exerciseid)
-    workout.exercises.push(exerciseid)
+    workout.exercises.push(parseInt(exerciseid))
 
     router.push({
       name: "Workout Edit",

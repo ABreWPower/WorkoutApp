@@ -120,12 +120,18 @@ const resolvers = {
       )
     },
     addWorkout: (parent, { name = null, picture = null, description = null, user = null, exercises = [] }) => {
+      let workoutid = null
       return querySQLDB("INSERT into workout (name, picture, description, user) VALUES (?, ?, ?, ?)", [name, picture, description, user])
         .then(function (result) {
-          let workoutid = result.insertId
+          workoutid = result.insertId
+          let inserts = []
           exercises.forEach(element => {
             querySQLDB("INSERT into workout_exercise (workoutid, exerciseid) VALUES (?, ?)", [workoutid, element])
           })
+          // return promise all
+          return Promise.all(inserts)
+        })
+        .then(function () {
           return querySQLDB("SELECT * FROM workout WHERE id = ?", [workoutid]).then(result => result[0])
         })
     },
