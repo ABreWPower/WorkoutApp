@@ -9,6 +9,9 @@ import router from "../router/router.js"
 const routeObj = useRoute()
 console.log("router params", routeObj.params)
 
+// TODO load page with existing workouts
+// TODO when saving update exiting workouts
+
 var workout = {
   id: null,
   name: null,
@@ -61,9 +64,6 @@ const addExerciseClick = () => {
     }
   })
 }
-
-// TODO Allow for updating (maybe if have ID)
-
 </script>
 
 <template>
