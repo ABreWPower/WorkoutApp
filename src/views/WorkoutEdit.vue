@@ -1,6 +1,6 @@
 <script setup>
 import workoutEditExerciseEdit from '../components/WorkoutEditExerciseEdit.vue'
-import { client } from  "../scripts/connectGraphQL.js"
+import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { useRoute } from 'vue-router'
 import { ref } from "vue"
@@ -26,13 +26,51 @@ if(routeObj.params.workout !== undefined) {
   console.log("workout", workout)
 }
 
+let getExercise = gql`
+  query Exercises($exercisesId: ID) {
+    exercises(id: $exercisesId) {
+      id
+      name
+      picture
+      instructions
+      difficulty
+      reps
+      duration
+    }
+  }
+`
+
+// all exercisesdata
+let exercisesData = ref([])
+// for each exercise
+workout.exercises.forEach(element => {
+  console.log('getting exercise data', element)
+  //    run query to get all data
+  client.query({
+    query: getExercise,
+    variables: {exercisesId: element},    
+    fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+  })
+  .then(result => {
+    console.log("results", result)
+    console.log("result.data.exercises[0]", result.data.exercises[0])
+
+    //    save in new object via push
+    exercisesData.value.push(result.data.exercises[0])
+    console.log("exercisesData", exercisesData.value)
+  })
+})
+
+// TODO down below use new object to show data
+
+
 let addWorkout = gql`
   mutation Mutation($name: String!, $description: String, $user: Int, $exercises: [Int]) {
     addWorkout(name: $name, description: $description, user: $user, exercises: $exercises) {
       id
     }
   }
-` 
+`
 
 const savedWorkoutID = ref()
 
@@ -85,7 +123,8 @@ const addExerciseClick = () => {
   <h4>Description</h4>
   <input type="text" class="form-control" id="workoutDescription" v-model="workout.description" aria-label="Workout Description" />
 
-  <div v-for="exercise in workout.exercises" :key="exercise">
+  <!-- I think part of the problem is we are only pulling back a number not the whole object -->
+  <div v-for="exercise in exercisesData" :key="exercise">
     <workout-edit-exercise-edit :name="exercise.name" :sets="exercise.sets" :reps="exercise.reps" :duration="exercise.duration" :rest="exercise.rest"></workout-edit-exercise-edit>
   </div>
 
