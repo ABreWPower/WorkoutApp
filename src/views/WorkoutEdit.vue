@@ -61,8 +61,6 @@ workout.exercises.forEach(element => {
   })
 })
 
-// TODO down below use new object to show data
-
 
 let addWorkout = gql`
   mutation Mutation($name: String!, $description: String, $user: Int, $exercises: [Int]) {
