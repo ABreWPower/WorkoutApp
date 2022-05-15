@@ -9,54 +9,34 @@ const routeObj = useRoute()
 console.log("workoutid from router", routeObj.params.workoutid)
 
 let getWorkout = gql`
-  query Query {
-    workouts(id: ${routeObj.params.workoutid}) {
+  query Query($workoutsId: ID) {
+    workouts(id: $workoutsId) {
       id
       name
       picture
       description
-      user {
-        id
-        name
-        email
-        avatar
-      }
       duration
       difficulty
       equipment {
-        id
         name
         icon
       }
       exercises {
         id
         name
-        video
         instructions
         picture
-        difficulty
-        musclegroups {
-          id
-          name
-          picture
-        }
-        reps
-        duration
-        equipment {
-          id
-          name
-          icon
-        }
       }
     }
   }
-` 
+`
 
 const workout = ref([])
 const equipment = ref([])
 
 client.query({
   query: getWorkout,
+  variables: {workoutsId: routeObj.params.workoutid},
   fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
 })
 .then(result => {
