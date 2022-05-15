@@ -30,7 +30,7 @@ const routes = [
   {
     path: '/workoutedit',
     name: 'Workout Edit',
-    props: { workoutid: null },
+    props: { workout: null },
     component: () => import('../views/WorkoutEdit.vue')
   },
   {
