@@ -11,6 +11,7 @@ console.log("router params", routeObj.params)
 
 // TODO load page with existing workouts
 // TODO when saving update exiting workouts
+// Need to save the exercise reps, sets, etc in the database somewhere
 
 var workout = {
   id: null,
