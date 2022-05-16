@@ -1,5 +1,5 @@
 <script setup>
-import workoutEditExerciseEdit from '../components/WorkoutEditExerciseEdit.vue'
+import workoutEditExerciseEdit from '../components/WorkoutEditExerciseCardView.vue'
 import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { useRoute } from 'vue-router'
