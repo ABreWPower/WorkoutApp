@@ -36,7 +36,6 @@ const getImages = function () {
 
 <template>
   <div>
-    <!-- TODO fix the card layout as object are not where they are supposed to be -->
     <div class="card mb-3">
       <div class="row g-0">
         <div class="col-md-4">
@@ -51,7 +50,6 @@ const getImages = function () {
           <div class="card-body">
             <div class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
               <span class="input-group-text" id="setsText" style="width: 75px">Sets</span>
-              <!-- Fix all of the input boxes as they shouldn't be this long, and should be able to stack on eachother instead of individual rows -->
               <input type="number" :value="props.sets" class="form-control" aria-label="Number of sets to complete for this exercise: {{ name }}" aria-describedby="setsText" style="max-width: 75px" />
             </div>
             <div v-if="reps != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
