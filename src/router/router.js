@@ -22,7 +22,7 @@ const routes = [
     component: () => import('../views/Exercises.vue')
   },
   {
-    path: '/workoutview',
+    path: '/workoutview/:workoutid',
     name: 'Workout View',
     props: { workoutid: null },
     component: () => import('../views/WorkoutView.vue')
@@ -30,7 +30,7 @@ const routes = [
   {
     path: '/workoutedit',
     name: 'Workout Edit',
-    props: { workoutid: null },
+    props: { workout: null },
     component: () => import('../views/WorkoutEdit.vue')
   },
   {

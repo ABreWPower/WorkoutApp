@@ -18,7 +18,8 @@ var workout = {
   name: null,
   picture: null,
   description: null,
-  exercises: [],
+  exercises: [],      //TODO: reference as list of objects of exercises for EDIT scenario
+  exerciseIds: [],    //TODO: reference code as ID only for ADD scenerio
   user: 1
 }
 

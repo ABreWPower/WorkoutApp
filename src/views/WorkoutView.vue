@@ -4,59 +4,40 @@ import { useRoute } from 'vue-router'
 import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { ref } from "vue"
+import router from "../router/router.js"
 
 const routeObj = useRoute()
 console.log("workoutid from router", routeObj.params.workoutid)
 
 let getWorkout = gql`
-  query Query {
-    workouts(id: ${routeObj.params.workoutid}) {
+  query Query($workoutsId: ID) {
+    workouts(id: $workoutsId) {
       id
       name
       picture
       description
-      user {
-        id
-        name
-        email
-        avatar
-      }
       duration
       difficulty
       equipment {
-        id
         name
         icon
       }
       exercises {
         id
         name
-        video
         instructions
         picture
-        difficulty
-        musclegroups {
-          id
-          name
-          picture
-        }
-        reps
-        duration
-        equipment {
-          id
-          name
-          icon
-        }
       }
     }
   }
-` 
+`
 
 const workout = ref([])
 const equipment = ref([])
 
 client.query({
   query: getWorkout,
+  variables: {workoutsId: routeObj.params.workoutid},
   fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
 })
 .then(result => {
@@ -69,6 +50,17 @@ client.query({
     equipment.value.push(element.name)
   })
 })
+
+let editClick = function() {
+  console.log("editClick")
+  router.push({
+    name: 'Workout Edit',
+    params: {
+      workout: JSON.stringify(workout.value)
+    }
+  })
+}
+
 </script>
 
 <template>
@@ -106,7 +98,7 @@ client.query({
       <button type="button" class="btn btn-primary">Start</button>
     </div>
     <div class="col">
-      <button type="button" class="btn btn-outline-secondary">Edit</button>
+      <button type="button" class="btn btn-outline-secondary" @click="editClick()">Edit</button>
     </div>
   </div>
 </template>
