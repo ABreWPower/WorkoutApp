@@ -42,7 +42,7 @@ let getExercise = gql`
 `
 
 let addWorkout = gql`
-  mutation Mutation($name: String!, $description: String, $user: Int, $exercises: [Int]) {
+  mutation Mutation($name: String!, $description: String, $user: Int, $exercises: [WorkoutExerciseInput]) {
     addWorkout(name: $name, description: $description, user: $user, exercises: $exercises) {
       id
     }
@@ -53,10 +53,20 @@ const savedWorkoutID = ref()
 
 const saveWorkoutClick = () => {
   console.log("before save workout", workout)
+  console.log("exercises", workout.exercises)
+  console.log("type of", typeof workout.exercises)
+  console.log("flatmap", workout.exercises.flatMap(element => [{id: element.id}]))
 
   client.mutate({
     mutation: addWorkout,
-    variables: workout
+    variables: {
+      id: workout.id,
+      name: workout.name,
+      picture: workout.picture,
+      description: workout.description,
+      user: workout.user,
+      exercises: workout.exercises.flatMap(element => [{id: parseInt(element.id)}])
+    }
   })
   .then(result => {
     console.log("results", result)

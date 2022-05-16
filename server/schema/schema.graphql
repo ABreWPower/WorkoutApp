@@ -33,6 +33,10 @@ type Exercise {
   equipment: [Equipment]
 }
 
+input WorkoutExerciseInput {
+  id: Int!
+}
+
 type Equipment {
   id: ID!
   name: String!
@@ -84,8 +88,8 @@ type Mutation {
   addUser(name: String!, email: String, avatar: String): User
 #   updateUser(id: ID!, name: String, email: String, avatar: String): User
 
-  addWorkout(name: String!, picture: String, description: String, user: Int, exercises: [Int]): Workout
-  updateWorkout(id: ID!, name: String, picture: String, description: String, user: Int, exercises: [Int]): Workout
+  addWorkout(name: String!, picture: String, description: String, user: Int, exercises: [WorkoutExerciseInput]): Workout
+  updateWorkout(id: ID!, name: String, picture: String, description: String, user: Int, exercises: [WorkoutExerciseInput]): Workout
 
 #   addExercise(name: String!, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment]): Exercise
 #   updateExercise(id: ID!, name: String, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment]): Exercise

@@ -126,7 +126,7 @@ const resolvers = {
           workoutid = result.insertId
           let inserts = []
           exercises.forEach(element => {
-            querySQLDB("INSERT into workout_exercise (workoutid, exerciseid) VALUES (?, ?)", [workoutid, element])
+            querySQLDB("INSERT into workout_exercise (workoutid, exerciseid) VALUES (?, ?)", [workoutid, element.id])
           })
           // return promise all
           return Promise.all(inserts)
@@ -149,8 +149,8 @@ const resolvers = {
           console.log("having real fun now, before inserts", exercises)
           let inserts = []
           exercises.forEach(element => {
-            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid) VALUES (?, ?)", [workoutid, element]))
-            console.log(`INSERT into workout_exercise (workoutid, exerciseid) VALUES (${workoutid}, ${element})`)
+            console.log(`INSERT into workout_exercise (workoutid, exerciseid) VALUES (${workoutid}, ${element.id})`)
+            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid) VALUES (?, ?)", [workoutid, element.id]))
           })
           // return promise all
           return Promise.all(inserts)
