@@ -49,22 +49,22 @@ const getImages = function () {
         </div>
         <div class="col-md-8">
           <div class="card-body">
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text" id="setsText">Sets</span>
+            <div class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
+              <span class="input-group-text" id="setsText" style="width: 75px">Sets</span>
               <!-- Fix all of the input boxes as they shouldn't be this long, and should be able to stack on eachother instead of individual rows -->
-              <input type="number" :value="props.sets" class="form-control" aria-label="Number of sets to complete for this exercise: {{ name }}" aria-describedby="setsText" />
+              <input type="number" :value="props.sets" class="form-control" aria-label="Number of sets to complete for this exercise: {{ name }}" aria-describedby="setsText" style="max-width: 75px" />
             </div>
-            <div v-if="reps != 0" class="input-group input-group-sm mb-3">
-              <span class="input-group-text" id="repsText">Reps</span>
-              <input type="number" :value="props.reps" class="form-control" aria-label="Number of reps to complete each set for this exercise: {{ name }}" aria-describedby="repsText" />
+            <div v-if="reps != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
+              <span class="input-group-text" id="repsText" style="width: 75px">Reps</span>
+              <input type="number" :value="props.reps" class="form-control" aria-label="Number of reps to complete each set for this exercise: {{ name }}" aria-describedby="repsText" style="max-width: 75px" />
             </div>
-            <div v-if="duration != 0" class="input-group input-group-sm mb-3">
-              <span class="input-group-text" id="durationText">Duration</span>
-              <input type="number" :value="props.duration" class="form-control" aria-label="How long to complete each set for this exercise: {{ name }}" aria-describedby="durationText" />
+            <div v-if="duration != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
+              <span class="input-group-text" id="durationText" style="width: 75px">Duration</span>
+              <input type="number" :value="props.duration" class="form-control" aria-label="How long to complete each set for this exercise: {{ name }}" placeholder="Seconds" aria-describedby="durationText" style="max-width: 75px" />
             </div>
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text" id="restText">Rest</span>
-              <input type="number" :value="props.rest" class="form-control" aria-label="Number of time to rest for this exercise: {{ name }}" aria-describedby="restText" />
+            <div class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
+              <span class="input-group-text" id="restText" style="width: 75px">Rest</span>
+              <input type="number" :value="props.rest" class="form-control" aria-label="Number of time to rest for this exercise: {{ name }}" aria-describedby="restText" style="max-width: 75px" />
             </div>
           </div>
         </div>

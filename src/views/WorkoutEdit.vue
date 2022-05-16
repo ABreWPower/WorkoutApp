@@ -9,7 +9,7 @@ import router from "../router/router.js"
 const routeObj = useRoute()
 console.log("router params", routeObj.params)
 
-// TODO load page with existing workouts
+// TODO load page with existing workouts (When the page is refreshed it loses the content)
 // TODO when saving update exiting workouts
 // Need to save the exercise reps, sets, etc in the database somewhere
 
