@@ -110,9 +110,9 @@ const addExerciseClick = () => {
     <input type="text" class="form-control" id="workoutName" v-model="workout.name" aria-label="Workout Name" aria-describedby="workoutNameLabel" />
   </div>
   <!-- Fix picture size like it is on the other pages, currently extending to far -->
-  <img src="/pic1.jpg" alt="pic1" style="max-width: 100vw" />
+  <img src="/pic1.jpg" alt="pic1" style="max-width: 94vw; padding-top: 15px; padding-bottom: 15px" />
 
-  <div class="row align-items-start">
+  <div class="row align-items-start" style="padding-bottom: 20px">
     <div class="col">
       <button type="button" class="btn btn-outline-primary">Upload Photo</button>
     </div>
@@ -121,15 +121,17 @@ const addExerciseClick = () => {
     </div>
   </div>
 
-  <h4>Description</h4>
-  <input type="text" class="form-control" id="workoutDescription" v-model="workout.description" aria-label="Workout Description" />
+  <div style="padding-bottom: 20px">
+    <h4>Description</h4>
+    <input type="text" class="form-control" id="workoutDescription" v-model="workout.description" aria-label="Workout Description" />
+  </div>
 
   <!-- I think part of the problem is we are only pulling back a number not the whole object -->
   <div v-for="exercise in exercisesData" :key="exercise">
     <workout-edit-exercise-edit :name="exercise.name" :sets="exercise.sets" :reps="exercise.reps" :duration="exercise.duration" :rest="exercise.rest"></workout-edit-exercise-edit>
   </div>
 
-  <div class="row">
+  <div class="row" style="padding-bottom: 10px">
     <div class="col">
       <button type="button" class="btn btn-outline-secondary" @click="addExerciseClick()">Add Exercise</button>
     </div>
