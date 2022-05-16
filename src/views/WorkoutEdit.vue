@@ -18,8 +18,7 @@ var workout = {
   name: null,
   picture: null,
   description: null,
-  exercises: [],      //TODO: reference as list of objects of exercises for EDIT scenario
-  exerciseIds: [],    //TODO: reference code as ID only for ADD scenerio
+  exercises: [],
   user: 1
 }
 
@@ -41,28 +40,6 @@ let getExercise = gql`
     }
   }
 `
-
-// all exercisesdata
-let exercisesData = ref([])
-// for each exercise
-workout.exercises.forEach(element => {
-  console.log('getting exercise data', element)
-  //    run query to get all data
-  client.query({
-    query: getExercise,
-    variables: {exercisesId: element},    
-    fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
-  })
-  .then(result => {
-    console.log("results", result)
-    console.log("result.data.exercises[0]", result.data.exercises[0])
-
-    //    save in new object via push
-    exercisesData.value.push(result.data.exercises[0])
-    console.log("exercisesData", exercisesData.value)
-  })
-})
-
 
 let addWorkout = gql`
   mutation Mutation($name: String!, $description: String, $user: Int, $exercises: [Int]) {
@@ -127,7 +104,7 @@ const addExerciseClick = () => {
   </div>
 
   <!-- I think part of the problem is we are only pulling back a number not the whole object -->
-  <div v-for="exercise in exercisesData" :key="exercise">
+  <div v-for="exercise in workout.exercises" :key="exercise">
     <workout-edit-exercise-edit :name="exercise.name" :sets="exercise.sets" :reps="exercise.reps" :duration="exercise.duration" :rest="exercise.rest"></workout-edit-exercise-edit>
   </div>
 
