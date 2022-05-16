@@ -110,7 +110,7 @@ const addExerciseClick = () => {
     <input type="text" class="form-control" id="workoutName" v-model="workout.name" aria-label="Workout Name" aria-describedby="workoutNameLabel" />
   </div>
   <!-- Fix picture size like it is on the other pages, currently extending to far -->
-  <img src="/pic1.jpg" alt="pic1" />
+  <img src="/pic1.jpg" alt="pic1" style="max-width: 100vw" />
 
   <div class="row align-items-start">
     <div class="col">
