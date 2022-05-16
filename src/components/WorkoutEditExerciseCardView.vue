@@ -42,11 +42,13 @@ const cardClick = function (cardName) {
 
 <template>
   <div>
-    <div class="card mb-3" style="max-width: 540px">
+    <!-- TODO fix the card layout as object are not where they are supposed to be -->
+    <div class="card mb-3">
       <div class="row g-0">
         <div class="col-md-4">
+          <h3 class="card-title">{{ props.name }}</h3>
           <img v-bind:src="getImages(picture)" v-bind:alt="name" class="img-fluid rounded-start smallpics" />
-          <h5 class="card-title">{{ props.name }}</h5>
+          <!-- TODO move the bottom to to the right of the card -->
           <i class="bi bi-trash"></i>
           <i class="bi bi-three-dots-vertical"></i>
         </div>
@@ -54,6 +56,7 @@ const cardClick = function (cardName) {
           <div class="card-body">
             <div class="input-group input-group-sm mb-3">
               <span class="input-group-text" id="setsText">Sets</span>
+              <!-- Fix all of the input boxes as they shouldn't be this long, and should be able to stack on eachother instead of individual rows -->
               <input type="number" :value="props.sets" class="form-control" aria-label="Number of sets to complete for this exercise: {{ name }}" aria-describedby="setsText" />
             </div>
             <div v-if="reps != 0" class="input-group input-group-sm mb-3">
