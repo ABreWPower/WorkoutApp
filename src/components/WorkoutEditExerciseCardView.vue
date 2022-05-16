@@ -1,7 +1,7 @@
 <script setup>
-import Exercise1Pic from "/pic1.jpg";
-import Exercise2Pic from "/pic2.jpg";
-import Exercise3Pic from "/pic3.jpg";
+import Exercise1Pic from "/pic1.jpg"
+import Exercise2Pic from "/pic2.jpg"
+import Exercise3Pic from "/pic3.jpg"
 
 const props = defineProps({
   name: {
@@ -10,34 +10,28 @@ const props = defineProps({
   },
   sets: {
     type: Number,
-    required: true,
+    required: false,
   },
   reps: {
     type: Number,
-    required: true,
+    required: false,
   },
   duration: {
     type: Number,
-    required: true,
+    required: false,
   },
   rest: {
     type: Number,
-    required: true,
+    required: false,
   }
-});
+})
 
-// TODO this info is not being passed properly or at all
 console.log("props", props.name)
 
 const getImages = function () {
   let images = [Exercise1Pic, Exercise2Pic, Exercise3Pic];
   return images[Math.floor(Math.random() * images.length)];
-};
-
-const cardClick = function (cardName) {
-  console.log(cardName);
-  // TODO go to the workout editor screen
-};
+}
 </script>
 
 <template>
@@ -48,9 +42,10 @@ const cardClick = function (cardName) {
         <div class="col-md-4">
           <h3 class="card-title">{{ props.name }}</h3>
           <img v-bind:src="getImages(picture)" v-bind:alt="name" class="img-fluid rounded-start smallpics" />
-          <!-- TODO move the bottom to to the right of the card -->
-          <i class="bi bi-trash"></i>
-          <i class="bi bi-three-dots-vertical"></i>
+          <div class="d-flex float-end">
+            <i class="bi bi-trash bi-2x" style="font-size: 35px; padding-right: 10px"></i>
+            <i class="bi bi-three-dots-vertical" style="font-size: 35px; padding-right: 10px"></i>
+          </div>
         </div>
         <div class="col-md-8">
           <div class="card-body">
