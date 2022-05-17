@@ -10,7 +10,6 @@ const routeObj = useRoute()
 console.log("router params", routeObj.params)
 
 // TODO load page with existing workouts (When the page is refreshed it loses the content)
-// TODO when saving update exiting workouts
 // Need to save the exercise reps, sets, etc in the database somewhere
 
 var workout = {
@@ -49,7 +48,13 @@ let addWorkout = gql`
   }
 `
 
-const savedWorkoutID = ref()
+let updateWorkout = gql`
+  mutation Mutation($id: Int!, $name: String!, $description: String, $user: Int, $exercises: [WorkoutExerciseInput]) {
+    updateWorkout(id: $id, name: $name, description: $description, user: $user, exercises: $exercises) {
+      id
+    }
+  }
+`
 
 const saveWorkoutClick = () => {
   console.log("before save workout", workout)
@@ -57,10 +62,21 @@ const saveWorkoutClick = () => {
   console.log("type of", typeof workout.exercises)
   console.log("flatmap", workout.exercises.flatMap(element => [{id: element.id}]))
 
+  // Set a mutation to use
+  let mutationToUse = null
+  if (workout.id == null) {
+    console.log("no id, setting to use addWorkout")
+    mutationToUse = addWorkout
+  }
+  else {
+    console.log("found id, using updateWorkout")
+    mutationToUse = updateWorkout
+  }
+
   client.mutate({
-    mutation: addWorkout,
+    mutation: mutationToUse,
     variables: {
-      id: workout.id,
+      id: parseInt(workout.id),
       name: workout.name,
       picture: workout.picture,
       description: workout.description,
@@ -70,8 +86,14 @@ const saveWorkoutClick = () => {
   })
   .then(result => {
     console.log("results", result)
-    savedWorkoutID.value = result.data.addWorkout.id
-    console.log("savedWorkoutID", savedWorkoutID.value)
+    if (workout.id == null) {
+      workout.id = result.data.addWorkout.id
+      console.log("workout id", workout.id)
+    }
+    else {
+      console.log("nothing to do with returned id as we already have it")
+    }
+    // TODO probably do something to let user know it succeded
   })
 
   console.log("after save workout")

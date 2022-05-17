@@ -89,7 +89,7 @@ type Mutation {
 #   updateUser(id: ID!, name: String, email: String, avatar: String): User
 
   addWorkout(name: String!, picture: String, description: String, user: Int, exercises: [WorkoutExerciseInput]): Workout
-  updateWorkout(id: ID!, name: String, picture: String, description: String, user: Int, exercises: [WorkoutExerciseInput]): Workout
+  updateWorkout(id: Int!, name: String, picture: String, description: String, user: Int, exercises: [WorkoutExerciseInput]): Workout
 
 #   addExercise(name: String!, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment]): Exercise
 #   updateExercise(id: ID!, name: String, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment]): Exercise

@@ -62,7 +62,7 @@ const getImages = function () {
             </div>
             <div class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
               <span class="input-group-text" id="restText" style="width: 75px">Rest</span>
-              <input type="number" :value="props.rest" class="form-control" aria-label="Number of time to rest for this exercise: {{ name }}" aria-describedby="restText" style="max-width: 75px" />
+              <input type="number" :value="props.rest" class="form-control" aria-label="Number of time to rest for this exercise: {{ name }}" placeholder="Seconds" aria-describedby="restText" style="max-width: 75px" />
             </div>
           </div>
         </div>
