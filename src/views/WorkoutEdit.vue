@@ -9,8 +9,6 @@ import router from "../router/router.js"
 const routeObj = useRoute()
 console.log("workout edit router params", routeObj.params)
 
-// TODO load page with existing workouts (When the page is refreshed it loses the content)
-//    Thought for this is to pass in the id like we do on workout view, but if we don't find some data from the object go fetch the thing?
 // Need to save the exercise reps, sets, etc in the database somewhere
 
 // ********************

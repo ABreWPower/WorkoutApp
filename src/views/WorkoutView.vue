@@ -42,12 +42,8 @@ client.query({
   fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
 })
 .then(result => {
-  // console.log("results", result)
   workout.value = structuredClone(result.data.workouts[0])
-  // console.log("workouts", workout)
-  // console.log("workout.equipment", result.data.workouts[0].equipment)
   result.data.workouts[0].equipment.forEach(element => {
-    // console.log("equipment", element)
     equipment.value.push(element.name)
   })
 })

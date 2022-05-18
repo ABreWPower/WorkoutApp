@@ -1,14 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-// import NavBar from './views/NavBar.vue'
 import Workouts from '../views/Workouts.vue'
-// DONE // import Exercises from './views/Exercises.vue'
-// import Settings from './views/Settings.vue'
-// import About from './views/About.vue'
-// import Profile from './views/Profile.vue'
 
-// DONE // import WorkoutPage from './views/WorkoutPage.vue'
-// DONE // import WorkoutEdit from './views/WorkoutEdit.vue'
 
 const routes = [
   {
@@ -35,7 +28,6 @@ const routes = [
   {
     path: '/workoutedit/:workoutid',
     name: 'Workout Edit',
-    // props: { workout: null },
     props: {
       workout: true,
       workoutid: true
