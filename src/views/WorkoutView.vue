@@ -7,6 +7,7 @@ import { ref } from "vue"
 import router from "../router/router.js"
 
 const routeObj = useRoute()
+console.log("workout view router params", routeObj.params)
 console.log("workoutid from router", routeObj.params.workoutid)
 
 let getWorkout = gql`
@@ -53,10 +54,12 @@ client.query({
 
 let editClick = function() {
   console.log("editClick")
+  console.log("workoutid", workout.value.id)
   router.push({
     name: 'Workout Edit',
     params: {
-      workout: JSON.stringify(workout.value)
+      workout: JSON.stringify(workout.value),
+      workoutid: workout.value.id
     }
   })
 }

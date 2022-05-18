@@ -29,8 +29,17 @@ const routes = [
   },
   {
     path: '/workoutedit',
+    name: 'Workout Add',
+    component: () => import('../views/WorkoutEdit.vue')
+  },
+  {
+    path: '/workoutedit/:workoutid',
     name: 'Workout Edit',
-    props: { workout: null },
+    // props: { workout: null },
+    props: {
+      workout: true,
+      workoutid: true
+    },
     component: () => import('../views/WorkoutEdit.vue')
   },
   {

@@ -3,43 +3,73 @@ import workoutEditExerciseEdit from '../components/WorkoutEditExerciseCardView.v
 import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { useRoute } from 'vue-router'
-import { ref } from "vue"
+import { reactive, ref } from "vue"
 import router from "../router/router.js"
 
 const routeObj = useRoute()
-console.log("router params", routeObj.params)
+console.log("workout edit router params", routeObj.params)
 
 // TODO load page with existing workouts (When the page is refreshed it loses the content)
 //    Thought for this is to pass in the id like we do on workout view, but if we don't find some data from the object go fetch the thing?
 // Need to save the exercise reps, sets, etc in the database somewhere
 
-var workout = {
+// ********************
+// Data loading section
+// ********************
+
+const workout = ref({
   id: null,
   name: null,
   picture: null,
   description: null,
   exercises: [],
   user: 1
-}
+})
 
+// If we get an workout object passed in, overwrite the defaults
 if(routeObj.params.workout !== undefined) {
-  workout = JSON.parse(routeObj.params.workout)
-  console.log("workout", workout)
+  workout.value = JSON.parse(routeObj.params.workout)
+  console.log("new workout object", workout.value)
 }
 
-let getExercise = gql`
-  query Exercises($exercisesId: ID) {
-    exercises(id: $exercisesId) {
+let getWorkoutFromID = gql`
+  query Query($workoutsId: ID) {
+    workouts(id: $workoutsId) {
       id
       name
       picture
-      instructions
-      difficulty
-      reps
-      duration
+      description
+      exercises {
+        id
+        name
+        picture
+        instructions
+        reps
+        duration
+      }
     }
   }
 `
+
+// If the object has property of id != null and name = null then we should assume the page was reloaded and need to pull down the data
+// if (workout.id != null && workout.name == null) {
+if (routeObj.params.workoutid != null && workout.value.name == null) {
+  client.query({
+    query: getWorkoutFromID,
+    variables: { workoutsId: parseInt(routeObj.params.workoutid)},
+    fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+  })
+  .then(result => {
+    console.log("results", result)
+    console.log("result.data.workouts[0]", result.data.workouts[0])
+    workout.value = result.data.workouts[0]
+    console.log("workout after load from server", workout.value)
+  })
+}
+
+// **************
+// Saving section
+// **************
 
 let addWorkout = gql`
   mutation Mutation($name: String!, $description: String, $user: Int, $exercises: [WorkoutExerciseInput]) {
@@ -58,14 +88,14 @@ let updateWorkout = gql`
 `
 
 const saveWorkoutClick = () => {
-  console.log("before save workout", workout)
-  console.log("exercises", workout.exercises)
-  console.log("type of", typeof workout.exercises)
-  console.log("flatmap", workout.exercises.flatMap(element => [{id: element.id}]))
+  console.log("before save workout", workout.value)
+  console.log("exercises", workout.value.exercises)
+  console.log("type of", typeof workout.value.exercises)
+  console.log("flatmap", workout.value.exercises.flatMap(element => [{id: element.id}]))
 
   // Set a mutation to use
   let mutationToUse = null
-  if (workout.id == null) {
+  if (workout.value.id == null) {
     console.log("no id, setting to use addWorkout")
     mutationToUse = addWorkout
   }
@@ -77,19 +107,19 @@ const saveWorkoutClick = () => {
   client.mutate({
     mutation: mutationToUse,
     variables: {
-      id: parseInt(workout.id),
-      name: workout.name,
-      picture: workout.picture,
-      description: workout.description,
-      user: workout.user,
-      exercises: workout.exercises.flatMap(element => [{id: parseInt(element.id)}])
+      id: parseInt(workout.value.id),
+      name: workout.value.name,
+      picture: workout.value.picture,
+      description: workout.value.description,
+      user: workout.value.user,
+      exercises: workout.value.exercises.flatMap(element => [{id: parseInt(element.id)}])
     }
   })
   .then(result => {
     console.log("results", result)
-    if (workout.id == null) {
-      workout.id = result.data.addWorkout.id
-      console.log("workout id", workout.id)
+    if (workout.value.id == null) {
+      workout.value.id = result.data.addWorkout.id
+      console.log("workout id", workout.value.id)
     }
     else {
       console.log("nothing to do with returned id as we already have it")
@@ -100,15 +130,19 @@ const saveWorkoutClick = () => {
   console.log("after save workout")
 }
 
+// *********************
+//  Other Button section
+// *********************
+
 const addExerciseClick = () => {
   console.log("add exercise click")
-  console.log("workout", workout)
+  console.log("workout", workout.value)
 
   router.push({ 
     name: 'Exercises',
     params: {
       mode: "AddExerciseToWorkout",
-      workout: JSON.stringify(workout)
+      workout: JSON.stringify(workout.value)
     }
   })
 }

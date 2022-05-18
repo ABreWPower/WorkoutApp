@@ -7,7 +7,7 @@ import { ref } from "vue"
 import router from "../router/router.js"
 
 const routeObj = useRoute()
-console.log("router params", routeObj.params)
+console.log("exercise router params", routeObj.params)
 
 let workout = null
 if(routeObj.params.workout !== undefined) {
@@ -52,15 +52,18 @@ client.query({
   console.log("exercises", exercises)
 })
 
-const cardClick = function(exercise) {
+let cardClick = function(exercise) {
   return function() {
     console.log("card click", exercise)
     workout.exercises.push(exercise)
+    console.log("workout", workout)
+    workout.id = parseInt(workout.id)
 
     router.push({
       name: "Workout Edit",
       params: {
-        workout: JSON.stringify(workout)
+        workout: JSON.stringify(workout),
+        workoutid: workout.id
       }
     })
   }
