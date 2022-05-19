@@ -66,7 +66,49 @@ CREATE TABLE `exercise` (
 
 LOCK TABLES `exercise` WRITE;
 /*!40000 ALTER TABLE `exercise` DISABLE KEYS */;
-INSERT INTO `exercise` VALUES (1,'Chinup',NULL,NULL,'Pull your self up on a bar',1,10,NULL),(2,'Pullup',NULL,NULL,'Pull your self up on a bar',2,15,NULL),(3,'Pushup',NULL,NULL,'Push off of the ground',3,20,NULL),(4,'Bicep Curl',NULL,NULL,'Curl arms up holding a bar or dumbbell',1,12,NULL),(5,'Skull Crusher',NULL,NULL,'lower weight near your head while on bench',2,8,NULL),(6,'Plank',NULL,NULL,'On elbow and toes with body straight out',3,NULL,60);
+-- (id, name, video, picture, instructions, difficulty, reps, duration)
+INSERT INTO `exercise` VALUES 
+  (1, 'Rest', NULL, 'rest.jpg', 'Allow the body to take time to recover', 0, NULL, 30),
+  (2,'Chinup',NULL,NULL,'Pull your self up on a bar with your palms facing you',1,10,NULL),
+  (3,'Pullup',NULL,NULL,'Pull your self up on a bar with your palms facing away from you',2,15,NULL),
+  (4,'Pushup',NULL, 'pushup.jpg','Push off of the ground while keeping the core tight',3,20,NULL),
+  (5,'Bicep Curl',NULL,NULL,'Curl arms up holding a bar or dumbbell',1,12,NULL),
+  (6,'Skull Crusher',NULL,NULL,'Lower weight near your head while on bench, palms facing up, upper arm should be mostly verical',2,8,NULL),
+  (7,'Plank',NULL,NULL,'On elbow and toes with body straight out keeping your core tight',3,NULL,60),
+  (8, 'TRX Reverse Rows', NULL, 'trx_row.png', 'Heels planted on the ground, arms holding the TRX handles, lean back to where your arms are almost straight, palms facing together, then pull your hands to the side of your body tightening up your back', 2, 12, NULL),
+  (9, 'TRX Face Pull', NULL, 'trx_face_pull.jfif', 'Heels planted on the ground, arms holding the TRX handles, lean back to where your arms are almost straight, palms down together, then pull your hands to your neck with at the same level as your shoulders, tightening up your back and shoulders'),
+  (10, 'Band Wall Walk', NULL, 'band_wall_walk.jpg', 'Place a band around your arms around wrists, then place hands on the wall, move one of your armes away from the other, come back then go diagnoally up and come back and then go diagnally back, repeat for other arm', 1, 5, NULL),
+  (11, 'Neck Strengthing', 'https://www.youtube.com/watch?v=RN6M1hCE4wY', 'neck_strengthing.jpg', 'To perform this exercise find a bench or an object you can have your head laying off of, you will complete reps in each of the for dirctions, forward, backward, and each side.  The direction you are working should be moving way from the ground.  This can be weighted or unweighted', 1, 15, NULL),
+  (12, 'Prone T', 'https://www.youtube.com/watch?v=Ygok5LNB1tY', 'prone_t.jpg', 'Laying down on the ground, bench, or ball, With you arms straight out to the sides, raise and lower your arms engaging your upper back', 1, 10, NULL),
+  (13, 'Prone Y', 'https://www.youtube.com/watch?v=Yv6sUKOwOY8&t=6s', 'prone_y.jpg', 'Laying down on the ground, bench, or ball, With you arms up making a Y position with your body, raise and lower your arms engaging your upper back', 1, 10, NULL),
+  (14, 'Swimmers', NULL, NULL, 'This motion is similar to a overhead press, start with your hand in the lowered position and then raise them, palms open.  But you will be doing this will lying down on the ground, ball, or bench', 1, 10, NULL),
+  (15, 'Shoulder Shrugs', NULL, 'shoulder_shrugs.jfif', 'Shrug your shoulders holding dumbells or a barbell', 1, 12, NULL),
+  (16, 'Straight arm Raise', NULL, 'straight_arm_raise.jfif', 'Start with your arms at your sides, raise your arms up to shoulder high, you should be creating a T shape', 1, 12, NULL),
+  (17, 'Front Straight arm Raise', NULL, 'front_straight_arm_raise.jfif', 'Start with your arms in front of you, raise your arms up in front of you until they are at shoulder height', 1, 12, NULL) --,
+  -- (18, 'Speed Bag - Single Arm Bicycle Chain'), https://www.youtube.com/watch?v=AjJ3AYffCsw
+  -- (19, 'Speed Bag - Front Alternating Bicycle Chain'), https://www.youtube.com/watch?v=AjJ3AYffCsw
+  -- (20, 'Speed Bag - Rear Alternating Bicycle Chain'), https://www.youtube.com/watch?v=AjJ3AYffCsw
+  -- (21, 'Speed Bag - Elbows Roll'), https://www.youtube.com/watch?v=xxzMbt1Yvyo
+  -- (22, 'Speed Bag - Rear Alternating Bicycle Chain'), https://www.youtube.com/watch?v=AjJ3AYffCsw
+  -- (23, 'Speed Bag - Rolling'), https://www.youtube.com/watch?v=WpjueP-tOZA
+  -- (24, 'Speed Bag - Linking'), https://www.youtube.com/watch?v=hOTzM8ln_R8
+  -- (25, 'Speed Bag - Double Punch'), 
+  -- (26, 'Speed Bag - Pinning/Trapping'),
+  -- (26, 'Speed Bag - Freestyle'),
+  -- (28, 'Heavy Bag - Uppercuts'),
+  -- (29, 'Heavy Bag - Hooks'),
+  -- (30, 'Heavy Bag - Jabs'),
+  -- (31, 'Heavy Bag - Crosses'),
+  -- (32, 'Heavy Bag - Freestyle'),
+  -- (33, ),
+  -- (34, ),
+  -- (35, ),
+  -- (36, ),
+  -- (37, ),
+  -- (38, ),
+  -- (39, ),
+  -- (40, ),
+  ;
 /*!40000 ALTER TABLE `exercise` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -212,16 +254,30 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `workout_exercise`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `workout_exercise` (
-  `workoutid` int NOT NULL,
-  `exerciseid` int NOT NULL,
-  PRIMARY KEY (`workoutid`,`exerciseid`),
-  KEY `fk_workout_has_exercise_exercise1_idx` (`exerciseid`),
-  KEY `fk_workout_has_exercise_workout_idx` (`workoutid`),
-  CONSTRAINT `fk_workout_has_exercise_exercise1` FOREIGN KEY (`exerciseid`) REFERENCES `exercise` (`id`),
-  CONSTRAINT `fk_workout_has_exercise_workout` FOREIGN KEY (`workoutid`) REFERENCES `workout` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE IF NOT EXISTS `workout_exercise` (
+  `workoutid` INT NOT NULL,
+  `exerciseid` INT NOT NULL,
+  `reps` INT UNSIGNED NULL,
+  `sets` INT UNSIGNED NULL,
+  `duration` INT UNSIGNED NULL,
+  `rest` INT UNSIGNED NULL,
+  PRIMARY KEY (`workoutid`, `exerciseid`),
+  INDEX `fk_workout_has_exercise_exercise1_idx` (`exerciseid` ASC) VISIBLE,
+  INDEX `fk_workout_has_exercise_workout_idx` (`workoutid` ASC) VISIBLE,
+  CONSTRAINT `fk_workout_has_exercise_workout`
+    FOREIGN KEY (`workoutid`)
+    REFERENCES `workout` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_workout_has_exercise_exercise1`
+    FOREIGN KEY (`exerciseid`)
+    REFERENCES `exercise` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
 
 --
 -- Dumping data for table `workout_exercise`
