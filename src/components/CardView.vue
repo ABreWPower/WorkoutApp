@@ -42,10 +42,12 @@ const getImages = function () {
 }
 
 const cardClick = () => {
-  if(props.clickHandler !== undefined) {
+  console.log("CardView cardClick")
+  if(props.clickHandler !== undefined) { //TODO this line does not work, as click on card in exercises without coming from workout edit still passes a handler but isn't valid
+    console.log("CardView cardClick carkHandler found")
     props.clickHandler()
   } else {
-
+    console.log("CardView cardClick cardHandler not found")
     if (props.workoutid != null) {
       console.log("props.workoutid", props.workoutid)
       router.push({ name: 'Workout View', params: { workoutid: props.workoutid } })
@@ -61,7 +63,7 @@ const cardClick = () => {
 </script>
 
 <template>
-  <div class="card mb-3 border-secondary" style="max-height: 8em; cursor: pointer;" @click="cardClick">
+  <div class="card mb-3 border-secondary" style="max-height: 8em; cursor: pointer" @click="cardClick">
     <div class="row g-0">
       <!-- TODO put video if there is one otherwise picture -->
       <div class="col-4 align-self-center">

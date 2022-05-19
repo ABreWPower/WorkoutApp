@@ -15,6 +15,29 @@ if(routeObj.params.workout !== undefined) {
   console.log("workout", workout)
 }
 
+var cardClickHandler = undefined
+if (routeObj.params.mode == "AddExerciseToWorkout") {
+  console.log("Set Card Click Handler")
+  // Click handler is for when we come from workout edit page and should only be set if a workout was passed in
+  cardClickHandler = function(exercise) {  
+    console.log("Card Click Handler")
+    return function() {
+      console.log("card click", exercise)
+      workout.exercises.push(exercise)
+      console.log("workout", workout)
+      workout.id = parseInt(workout.id)
+
+      router.push({
+        name: "Workout Edit",
+        params: {
+          workout: JSON.stringify(workout),
+          workoutid: workout.id
+        }
+      })
+    }
+  }
+}
+
 let getExercises = gql`
   query Query {
     exercises {
@@ -51,24 +74,6 @@ client.query({
   exercises.value = structuredClone(result.data.exercises)
   console.log("exercises", exercises)
 })
-
-let cardClick = function(exercise) {
-  return function() {
-    console.log("card click", exercise)
-    workout.exercises.push(exercise)
-    console.log("workout", workout)
-    workout.id = parseInt(workout.id)
-
-    router.push({
-      name: "Workout Edit",
-      params: {
-        workout: JSON.stringify(workout),
-        workoutid: workout.id
-      }
-    })
-  }
-}
-
 </script>
 
 <template>
@@ -79,7 +84,8 @@ let cardClick = function(exercise) {
   <!-- height: calc(100% vertical height - Nav bar (56px) - Search bar (38px) - New exercise btn (38px) - IDK-DIK (16px) - Card margin (0.5rem) - Toolbar margin (0.5rem) -->
   <div style="position: relative; height: calc(100vh - 56px - 38px - 38px - 16px - 0.5rem - 0.5rem); margin-top: 0.5rem; overflow: auto">
     <div v-for="exercise in exercises" :key="exercise">
-      <card-view :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :description="exercise.instructions" :exerciseid="exercise.id" :click-handler="cardClick(exercise)"></card-view>
+      <card-view v-if="routeObj.params.mode != 'AddExerciseToWorkout'" :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :description="exercise.instructions" :exerciseid="exercise.id"></card-view>
+      <card-view v-else :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :description="exercise.instructions" :exerciseid="exercise.id" :click-handler="cardClickHandler(exercise)"></card-view>
     </div>
   </div>
   <button type="button" class="btn btn-outline-secondary">New Exercise</button>
