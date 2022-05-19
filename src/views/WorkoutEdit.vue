@@ -9,7 +9,7 @@ import router from "../router/router.js"
 const routeObj = useRoute()
 console.log("workout edit router params", routeObj.params)
 
-// Need to save the exercise reps, sets, duration, rest
+// TODO save the exercise reps, sets, duration, rest
 
 // ********************
 // Data loading section
