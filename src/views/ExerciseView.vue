@@ -73,6 +73,7 @@ let editClick = function() {
   router.push({
     name: 'Exercise Edit',
     params: {
+      exercise: JSON.stringify(exercise.value),
       exerciseid: exercise.value.id
     }
   })
