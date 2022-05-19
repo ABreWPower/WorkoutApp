@@ -1,0 +1,87 @@
+<script setup>
+import cardView from '../components/CardView.vue'
+import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
+import { useRoute } from 'vue-router'
+import { gql } from "@apollo/client/core";
+import { ref } from "vue"
+import router from "../router/router.js"
+
+const routeObj = useRoute()
+console.log("exercise edit router params", routeObj.params)
+
+let getExercise = gql`
+  query Equipment($exercisesId: ID) {
+    exercises(id: $exercisesId) {
+      id
+      name
+      video
+      picture
+      instructions
+      difficulty
+      musclegroups {
+        id
+        name
+        picture
+      }
+      reps
+      duration
+      equipment {
+        id
+        name
+        icon
+      }
+    }
+  }
+` 
+
+const exercise = ref([])
+
+client.query({
+  query: getExercise,
+  variables: { exercisesId: parseInt()},
+  fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+})
+.then(result => {
+  console.log("results", result)
+  exercises.value = structuredClone(result.data.exercises)
+  console.log("exercises", exercises)
+})
+
+let cardClick = function(exercise) {
+  return function() {
+    console.log("card click", exercise)
+    workout.exercises.push(exercise)
+    console.log("workout", workout)
+    workout.id = parseInt(workout.id)
+
+    router.push({
+      name: "Workout Edit",
+      params: {
+        workout: JSON.stringify(workout),
+        workoutid: workout.id
+      }
+    })
+  }
+}
+
+</script>
+
+<template>
+  <form class="d-flex">
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+    <button class="btn btn-outline-primary" type="submit">Search</button>
+  </form>
+  <!-- height: calc(100% vertical height - Nav bar (56px) - Search bar (38px) - New exercise btn (38px) - IDK-DIK (16px) - Card margin (0.5rem) - Toolbar margin (0.5rem) -->
+  <div style="position: relative; height: calc(100vh - 56px - 38px - 38px - 16px - 0.5rem - 0.5rem); margin-top: 0.5rem; overflow: auto">
+    <div v-for="exercise in exercises" :key="exercise">
+      <card-view :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :description="exercise.instructions" :exerciseid="exercise.id" :click-handler="cardClick(exercise)"></card-view>
+    </div>
+  </div>
+  <button type="button" class="btn btn-outline-secondary">New Exercise</button>
+</template>
+
+<style scoped>
+div.card-view:last-child div.card {
+  margin-bottom: 0 !important;
+}
+</style>

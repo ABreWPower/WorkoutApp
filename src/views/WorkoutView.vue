@@ -59,7 +59,6 @@ let editClick = function() {
     }
   })
 }
-
 </script>
 
 <template>

@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { ref } from "vue"
+import router from "../router/router.js"
 
 import Workout1Pic from "/pic1.jpg"
 import Workout2Pic from "/pic2.jpg"
@@ -65,6 +66,17 @@ client.query({
     musclegroups.value.push(element.name)
   })
 })
+
+let editClick = function() {
+  console.log("editClick")
+  console.log("exerciseid", exercise.value.id)
+  router.push({
+    name: 'Exercise Edit',
+    params: {
+      exerciseid: exercise.value.id
+    }
+  })
+}
 </script>
 
 <template>
@@ -112,7 +124,7 @@ client.query({
       <button type="button" class="btn btn-primary">Start</button>
     </div> 
     <div class="col"> -->
-  <button type="button" class="btn btn-outline-secondary">Edit</button>
+  <button type="button" class="btn btn-outline-secondary" @click="editClick()">Edit</button>
   <!-- </div>
   </div> -->
 </template>
