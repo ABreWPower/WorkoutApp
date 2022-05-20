@@ -28,6 +28,10 @@ let getWorkout = gql`
         name
         instructions
         picture
+        duration
+        sets
+        reps
+        rest
       }
     }
   }

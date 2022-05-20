@@ -44,6 +44,8 @@ let getWorkoutFromID = gql`
         instructions
         reps
         duration
+        sets
+        rest
       }
     }
   }
