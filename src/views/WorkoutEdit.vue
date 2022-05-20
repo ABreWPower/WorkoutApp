@@ -1,5 +1,5 @@
 <script setup>
-import workoutEditExerciseEdit from '../components/WorkoutEditExerciseCardView.vue'
+import workoutEditExerciseCardView from '../components/WorkoutEditExerciseCardView.vue'
 import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { useRoute } from 'vue-router'
@@ -178,7 +178,17 @@ const addExerciseClick = () => {
 
   <!-- I think part of the problem is we are only pulling back a number not the whole object -->
   <div v-for="exercise in workout.exercises" :key="exercise.id">
-    <workout-edit-exercise-edit :name="exercise.name" :sets="exercise.sets" @update:sets="exercise.sets = parseInt($event)" :reps="exercise.reps" :duration="exercise.duration" :rest="exercise.rest"></workout-edit-exercise-edit>
+    <workout-edit-exercise-card-view
+      :name="exercise.name"
+      :sets="exercise.sets"
+      @update:sets="exercise.sets = parseInt($event)"
+      :reps="exercise.reps"
+      @update:reps="exercise.reps = parseInt($event)"
+      :duration="exercise.duration"
+      @update:duration="exercise.duration = parseInt($event)"
+      :rest="exercise.rest"
+      @update:rest="exercise.rest = parseInt($event)">
+    </workout-edit-exercise-card-view>
   </div>
 
   <div class="row" style="padding-bottom: 10px">

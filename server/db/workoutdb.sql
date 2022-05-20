@@ -100,7 +100,7 @@ INSERT INTO `exercise` VALUES
   -- (30, 'Heavy Bag - Jabs'),
   -- (31, 'Heavy Bag - Crosses'),
   -- (32, 'Heavy Bag - Freestyle'),
-  -- (33, ),
+  -- (33, 'Isometrics - Neck),
   -- (34, ),
   -- (35, ),
   -- (36, ),

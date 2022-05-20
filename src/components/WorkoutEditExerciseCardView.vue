@@ -53,19 +53,49 @@ const getImages = function () {
           <div class="card-body">
             <div class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
               <span class="input-group-text" id="setsText" style="width: 75px">Sets</span>
-              <input type="number" :value="props.sets" @input="$emit('update:sets', $event.target.value)" class="form-control" aria-label="Number of sets to complete for this exercise: {{ name }}" aria-describedby="setsText" style="max-width: 75px" />
+              <input
+                type="number"
+                :value="props.sets"
+                @input="$emit('update:sets', $event.target.value)"
+                class="form-control"
+                aria-label="Number of sets to complete for this exercise: {{ name }}"
+                aria-describedby="setsText"
+                style="max-width: 75px" />
             </div>
             <div v-if="reps != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
               <span class="input-group-text" id="repsText" style="width: 75px">Reps</span>
-              <input type="number" :value="props.reps" class="form-control" aria-label="Number of reps to complete each set for this exercise: {{ name }}" aria-describedby="repsText" style="max-width: 75px" />
+              <input
+                type="number"
+                :value="props.reps"
+                @input="$emit('update:reps', $event.target.value)"
+                class="form-control"
+                aria-label="Number of reps to complete each set for this exercise: {{ name }}"
+                aria-describedby="repsText"
+                style="max-width: 75px" />
             </div>
             <div v-if="duration != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
               <span class="input-group-text" id="durationText" style="width: 75px">Duration</span>
-              <input type="number" :value="props.duration" class="form-control" aria-label="How long to complete each set for this exercise: {{ name }}" placeholder="Seconds" aria-describedby="durationText" style="max-width: 75px" />
+              <input
+                type="number"
+                :value="props.duration"
+                @input="$emit('update:duration', $event.target.value)"
+                class="form-control"
+                aria-label="How long to complete each set for this exercise: {{ name }}"
+                placeholder="Seconds"
+                aria-describedby="durationText"
+                style="max-width: 75px" />
             </div>
             <div class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
               <span class="input-group-text" id="restText" style="width: 75px">Rest</span>
-              <input type="number" :value="props.rest" class="form-control" aria-label="Number of time to rest for this exercise: {{ name }}" placeholder="Seconds" aria-describedby="restText" style="max-width: 75px" />
+              <input
+                type="number"
+                :value="props.rest"
+                @input="$emit('update:rest', $event.target.value)"
+                class="form-control"
+                aria-label="Number of time to rest for this exercise: {{ name }}"
+                placeholder="Seconds"
+                aria-describedby="restText"
+                style="max-width: 75px" />
             </div>
           </div>
         </div>
