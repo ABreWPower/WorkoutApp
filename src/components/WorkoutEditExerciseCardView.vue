@@ -26,6 +26,8 @@ const props = defineProps({
   }
 })
 
+defineEmits(['update:sets', 'update:reps', 'update:duration', 'update:rest'])
+
 console.log("props", props.name)
 
 const getImages = function () {
@@ -33,6 +35,7 @@ const getImages = function () {
   return images[Math.floor(Math.random() * images.length)];
 }
 </script>
+
 
 <template>
   <div>
@@ -50,7 +53,7 @@ const getImages = function () {
           <div class="card-body">
             <div class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
               <span class="input-group-text" id="setsText" style="width: 75px">Sets</span>
-              <input type="number" :value="props.sets" class="form-control" aria-label="Number of sets to complete for this exercise: {{ name }}" aria-describedby="setsText" style="max-width: 75px" />
+              <input type="number" :value="props.sets" @input="$emit('update:sets', $event.target.value)" class="form-control" aria-label="Number of sets to complete for this exercise: {{ name }}" aria-describedby="setsText" style="max-width: 75px" />
             </div>
             <div v-if="reps != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
               <span class="input-group-text" id="repsText" style="width: 75px">Reps</span>

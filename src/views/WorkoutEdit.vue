@@ -62,7 +62,7 @@ if (routeObj.params.workoutid != null && workout.value.name == null) {
   .then(result => {
     console.log("results", result)
     console.log("result.data.workouts[0]", result.data.workouts[0])
-    workout.value = result.data.workouts[0]
+    workout.value = JSON.parse(JSON.stringify(result.data.workouts[0]))
     console.log("workout after load from server", workout.value)
   })
 }
@@ -112,7 +112,13 @@ const saveWorkoutClick = () => {
       picture: workout.value.picture,
       description: workout.value.description,
       user: workout.value.user,
-      exercises: workout.value.exercises.flatMap(element => [{id: parseInt(element.id)}])
+      exercises: workout.value.exercises.flatMap(element => [{
+        id: parseInt(element.id),
+        reps: element.reps,
+        sets: element.sets,
+        duration: element.duration,
+        rest: element.rest
+      }])
     }
   })
   .then(result => {
@@ -171,8 +177,8 @@ const addExerciseClick = () => {
   </div>
 
   <!-- I think part of the problem is we are only pulling back a number not the whole object -->
-  <div v-for="exercise in workout.exercises" :key="exercise">
-    <workout-edit-exercise-edit :name="exercise.name" :sets="exercise.sets" :reps="exercise.reps" :duration="exercise.duration" :rest="exercise.rest"></workout-edit-exercise-edit>
+  <div v-for="exercise in workout.exercises" :key="exercise.id">
+    <workout-edit-exercise-edit :name="exercise.name" :sets="exercise.sets" @update:sets="exercise.sets = parseInt($event)" :reps="exercise.reps" :duration="exercise.duration" :rest="exercise.rest"></workout-edit-exercise-edit>
   </div>
 
   <div class="row" style="padding-bottom: 10px">
