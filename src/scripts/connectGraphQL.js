@@ -11,6 +11,7 @@ persistCache({
 })
 
 export const client = new ApolloClient({
-  uri: "https://5ipdns9qfj.execute-api.us-east-1.amazonaws.com/dev/",
+  // uri: "https://5ipdns9qfj.execute-api.us-east-1.amazonaws.com/dev/",
+  uri: "http://localhost:4000",
   cache: cache
 });
