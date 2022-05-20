@@ -40,10 +40,20 @@ const resolvers = {
         WHERE w.id=?`, [parent.id])
     },
     exercises(parent) {
-      return querySQLDB(`SELECT DISTINCT exercise.*
+      return querySQLDB(`SELECT
+          exercise.id,
+            exercise.name,
+            exercise.video,
+            exercise.picture,
+            exercise.instructions,
+            exercise.difficulty,
+            workout_exercise.reps,
+            workout_exercise.sets,
+            workout_exercise.duration,
+            workout_exercise.rest
         FROM exercise
           INNER JOIN workout_exercise ON exercise.id = workout_exercise.exerciseid
-            INNER JOIN workout ON workout_exercise.workoutid = workout.id
+          INNER JOIN workout ON workout_exercise.workoutid = workout.id
         WHERE workout.id = ?`, [parent.id])
     },
     // TODO add in duration

@@ -31,6 +31,8 @@ type Exercise {
   reps: Int
   duration: Int
   equipment: [Equipment]
+  sets: Int
+  rest: Int
 }
 
 input WorkoutExerciseInput {
