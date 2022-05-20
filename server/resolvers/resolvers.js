@@ -125,9 +125,8 @@ const resolvers = {
         .then(function (result) {
           workoutid = result.insertId
           let inserts = []
-          // TODO update this for each exercise
           exercises.forEach(element => {
-            querySQLDB("INSERT into workout_exercise (workoutid, exerciseid) VALUES (?, ?)", [workoutid, element.id])
+            querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest) VALUES (?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest])
           })
           // return promise all
           return Promise.all(inserts)
@@ -147,12 +146,9 @@ const resolvers = {
         })
         .then(function () {
           // then re-add the new ones
-          console.log("having real fun now, before inserts", exercises)
           let inserts = []
-          // TODO update this for each exercise
           exercises.forEach(element => {
-            console.log(`INSERT into workout_exercise (workoutid, exerciseid) VALUES (${workoutid}, ${element.id})`)
-            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid) VALUES (?, ?)", [workoutid, element.id]))
+            querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest) VALUES (?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest])
           })
           // return promise all
           return Promise.all(inserts)

@@ -33,9 +33,12 @@ type Exercise {
   equipment: [Equipment]
 }
 
-# TODO add the extra fields we need to pass
 input WorkoutExerciseInput {
   id: Int!
+  reps: Int
+  sets: Int
+  duration: Int
+  rest: Int
 }
 
 type Equipment {

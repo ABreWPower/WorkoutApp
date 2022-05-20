@@ -84,7 +84,7 @@ INSERT INTO `exercise` VALUES
   (14, 'Swimmers', NULL, NULL, 'This motion is similar to a overhead press, start with your hand in the lowered position and then raise them, palms open.  But you will be doing this will lying down on the ground, ball, or bench', 1, 10, NULL),
   (15, 'Shoulder Shrugs', NULL, 'shoulder_shrugs.jfif', 'Shrug your shoulders holding dumbells or a barbell', 1, 12, NULL),
   (16, 'Straight arm Raise', NULL, 'straight_arm_raise.jfif', 'Start with your arms at your sides, raise your arms up to shoulder high, you should be creating a T shape', 1, 12, NULL),
-  (17, 'Front Straight arm Raise', NULL, 'front_straight_arm_raise.jfif', 'Start with your arms in front of you, raise your arms up in front of you until they are at shoulder height', 1, 12, NULL) --,
+  (17, 'Front Straight arm Raise', NULL, 'front_straight_arm_raise.jfif', 'Start with your arms in front of you, raise your arms up in front of you until they are at shoulder height', 1, 12, NULL)
   -- (18, 'Speed Bag - Single Arm Bicycle Chain'), https://www.youtube.com/watch?v=AjJ3AYffCsw
   -- (19, 'Speed Bag - Front Alternating Bicycle Chain'), https://www.youtube.com/watch?v=AjJ3AYffCsw
   -- (20, 'Speed Bag - Rear Alternating Bicycle Chain'), https://www.youtube.com/watch?v=AjJ3AYffCsw
@@ -262,8 +262,8 @@ CREATE TABLE IF NOT EXISTS `workout_exercise` (
   `duration` INT UNSIGNED NULL,
   `rest` INT UNSIGNED NULL,
   PRIMARY KEY (`workoutid`, `exerciseid`),
-  INDEX `fk_workout_has_exercise_exercise1_idx` (`exerciseid` ASC) VISIBLE,
-  INDEX `fk_workout_has_exercise_workout_idx` (`workoutid` ASC) VISIBLE,
+  INDEX `fk_workout_has_exercise_exercise1_idx` (`exerciseid` ASC),
+  INDEX `fk_workout_has_exercise_workout_idx` (`workoutid` ASC),
   CONSTRAINT `fk_workout_has_exercise_workout`
     FOREIGN KEY (`workoutid`)
     REFERENCES `workout` (`id`)
