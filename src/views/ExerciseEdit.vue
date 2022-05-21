@@ -12,20 +12,90 @@ console.log("exercise edit router params", routeObj.params)
 let exercise = JSON.parse(routeObj.params.exercise)
 console.log (exercise)
 
-let muscleGroup = false
-function muscleGroupdropdown() {
+// *************
+// Muscle Groups
+// *************
+
+let muscleGroupToggle = false
+function muscleGroupDropdown() {
   let dropdown = document.getElementById("muscleGroupForm")
   console.log(dropdown.display)
-  if (muscleGroup == false) {
+  if (muscleGroupToggle == false) {
     dropdown.style.display = "block"
-    muscleGroup = true
+    muscleGroupToggle = true
   }
   else {
     dropdown.style.display = "none"
-    muscleGroup = false
+    muscleGroupToggle = false
   }
 }
 
+let getMuscleGroups = gql`
+  query Musclegroups {
+    musclegroups {
+      id
+      name
+      picture
+    }
+  }
+`
+
+const muscleGroups = ref([])
+
+client.query({
+  query: getMuscleGroups,
+  fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+})
+.then(result => {
+  console.log("exercise musclegroups", result.data.musclegroups)
+  result.data.musclegroups.forEach(element => {
+    console.log("muscleGroups", element)
+    muscleGroups.value.push(element)
+  })
+})
+
+// *********
+// Equipment
+// *********
+
+
+let equipmentToggle = false
+function equipmentDropdown() {
+  let dropdown = document.getElementById("equipmentForm")
+  console.log(dropdown.display)
+  if (equipmentToggle == false) {
+    dropdown.style.display = "block"
+    equipmentToggle = true
+  }
+  else {
+    dropdown.style.display = "none"
+    equipmentToggle = false
+  }
+}
+
+let getEquipment = gql`
+  query Equipment {
+    equipment {
+      id
+      name
+      icon
+    }
+  }
+`
+
+const equipment = ref([])
+
+client.query({
+  query: getEquipment,
+  fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+})
+.then(result => {
+  console.log("exercise equipment", result.data.equipment)
+  result.data.equipment.forEach(element => {
+    console.log("equipment", element)
+    equipment.value.push(element)
+  })
+})
 </script>
 
 <template>
@@ -46,51 +116,43 @@ function muscleGroupdropdown() {
     <input type="text" class="form-control" id="workoutDescription" v-model="exercise.instructions" aria-label="Workout Description" />
   </div>
 
-  <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="muscleGroupDropdown" @click="muscleGroupdropdown()" aria-haspopup="true" aria-expanded="false">Muscle Groups</button>
+  <div class="dropdown" style="padding-bottom: 20px">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="muscleGroupDropdown" @click="muscleGroupDropdown()" aria-haspopup="true" aria-expanded="false">Muscle Groups</button>
     <div class="dropdown-menu" aria-labelledby="muscleGroupDropdown" id="muscleGroupForm">
-      <form class="px-4 py-3">
-        <div class="form-group">
-          <label for="exampleDropdownFormEmail1">Email address</label>
-          <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com" />
-        </div>
-        <div class="form-group">
-          <label for="exampleDropdownFormPassword1">Password</label>
-          <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password" />
-        </div>
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="dropdownCheck" />
-          <label class="form-check-label" for="dropdownCheck"> Remember me </label>
-        </div>
-        <button type="submit" class="btn btn-primary">Sign in</button>
-      </form>
-      <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="#">New around here? Sign up</a>
-      <a class="dropdown-item" href="#">Forgot password?</a>
-    </div>
-  </div>
-
-  <div class="row align-items-start">
-    <div class="col"></div>
-    <div class="col">
-      <div class="row align-items-start">
-        <p>
-          Difficulty:
-          <span v-for="i in [0, 1, 2]" :key="i">
-            <i v-if="i < exercise.difficulty" class="bi bi-star-fill"></i>
-            <i v-else class="bi bi-star"></i>
-          </span>
-        </p>
+      <div v-for="musclegroup in muscleGroups" :key="musclegroup.id">
+        <input type="checkbox" class="custom-control-input" :id="musclegroup.id" />
+        <label class="custom-control-label" :for="musclegroup.id"> {{ musclegroup.name }} </label>
       </div>
     </div>
   </div>
 
-  <div class="row align-items-start">
-    <div class="col">
-      <p>Duration: {{ exercise.duration }} minutes</p>
-    </div>
-    <div class="col">
-      <p>Required Equipment: {{ equipment }}</p>
+  <div class="" style="padding-bottom: 10px">
+    <p>
+      Difficulty:
+      <span v-for="i in [0, 1, 2]" :key="i">
+        <i v-if="i < exercise.difficulty" class="bi bi-star-fill"></i>
+        <i v-else class="bi bi-star"></i>
+      </span>
+    </p>
+  </div>
+
+  <!-- TODO lock 1 down after the other is filled in Reps/Duration -->
+  <div v-if="reps != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
+    <span class="input-group-text" id="repsText" style="width: 75px">Reps</span>
+    <input type="number" :value="exercise.reps" class="form-control" aria-describedby="repsText" style="max-width: 75px" />
+  </div>
+  <div v-if="duration != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
+    <span class="input-group-text" id="durationText" style="width: 75px">Duration</span>
+    <input type="number" :value="exercise.duration" class="form-control" placeholder="Seconds" aria-describedby="durationText" style="max-width: 75px" />
+  </div>
+
+  <div class="dropdown" style="padding-bottom: 20px">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="equipmentDropdown" @click="equipmentDropdown()" aria-haspopup="true" aria-expanded="false">Equipment</button>
+    <div class="dropdown-menu" aria-labelledby="equipmentDropdown" id="equipmentForm">
+      <div v-for="piece in equipment" :key="piece.id">
+        <input type="checkbox" class="custom-control-input" :id="piece.id" />
+        <label class="custom-control-label" :for="piece.id"> {{ piece.name }} </label>
+      </div>
     </div>
   </div>
 
