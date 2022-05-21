@@ -150,9 +150,8 @@ client.query({
     <button class="btn btn-secondary dropdown-toggle" type="button" id="equipmentDropdown" @click="equipmentDropdown()" aria-haspopup="true" aria-expanded="false">Equipment</button>
     <div class="dropdown-menu" aria-labelledby="equipmentDropdown" id="equipmentForm">
       <div v-for="piece in equipment" :key="piece.id">
-        <!-- IDs are not unique between this and muscle group, so you can't select them -->
-        <input type="checkbox" class="custom-control-input" :id="piece.id" />
-        <label class="custom-control-label" :for="piece.id"> {{ piece.name }} </label>
+        <input type="checkbox" class="custom-control-input" :id="piece.id + 1000" />
+        <label class="custom-control-label" :for="piece.id + 1000"> {{ piece.name }} </label>
       </div>
     </div>
   </div>
