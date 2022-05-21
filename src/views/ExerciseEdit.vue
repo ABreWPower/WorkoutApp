@@ -9,6 +9,8 @@ import router from "../router/router.js"
 const routeObj = useRoute()
 console.log("exercise edit router params", routeObj.params)
 
+// TODO get saves and updates working
+
 // ********************
 // Data loading section
 // ********************

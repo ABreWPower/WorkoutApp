@@ -74,6 +74,12 @@ client.query({
   exercises.value = structuredClone(result.data.exercises)
   console.log("exercises", exercises)
 })
+
+const newExerciseClick = () => {
+    console.log("before new exercise")
+    router.push({ name: 'Exercise Add' })
+    console.log("after router push for new exercise")
+}
 </script>
 
 <template>
@@ -88,7 +94,7 @@ client.query({
       <card-view v-else :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :description="exercise.instructions" :exerciseid="exercise.id" :click-handler="cardClickHandler(exercise)"></card-view>
     </div>
   </div>
-  <button type="button" class="btn btn-outline-secondary">New Exercise</button>
+  <button type="button" class="btn btn-outline-secondary" @click="newExerciseClick()">New Exercise</button>
 </template>
 
 <style scoped>
