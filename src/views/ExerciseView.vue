@@ -94,8 +94,8 @@ let editClick = function() {
         <p>
           Difficulty:
           <span v-for="i in [0, 1, 2]" :key="i">
-            <i v-if="i < exercise.difficulty" class="bi bi-star-fill"></i>
-            <i v-else class="bi bi-star"></i>
+            <i v-if="i < exercise.difficulty" class="bi bi-star-fill" style="font-size: 25px; padding-right: 10px"></i>
+            <i v-else class="bi bi-star" style="font-size: 25px; padding-right: 10px"></i>
           </span>
         </p>
       </div>
