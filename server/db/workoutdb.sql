@@ -206,7 +206,21 @@ CREATE TABLE `musclegroup` (
 
 LOCK TABLES `musclegroup` WRITE;
 /*!40000 ALTER TABLE `musclegroup` DISABLE KEYS */;
-INSERT INTO `musclegroup` VALUES (1,'Chest',NULL),(2,'Abs',NULL),(3,'Quadriceps',NULL),(4,'Tricep',NULL),(5,'Bicep',NULL);
+INSERT INTO `musclegroup` VALUES 
+  (1, 'Chest',NULL),
+  (2, 'Back',NULL),
+  (3, 'Abs',NULL),
+  (4, 'Quads ',NULL),
+  (5, 'Hamstrings',NULL),
+  (6, 'Calves',NULL),
+  (7, 'Glutes',NULL),
+  (8, 'Shoulder', NULL),
+  (9, 'Traps',NULL),
+  (10, 'Lats',NULL),
+  (11, 'Bicepts', NULL),
+  (12, 'Tricepts', NULL),
+  (13, 'Forarms', NULL),
+  (14, 'Neck',NULL);
 /*!40000 ALTER TABLE `musclegroup` ENABLE KEYS */;
 UNLOCK TABLES;
 
