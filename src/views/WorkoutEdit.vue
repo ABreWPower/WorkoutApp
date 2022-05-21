@@ -3,26 +3,17 @@ import workoutEditExerciseCardView from '../components/WorkoutEditExerciseCardVi
 import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { useRoute } from 'vue-router'
-import { reactive, ref } from "vue"
+import { ref } from "vue"
 import router from "../router/router.js"
 
 const routeObj = useRoute()
 console.log("workout edit router params", routeObj.params)
 
-// TODO save the exercise reps, sets, duration, rest
-
 // ********************
 // Data loading section
 // ********************
 
-const workout = ref({
-  id: null,
-  name: null,
-  picture: null,
-  description: null,
-  exercises: [],
-  user: 1
-})
+const workout = ref()
 
 // If we get an workout object passed in, overwrite the defaults
 if(routeObj.params.workout !== undefined) {

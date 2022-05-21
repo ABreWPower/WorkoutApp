@@ -9,91 +9,62 @@ import router from "../router/router.js"
 const routeObj = useRoute()
 console.log("exercise edit router params", routeObj.params)
 
-let exercise = JSON.parse(routeObj.params.exercise)
-console.log (exercise)
+// ********************
+// Data loading section
+// ********************
 
-// *************
-// Muscle Groups
-// *************
-
-let muscleGroupToggle = false
-function muscleGroupDropdown() {
-  let dropdown = document.getElementById("muscleGroupForm")
-  console.log(dropdown.display)
-  if (muscleGroupToggle == false) {
-    dropdown.style.display = "block"
-    muscleGroupToggle = true
-  }
-  else {
-    dropdown.style.display = "none"
-    muscleGroupToggle = false
-  }
-}
-
-let getMuscleGroups = gql`
-  query Musclegroups {
-    musclegroups {
-      id
-      name
-      picture
-    }
-  }
-`
-
-const muscleGroups = ref([])
-
-client.query({
-  query: getMuscleGroups,
-  fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
-})
-.then(result => {
-  console.log("exercise musclegroups", result.data.musclegroups)
-  result.data.musclegroups.forEach(element => {
-    console.log("muscleGroups", element)
-    muscleGroups.value.push(element)
-  })
-})
-
-// *********
-// Equipment
-// *********
-
-
-let equipmentToggle = false
-function equipmentDropdown() {
-  let dropdown = document.getElementById("equipmentForm")
-  console.log(dropdown.display)
-  if (equipmentToggle == false) {
-    dropdown.style.display = "block"
-    equipmentToggle = true
-  }
-  else {
-    dropdown.style.display = "none"
-    equipmentToggle = false
-  }
-}
-
-let getEquipment = gql`
-  query Equipment {
-    equipment {
-      id
-      name
-      icon
-    }
-  }
-`
-
+const exercise = ref()
 const equipment = ref([])
+const musclegroups = ref([])
+
+// If we get an exercise object passed in, overwrite the defaults
+if(routeObj.params.exercise !== undefined) {
+  exercise.value = JSON.parse(routeObj.params.exercise)
+  console.log("new exercise object", exercise.value)
+}
+
+let getExercise = gql`
+  query Query {
+    exercises(id: ${routeObj.params.exerciseid}) {
+      id
+      name
+      video
+      picture
+      instructions
+      musclegroups {
+        id
+        name
+        picture
+      }
+      difficulty
+      reps
+      duration
+      equipment {
+        id
+        name
+        icon
+      }
+    }
+  }
+` 
 
 client.query({
-  query: getEquipment,
+  query: getExercise,
   fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
 })
 .then(result => {
-  console.log("exercise equipment", result.data.equipment)
-  result.data.equipment.forEach(element => {
+  console.log("results", result)
+  exercise.value = structuredClone(result.data.exercises[0])
+  console.log("exercise", exercise)
+  console.log("exercise.equipment", result.data.exercises[0].equipment)
+  result.data.exercises[0].equipment.forEach(element => {
     console.log("equipment", element)
-    equipment.value.push(element)
+    equipment.value.push(element.name)
+  })
+  console.log("exercise.musclegroups", result.data.exercises[0].musclegroups)
+  result.data.exercises[0].musclegroups.forEach(element => {
+    console.log("musclegroups", element)
+    musclegroups.value.push(element.name)
   })
 })
 </script>
