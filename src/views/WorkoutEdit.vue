@@ -13,7 +13,10 @@ console.log("workout edit router params", routeObj.params)
 // Data loading section
 // ********************
 
-const workout = ref()
+const workout = ref({
+  id: null,
+  name: null
+})
 
 // If we get an workout object passed in, overwrite the defaults
 if(routeObj.params.workout !== undefined) {

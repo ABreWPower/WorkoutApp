@@ -13,7 +13,10 @@ console.log("exercise edit router params", routeObj.params)
 // Data loading section
 // ********************
 
-const exercise = ref()
+const exercise = ref({
+  id: null,
+  name: null
+})
 const equipment = ref([])
 const musclegroups = ref([])
 
@@ -24,8 +27,8 @@ if(routeObj.params.exercise !== undefined) {
 }
 
 let getExercise = gql`
-  query Query {
-    exercises(id: ${routeObj.params.exerciseid}) {
+  query Query($exercisesId: ID) {
+    exercises(id: $exercisesId) {
       id
       name
       video
@@ -48,23 +51,116 @@ let getExercise = gql`
   }
 ` 
 
+console.log("a", routeObj.params.exerciseid)
+console.log("b", exercise.value.name)
+if (routeObj.params.exerciseid != null && exercise.value.name == null) {
+  console.log("page was refreshed, pulling data")
+  client.query({
+    query: getExercise,
+    variables: { exercisesId: parseInt(routeObj.params.exerciseid)},
+    fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+  })
+  .then(result => {
+    console.log("results", result)
+    exercise.value = structuredClone(result.data.exercises[0])
+    console.log("exercise", exercise)
+    console.log("exercise.equipment", result.data.exercises[0].equipment)
+    result.data.exercises[0].equipment.forEach(element => {
+      console.log("equipment", element)
+      equipment.value.push(element.name)
+    })
+    console.log("exercise.musclegroups", result.data.exercises[0].musclegroups)
+    result.data.exercises[0].musclegroups.forEach(element => {
+      console.log("musclegroups", element)
+      musclegroups.value.push(element.name)
+    })
+  })
+}
+
+// TODO need to match up the existing equipment and musclegroups
+
+// *************
+// Muscle Groups
+// *************
+
+let muscleGroupToggle = false
+function muscleGroupDropdown() {
+  let dropdown = document.getElementById("muscleGroupForm")
+  console.log(dropdown.display)
+  if (muscleGroupToggle == false) {
+    dropdown.style.display = "block"
+    muscleGroupToggle = true
+  }
+  else {
+    dropdown.style.display = "none"
+    muscleGroupToggle = false
+  }
+}
+
+let getMuscleGroups = gql`
+  query Musclegroups {
+    musclegroups {
+      id
+      name
+      picture
+    }
+  }
+`
+
+const muscleGroupsList = ref([])
+
 client.query({
-  query: getExercise,
+  query: getMuscleGroups,
   fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
 })
 .then(result => {
-  console.log("results", result)
-  exercise.value = structuredClone(result.data.exercises[0])
-  console.log("exercise", exercise)
-  console.log("exercise.equipment", result.data.exercises[0].equipment)
-  result.data.exercises[0].equipment.forEach(element => {
-    console.log("equipment", element)
-    equipment.value.push(element.name)
+  console.log("exercise muscleGroupsList", result.data.musclegroups)
+  result.data.musclegroups.forEach(element => {
+    // console.log("muscleGroupsList add", element)
+    muscleGroupsList.value.push(element)
   })
-  console.log("exercise.musclegroups", result.data.exercises[0].musclegroups)
-  result.data.exercises[0].musclegroups.forEach(element => {
-    console.log("musclegroups", element)
-    musclegroups.value.push(element.name)
+})
+
+// *********
+// Equipment
+// *********
+
+
+let equipmentToggle = false
+function equipmentDropdown() {
+  let dropdown = document.getElementById("equipmentForm")
+  console.log(dropdown.display)
+  if (equipmentToggle == false) {
+    dropdown.style.display = "block"
+    equipmentToggle = true
+  }
+  else {
+    dropdown.style.display = "none"
+    equipmentToggle = false
+  }
+}
+
+let getEquipment = gql`
+  query Equipment {
+    equipment {
+      id
+      name
+      icon
+    }
+  }
+`
+
+const equipmentList = ref([])
+
+client.query({
+  query: getEquipment,
+  fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+})
+.then(result => {
+  console.log("exercise equipment", result.data.equipment)
+  result.data.equipment.forEach(element => {
+    // console.log("equipmentList add", element)
+    equipmentList.value.push(element)
   })
 })
 </script>
@@ -90,7 +186,7 @@ client.query({
   <div class="dropdown" style="padding-bottom: 20px">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="muscleGroupDropdown" @click="muscleGroupDropdown()" aria-haspopup="true" aria-expanded="false">Muscle Groups</button>
     <div class="dropdown-menu" aria-labelledby="muscleGroupDropdown" id="muscleGroupForm">
-      <div v-for="musclegroup in muscleGroups" :key="musclegroup.id">
+      <div v-for="musclegroup in muscleGroupsList" :key="musclegroup.id">
         <input type="checkbox" class="custom-control-input" :id="musclegroup.id" />
         <label class="custom-control-label" :for="musclegroup.id"> {{ musclegroup.name }} </label>
       </div>
@@ -120,7 +216,7 @@ client.query({
   <div class="dropdown" style="padding-bottom: 20px">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="equipmentDropdown" @click="equipmentDropdown()" aria-haspopup="true" aria-expanded="false">Equipment</button>
     <div class="dropdown-menu" aria-labelledby="equipmentDropdown" id="equipmentForm">
-      <div v-for="piece in equipment" :key="piece.id">
+      <div v-for="piece in equipmentList" :key="piece.id">
         <input type="checkbox" class="custom-control-input" :id="piece.id + 1000" />
         <label class="custom-control-label" :for="piece.id + 1000"> {{ piece.name }} </label>
       </div>
