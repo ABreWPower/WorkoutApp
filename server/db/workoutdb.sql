@@ -101,17 +101,17 @@ INSERT INTO `exercise` VALUES
   (14, 'Swimmers', NULL, NULL, 'This motion is similar to a overhead press, start with your hand in the lowered position and then raise them, palms open.  But you will be doing this will lying down on the ground, ball, or bench', 1, 10, NULL),
   (15, 'Shoulder Shrugs', NULL, 'shoulder_shrugs.jfif', 'Shrug your shoulders holding dumbells or a barbell', 1, 12, NULL),
   (16, 'Straight arm Raise', NULL, 'straight_arm_raise.jfif', 'Start with your arms at your sides, raise your arms up to shoulder high, you should be creating a T shape', 1, 12, NULL),
-  (17, 'Front Straight arm Raise', NULL, 'front_straight_arm_raise.jfif', 'Start with your arms in front of you, raise your arms up in front of you until they are at shoulder height', 1, 12, NULL)
-  -- (18, 'Speed Bag - Single Arm Bicycle Chain'), https://www.youtube.com/watch?v=AjJ3AYffCsw
-  -- (19, 'Speed Bag - Front Alternating Bicycle Chain'), https://www.youtube.com/watch?v=AjJ3AYffCsw
-  -- (20, 'Speed Bag - Rear Alternating Bicycle Chain'), https://www.youtube.com/watch?v=AjJ3AYffCsw
-  -- (21, 'Speed Bag - Elbows Roll'), https://www.youtube.com/watch?v=xxzMbt1Yvyo
-  -- (22, 'Speed Bag - Rear Alternating Bicycle Chain'), https://www.youtube.com/watch?v=AjJ3AYffCsw
-  -- (23, 'Speed Bag - Rolling'), https://www.youtube.com/watch?v=WpjueP-tOZA
-  -- (24, 'Speed Bag - Linking'), https://www.youtube.com/watch?v=hOTzM8ln_R8
-  -- (25, 'Speed Bag - Double Punch'), 
-  -- (26, 'Speed Bag - Pinning/Trapping'),
-  -- (26, 'Speed Bag - Freestyle'),
+  (17, 'Front Straight arm Raise', NULL, 'front_straight_arm_raise.jfif', 'Start with your arms in front of you, raise your arms up in front of you until they are at shoulder height', 1, 12, NULL),
+  (18, 'Speed Bag - Single Arm Bicycle Chain', 'https://www.youtube.com/watch?v=AjJ3AYffCsw', 'speed_bag_multiple.jpg', 'Speed bag technique', 1, NULL, 120),
+  (19, 'Speed Bag - Front Alternating Bicycle Chain', 'https://www.youtube.com/watch?v=AjJ3AYffCsw', 'speed_bag_multiple.jpg', 'Speed bag technique', 1, NULL, 120),
+  (20, 'Speed Bag - Rear Alternating Bicycle Chain', 'https://www.youtube.com/watch?v=AjJ3AYffCsw', 'speed_bag_multiple.jpg', 'Speed bag technique', 2, NULL, 120),
+  (21, 'Speed Bag - Elbows Roll', 'https://www.youtube.com/watch?v=xxzMbt1Yvyo', 'speed_bag_multiple.jpg', 'Speed bag technique', 3, NULL, 120),
+  (22, 'Speed Bag - Rear Alternating Bicycle Chain', 'https://www.youtube.com/watch?v=AjJ3AYffCsw', 'speed_bag_multiple.jpg', 'Speed bag technique', 2, NULL, 120),
+  (23, 'Speed Bag - Rolling', 'https://www.youtube.com/watch?v=WpjueP-tOZA', 'speed_bag_multiple.jpg', 'Speed bag technique', 1, NULL, 120),
+  (24, 'Speed Bag - Linking', 'https://www.youtube.com/watch?v=hOTzM8ln_R8', 'speed_bag_multiple.jpg', 'Speed bag technique', 2, NULL, 120),
+  (25, 'Speed Bag - Double Punch', 'https://www.youtube.com/watch?v=5EmwpHSbB5c', 'speed_bag_multiple.jpg', 'Speed bag technique', 3, NULL, 120),
+  (26, 'Speed Bag - Pinning/Trapping', 'https://www.youtube.com/watch?v=3B3nnbw89MA', 'speed_bag_multiple.jpg', 'Speed bag technique', 3, NULL, 120),
+  (27, 'Speed Bag - Freestyle', NULL, 'speed_bag_multiple.jpg', 'Speed bag technique', 3, NULL, 120)
   -- (28, 'Heavy Bag - Uppercuts'),
   -- (29, 'Heavy Bag - Hooks'),
   -- (30, 'Heavy Bag - Jabs'),
