@@ -36,7 +36,24 @@ CREATE TABLE `equipment` (
 
 LOCK TABLES `equipment` WRITE;
 /*!40000 ALTER TABLE `equipment` DISABLE KEYS */;
-INSERT INTO `equipment` VALUES (1,'Dumbbell',NULL),(2,'Bench',NULL),(3,'Treadmill',NULL),(4,'Pullup bar',NULL);
+INSERT INTO `equipment` VALUES 
+  (1,'Dumbbell',NULL),
+  (2,'Bench',NULL),
+  (3,'Treadmill',NULL),
+  (4,'Pullup bar',NULL),
+  (5,'Stationary Bicyle', NULL),
+  (6,'Jump Rope', NULL),
+  (7,'Resistance Bands', NULL),
+  (8,'Elliptical', NULL),
+  (9,'Barbell', NULL),
+  (10,'Kettlebell', NULL),
+  (11,'Squat Rack', NULL),
+  (12,'Benchpress Rack', NULL),
+  (13,'Row Machine', NULL),
+  (14,'Medicine Ball', NULL),
+  (15,'Foam Roller', NULL),
+  (16,'Ropes', NULL),
+  (17,'Platform', NULL);
 /*!40000 ALTER TABLE `equipment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -75,8 +92,8 @@ INSERT INTO `exercise` VALUES
   (5,'Bicep Curl',NULL,NULL,'Curl arms up holding a bar or dumbbell',1,12,NULL),
   (6,'Skull Crusher',NULL,NULL,'Lower weight near your head while on bench, palms facing up, upper arm should be mostly verical',2,8,NULL),
   (7,'Plank',NULL,NULL,'On elbow and toes with body straight out keeping your core tight',3,NULL,60),
-  (8, 'TRX Reverse Rows', NULL, 'trx_row.png', 'Heels planted on the ground, arms holding the TRX handles, lean back to where your arms are almost straight, palms facing together, then pull your hands to the side of your body tightening up your back', 2, 12, NULL),
-  (9, 'TRX Face Pull', NULL, 'trx_face_pull.jfif', 'Heels planted on the ground, arms holding the TRX handles, lean back to where your arms are almost straight, palms down together, then pull your hands to your neck with at the same level as your shoulders, tightening up your back and shoulders', 2, 12, NULL),
+  (8, 'Suspension Reverse Rows', NULL, 'Suspension_row.png', 'Heels planted on the ground, arms holding the Suspension handles, lean back to where your arms are almost straight, palms facing together, then pull your hands to the side of your body tightening up your back', 2, 12, NULL),
+  (9, 'Suspension Face Pull', NULL, 'Suspension_face_pull.jfif', 'Heels planted on the ground, arms holding the Suspension handles, lean back to where your arms are almost straight, palms down together, then pull your hands to your neck with at the same level as your shoulders, tightening up your back and shoulders', 2, 12, NULL),
   (10, 'Band Wall Walk', NULL, 'band_wall_walk.jpg', 'Place a band around your arms around wrists, then place hands on the wall, move one of your armes away from the other, come back then go diagnoally up and come back and then go diagnally back, repeat for other arm', 1, 5, NULL),
   (11, 'Neck Strengthing', 'https://www.youtube.com/watch?v=RN6M1hCE4wY', 'neck_strengthing.jpg', 'To perform this exercise find a bench or an object you can have your head laying off of, you will complete reps in each of the for dirctions, forward, backward, and each side.  The direction you are working should be moving way from the ground.  This can be weighted or unweighted', 1, 15, NULL),
   (12, 'Prone T', 'https://www.youtube.com/watch?v=Ygok5LNB1tY', 'prone_t.jpg', 'Laying down on the ground, bench, or ball, With you arms straight out to the sides, raise and lower your arms engaging your upper back', 1, 10, NULL),
