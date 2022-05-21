@@ -137,11 +137,11 @@ client.query({
   </div>
 
   <!-- TODO lock 1 down after the other is filled in Reps/Duration -->
-  <div v-if="reps != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
+  <div v-if="reps != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto" style="padding-bottom: 10px">
     <span class="input-group-text" id="repsText" style="width: 75px">Reps</span>
     <input type="number" :value="exercise.reps" class="form-control" aria-describedby="repsText" style="max-width: 75px" />
   </div>
-  <div v-if="duration != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
+  <div v-if="duration != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto" style="padding-bottom: 10px">
     <span class="input-group-text" id="durationText" style="width: 75px">Duration</span>
     <input type="number" :value="exercise.duration" class="form-control" placeholder="Seconds" aria-describedby="durationText" style="max-width: 75px" />
   </div>
@@ -150,6 +150,7 @@ client.query({
     <button class="btn btn-secondary dropdown-toggle" type="button" id="equipmentDropdown" @click="equipmentDropdown()" aria-haspopup="true" aria-expanded="false">Equipment</button>
     <div class="dropdown-menu" aria-labelledby="equipmentDropdown" id="equipmentForm">
       <div v-for="piece in equipment" :key="piece.id">
+        <!-- IDs are not unique between this and muscle group, so you can't select them -->
         <input type="checkbox" class="custom-control-input" :id="piece.id" />
         <label class="custom-control-label" :for="piece.id"> {{ piece.name }} </label>
       </div>
