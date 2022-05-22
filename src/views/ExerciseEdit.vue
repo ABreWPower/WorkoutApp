@@ -215,8 +215,8 @@ let addExercise = gql`
 `
 
 let updateExercise = gql`
-  mutation UpdateExercise($updateExerciseId: Int!, $name: String!, $video: String, $picture: String, $instructions: String, $difficulty: Int, $musclegroups: [Int], $reps: Int, $duration: Int, $equipment: [Int]) {
-    updateExercise(id: $updateExerciseId, name: $name, video: $video, picture: $picture, instructions: $instructions, difficulty: $difficulty, musclegroups: $musclegroups, reps: $reps, duration: $duration, equipment: $equipment) {
+  mutation UpdateExercise($id: Int!, $name: String!, $video: String, $picture: String, $instructions: String, $difficulty: Int, $musclegroups: [Int], $reps: Int, $duration: Int, $equipment: [Int]) {
+    updateExercise(id: $id, name: $name, video: $video, picture: $picture, instructions: $instructions, difficulty: $difficulty, musclegroups: $musclegroups, reps: $reps, duration: $duration, equipment: $equipment) {
       id
     }
   }
