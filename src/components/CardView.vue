@@ -43,7 +43,7 @@ const getImages = function () {
 
 const cardClick = () => {
   console.log("CardView cardClick")
-  if(props.clickHandler !== undefined) { //TODO this line does not work, as click on card in exercises without coming from workout edit still passes a handler but isn't valid
+  if(props.clickHandler !== undefined) {
     console.log("CardView cardClick carkHandler found")
     props.clickHandler()
   } else {
