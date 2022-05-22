@@ -9,8 +9,6 @@ import router from "../router/router.js"
 const routeObj = useRoute()
 console.log("exercise edit router params", routeObj.params)
 
-// TODO get saves and updates working
-
 // ********************
 // Data loading section
 // ********************
@@ -225,8 +223,8 @@ let updateExercise = gql`
 // TODO: After saving a new exercise, switch to edit page
 const saveExerciseClick = () => {
   console.log("before save exercise", exercise.value)
-  console.log("flatmap", exercise.value.musclegroups.flatMap(element => [{id: element.id}]))
-  console.log("flatmap", exercise.value.equipment.flatMap(element => [{id: element.id}]))
+  console.log("flatmap", exercise.value.musclegroups.flatMap(element => [element.id]))
+  console.log("flatmap", exercise.value.equipment.flatMap(element => [element.id]))
 
   // Set a mutation to use
   let mutationToUse = null
@@ -250,12 +248,8 @@ const saveExerciseClick = () => {
       difficulty: exercise.value.difficulty,
       reps: exercise.value.reps,
       duration: exercise.value.duration,
-      exercises: exercise.value.equipment.flatMap(element => [{
-        id: parseInt(element.id)
-      }]),
-      exercises: exercise.value.musclegroups.flatMap(element => [{
-        id: parseInt(element.id)
-      }])
+      equipment: exercise.value.equipment.flatMap(element => [parseInt(element.id)]),
+      musclegroups: exercise.value.musclegroups.flatMap(element => [parseInt(element.id)])
     }
   })
   .then(result => {

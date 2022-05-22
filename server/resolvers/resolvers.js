@@ -204,7 +204,7 @@ const resolvers = {
           // return promise all
           return Promise.all(deletes)
         })
-        .then(function (result) {
+        .then(function () {
           let inserts = []
           musclegroups.forEach(element => {
             inserts.push(querySQLDB("INSERT into exercise_musclegroup VALUES (?, ?)", [exerciseId, element]))
