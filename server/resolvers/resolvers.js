@@ -112,16 +112,6 @@ const resolvers = {
         result => querySQLDB("SELECT * FROM users WHERE id = ?", [result.insertId]).then(result => result[0])
       )
     },
-    addEquipment: (parent, { name = null, icon = null }) => {
-      return querySQLDB("INSERT into equipment (name, icon) VALUES (?, ?)", [name, icon]).then(
-        result => querySQLDB("SELECT * FROM equipment WHERE id = ?", [result.insertId]).then(result => result[0])
-      )
-    },
-    addMuscleGroup: (parent, { name = null, picture = null }) => {
-      return querySQLDB("INSERT into musclegroup (name, picture) VALUES (?, ?)", [name, picture]).then(
-        result => querySQLDB("SELECT * FROM musclegroup WHERE id = ?", [result.insertId]).then(result => result[0])
-      )
-    },
     addWorkout: (parent, { name = null, picture = null, description = null, user = null, exercises = [] }) => {
       let workoutid = null
       return querySQLDB("INSERT into workout (name, picture, description, user) VALUES (?, ?, ?, ?)", [name, picture, description, user])
@@ -129,7 +119,7 @@ const resolvers = {
           workoutid = result.insertId
           let inserts = []
           exercises.forEach(element => {
-            ["id", "reps", "sets", "duration", "rest"].forEach(function(columnName) {
+            ["id", "reps", "sets", "duration", "rest"].forEach(function (columnName) {
               if (element[columnName] === undefined) {
                 element[columnName] = null
               }
@@ -156,7 +146,7 @@ const resolvers = {
           // then re-add the new ones
           let inserts = []
           exercises.forEach(element => {
-            ["id", "reps", "sets", "duration", "rest"].forEach(function(columnName) {
+            ["id", "reps", "sets", "duration", "rest"].forEach(function (columnName) {
               if (element[columnName] === undefined) {
                 element[columnName] = null
               }
@@ -170,8 +160,30 @@ const resolvers = {
           console.log("before return data")
           return querySQLDB("SELECT * FROM workout WHERE id = ?", [workoutid]).then(result => result[0])
         })
-
-    }
+    },
+    addExercise: (parent, { name = null, video = null, picture = null, instructions = null, difficulty = null, reps = null, duration = null, musclegroups = [], equipment = [] }) => {
+      let exerciseId = null
+      if (musclegroups === null) musclegroups = []
+      if (equipment === null) equipment = []
+      return querySQLDB(`INSERT INTO exercise
+        (name, video, picture, instructions, difficulty, reps, duration)
+        VALUES (?, ?, ?, ?, ?, ?, ?)`, [name, video, picture, instructions, difficulty, reps, duration])
+        .then(function (result) {
+          exerciseId = result.insertId
+          let inserts = []
+          musclegroups.forEach(element => {
+            inserts.push(querySQLDB("INSERT into exercise_musclegroup VALUES (?, ?)", [exerciseId, element]))
+          })
+          equipment.forEach(element => {
+            inserts.push(querySQLDB("INSERT into exercise_equipment VALUES (?, ?)", [exerciseId, element]))
+          })
+          // return promise all
+          return Promise.all(inserts)
+        })
+        .then(function () {
+          return querySQLDB("SELECT * FROM exercise WHERE id = ?", [exerciseId]).then(result => result[0])
+        })
+    },
     // TODO need to make the rest of the adds and then all of the updates
   }
 }

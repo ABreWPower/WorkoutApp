@@ -97,14 +97,8 @@ type Mutation {
   addWorkout(name: String!, picture: String, description: String, user: Int, exercises: [WorkoutExerciseInput]): Workout
   updateWorkout(id: Int!, name: String, picture: String, description: String, user: Int, exercises: [WorkoutExerciseInput]): Workout
 
-#   addExercise(name: String!, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment]): Exercise
+  addExercise(name: String!, video: String, picture: String, instructions: String, difficulty: Int, musclegroups: [Int], reps: Int, duration: Int, equipment: [Int]): Exercise
 #   updateExercise(id: ID!, name: String, video: String, picture: String, instructions: String, difficulty: String, musclegroups: [MuscleGroup], reps: Int, duration: Int, equipment: [Equipment]): Exercise
-
-  addEquipment(name: String!, icon: String): Equipment
-#   updateEquipment(id: ID!, name: String, icon: String): Equipment
-
-  addMuscleGroup(name: String!, picture: String): MuscleGroup
-#   updateMuscleGroup(id: ID!, name: String, picture: String): MuscleGroup
 
 #   addWorkoutLog(user: Int, workout: Workout!, totalduration: Int, starteddatetime: Int, wlexercises: [WorkoutLogExercise]): WorkoutLog
 #   updateWorkoutLog(id: ID!, user: Int, workout: Workout, totalduration: Int, starteddatetime: Int, wlexercises: [WorkoutLogExercise]): WorkoutLog
