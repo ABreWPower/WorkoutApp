@@ -136,7 +136,7 @@ const resolvers = {
     updateWorkout: (parent, { id = null, name = null, picture = null, description = null, user = null, exercises = [] }) => {
       console.log("starting update function")
       let workoutid = id
-      return querySQLDB("UPDATE workout SET name = ?, picture = ?, description = ?, user = ? WHERE ID = ?", [name, picture, description, user, id])
+      return querySQLDB("UPDATE workout SET name = ?, picture = ?, description = ?, user = ? WHERE ID = ?", [name, picture, description, user, workoutid])
         .then(function () {
           console.log("workout id is: ", workoutid)
           // delete all element containing workout id
@@ -170,6 +170,41 @@ const resolvers = {
         VALUES (?, ?, ?, ?, ?, ?, ?)`, [name, video, picture, instructions, difficulty, reps, duration])
         .then(function (result) {
           exerciseId = result.insertId
+          let inserts = []
+          musclegroups.forEach(element => {
+            inserts.push(querySQLDB("INSERT into exercise_musclegroup VALUES (?, ?)", [exerciseId, element]))
+          })
+          equipment.forEach(element => {
+            inserts.push(querySQLDB("INSERT into exercise_equipment VALUES (?, ?)", [exerciseId, element]))
+          })
+          // return promise all
+          return Promise.all(inserts)
+        })
+        .then(function () {
+          return querySQLDB("SELECT * FROM exercise WHERE id = ?", [exerciseId]).then(result => result[0])
+        })
+    },
+    updateExercise: (parent, { id = null, name = null, video = null, picture = null, instructions = null, difficulty = null, reps = null, duration = null, musclegroups = [], equipment = [] }) => {
+      let exerciseId = id
+      if (musclegroups === null) musclegroups = []
+      if (equipment === null) equipment = []
+      return querySQLDB(`UPDATE exercise SET
+          name = ?,
+          video = ?,
+          picture = ?,
+          instructions = ?,
+          difficulty = ?,
+          reps = ?,
+          duration = ?
+        WHERE id = ?`, [name, video, picture, instructions, difficulty, reps, duration, exerciseId])
+        .then(function () {
+          let deletes = []
+          deletes.push(querySQLDB("DELETE from exercise_musclegroup WHERE exerciseid = ?", [exerciseId]))
+          deletes.push(querySQLDB("DELETE from exercise_equipment WHERE exerciseid = ?", [exerciseId]))
+          // return promise all
+          return Promise.all(deletes)
+        })
+        .then(function (result) {
           let inserts = []
           musclegroups.forEach(element => {
             inserts.push(querySQLDB("INSERT into exercise_musclegroup VALUES (?, ?)", [exerciseId, element]))
