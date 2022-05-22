@@ -168,6 +168,7 @@ client.query({
 </script>
 
 <template>
+  <!-- TODO sorta need to make this editable -->
   <h1>{{ exercise.name }}</h1>
   <img src="/pic1.jpg" alt="pic1" style="max-width: 94vw; padding-top: 15px; padding-bottom: 15px" />
 

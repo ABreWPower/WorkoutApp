@@ -98,7 +98,7 @@ INSERT INTO `exercise` (`name`, video, picture, instructions, difficulty, reps, 
   ('Skull Crusher',NULL,NULL,'Lower weight near your head while on bench, palms facing up, upper arm should be mostly verical',2,8,NULL),
 
   ('Pushup',NULL, 'pushup.jpg','Push off of the ground while keeping the core tight',3,20,NULL),
-  ('Wide Pushup',NULL, 'pushup.jpg','Push off of the ground while keeping the core tight',3,20,NULL),
+  ('Wide *** Pushup',NULL, 'pushup.jpg','Push off of the ground while keeping the core tight',3,20,NULL),
 
 
 
@@ -114,6 +114,7 @@ INSERT INTO `exercise` (`name`, video, picture, instructions, difficulty, reps, 
   ('Shoulder Shrugs', NULL, 'shoulder_shrugs.jfif', 'Shrug your shoulders holding dumbells or a barbell', 1, 12, NULL),
   ('Straight arm Raise', NULL, 'straight_arm_raise.jfif', 'Start with your arms at your sides, raise your arms up to shoulder high, you should be creating a T shape', 1, 12, NULL),
   ('Front Straight arm Raise', NULL, 'front_straight_arm_raise.jfif', 'Start with your arms in front of you, raise your arms up in front of you until they are at shoulder height', 1, 12, NULL),
+
   ('Speed Bag - Single Arm Bicycle Chain', 'https://www.youtube.com/watch?v=AjJ3AYffCsw', 'speed_bag_multiple.jpg', 'Speed bag technique', 1, NULL, 120),
   ('Speed Bag - Front Alternating Bicycle Chain', 'https://www.youtube.com/watch?v=AjJ3AYffCsw', 'speed_bag_multiple.jpg', 'Speed bag technique', 1, NULL, 120),
   ('Speed Bag - Rear Alternating Bicycle Chain', 'https://www.youtube.com/watch?v=AjJ3AYffCsw', 'speed_bag_multiple.jpg', 'Speed bag technique', 2, NULL, 120),

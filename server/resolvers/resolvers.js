@@ -5,14 +5,6 @@ const { connectSQLDB, querySQLDB } = require('../db/db.js')
 const resolvers = {
   Query: {
     users: () => querySQLDB("SELECT * FROM users").then(result => result),
-    // workouts: (parent, args) => {
-    //   console.log("parent", parent)
-    //   console.log("args", args.id)
-    //   querySQLDB("SELECT * FROM workout WHERE id like ?", args.id }).then(result => {
-    //     console.log("results", result)
-    //     return result
-    //   })
-    // },
     workouts: (parent, args) => {
       if (args.id == undefined) args.id = null
       return querySQLDB("SELECT * FROM workout WHERE id like IFNULL(?, '%')", [args.id]).then(result => result)
@@ -136,6 +128,7 @@ const resolvers = {
           workoutid = result.insertId
           let inserts = []
           exercises.forEach(element => {
+            // TODO umm maybe we should like add this to the insert array??
             querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest) VALUES (?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest])
           })
           // return promise all
@@ -158,6 +151,7 @@ const resolvers = {
           // then re-add the new ones
           let inserts = []
           exercises.forEach(element => {
+            // TODO umm maybe we should like add this to the insert array??
             querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest) VALUES (?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest])
           })
           // return promise all
