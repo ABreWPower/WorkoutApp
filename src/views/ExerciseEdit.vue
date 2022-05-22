@@ -2,7 +2,7 @@
 import cardView from '../components/CardView.vue'
 import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
 import { useRoute } from 'vue-router'
-import { gql } from "@apollo/client/core";
+import { empty, gql } from "@apollo/client/core";
 import { ref } from "vue"
 import router from "../router/router.js"
 
@@ -17,10 +17,10 @@ console.log("exercise edit router params", routeObj.params)
 
 const exercise = ref({
   id: null,
-  name: null
+  name: null,
+  musclegroups: [],
+  equipment: []
 })
-const equipment = ref([])
-const musclegroups = ref([])
 
 // If we get an exercise object passed in, overwrite the defaults
 if(routeObj.params.exercise !== undefined) {
@@ -69,36 +69,32 @@ if (routeObj.params.exerciseid != null && exercise.value.name == null) {
     console.log("exercise.equipment", result.data.exercises[0].equipment)
     result.data.exercises[0].equipment.forEach(element => {
       console.log("equipment", element)
-      equipment.value.push(element.name)
+      exercise.value.equipment.push(element.name)
     })
     console.log("exercise.musclegroups", result.data.exercises[0].musclegroups)
     result.data.exercises[0].musclegroups.forEach(element => {
       console.log("musclegroups", element)
-      musclegroups.value.push(element.name)
+      exercise.value.musclegroups.push(element.name)
     })
   })
 }
 
 // TODO need to match up the existing equipment and musclegroups
 
+// **********************
+// Array Removal Function
+// **********************
+function arrayRemove(arr, value) { 
+    return arr.filter( function(element) {
+        return element != value; 
+    })
+}
+
 // *************
 // Muscle Groups
 // *************
 
-let muscleGroupToggle = false
-function muscleGroupDropdown() {
-  let dropdown = document.getElementById("muscleGroupForm")
-  console.log(dropdown.display)
-  if (muscleGroupToggle == false) {
-    dropdown.style.display = "block"
-    muscleGroupToggle = true
-  }
-  else {
-    dropdown.style.display = "none"
-    muscleGroupToggle = false
-  }
-}
-
+// Pull all of the muscle groups from the database use show the user
 let getMuscleGroups = gql`
   query Musclegroups {
     musclegroups {
@@ -123,25 +119,37 @@ client.query({
   })
 })
 
+// Enable and disable the muscle group form
+let muscleGroupToggle = false
+function muscleGroupDropdown() {
+  let dropdown = document.getElementById("muscleGroupForm")
+  if (muscleGroupToggle == false) {
+    dropdown.style.display = "block"
+    muscleGroupToggle = true
+  }
+  else {
+    dropdown.style.display = "none"
+    muscleGroupToggle = false
+  }
+}
+
+// Add each clicked item to the exercise.musclegroups
+function muscleGroupCheckChange(musclegroup) {
+  if (exercise.value.musclegroups.includes(musclegroup)) {
+    // Remove the muscle group from the exercise
+    exercise.value.musclegroups = arrayRemove(exercise.value.musclegroups, musclegroup)
+  }
+  else {
+    // Add the muscle group to the exercise
+    exercise.value.musclegroups.push(musclegroup)
+  }
+}
+
 // *********
 // Equipment
 // *********
 
-
-let equipmentToggle = false
-function equipmentDropdown() {
-  let dropdown = document.getElementById("equipmentForm")
-  console.log(dropdown.display)
-  if (equipmentToggle == false) {
-    dropdown.style.display = "block"
-    equipmentToggle = true
-  }
-  else {
-    dropdown.style.display = "none"
-    equipmentToggle = false
-  }
-}
-
+// Pull all of the equipment from the database use show the user
 let getEquipment = gql`
   query Equipment {
     equipment {
@@ -165,11 +173,113 @@ client.query({
     equipmentList.value.push(element)
   })
 })
+
+// Enable and disable the equipment form
+let equipmentToggle = false
+function equipmentDropdown() {
+  let dropdown = document.getElementById("equipmentForm")
+  if (equipmentToggle == false) {
+    dropdown.style.display = "block"
+    equipmentToggle = true
+  }
+  else {
+    dropdown.style.display = "none"
+    equipmentToggle = false
+  }
+}
+
+// Add each clicked item to the exercise.musclegroups
+function equipmentCheckChange(piece) {
+  if (exercise.value.equipment.includes(piece)) {
+    // Remove the muscle group from the exercise
+    exercise.value.equipment = arrayRemove(exercise.value.equipment, piece)
+  }
+  else {
+    // Add the muscle group to the exercise
+    exercise.value.equipment.push(piece)
+  }
+
+  console.log("exercise.value.equipment", exercise.value.equipment)
+}
+
+// **************
+// Saving section
+// **************
+
+let addExercise = gql`
+  mutation Mutation($name: String!, $video: String, $picture: String, $instructions: String, $difficulty: Int, $musclegroups: [Int], $reps: Int, $duration: Int, $equipment: [Int]) {
+    addExercise(name: $name, video: $video, picture: $picture, instructions: $instructions, difficulty: $difficulty, musclegroups: $musclegroups, reps: $reps, duration: $duration, equipment: $equipment) {
+      id
+    }
+  }
+`
+
+let updateExercise = gql`
+  mutation UpdateExercise($updateExerciseId: Int!, $name: String!, $video: String, $picture: String, $instructions: String, $difficulty: Int, $musclegroups: [Int], $reps: Int, $duration: Int, $equipment: [Int]) {
+    updateExercise(id: $updateExerciseId, name: $name, video: $video, picture: $picture, instructions: $instructions, difficulty: $difficulty, musclegroups: $musclegroups, reps: $reps, duration: $duration, equipment: $equipment) {
+      id
+    }
+  }
+`
+
+// TODO: After saving a new exercise, switch to edit page
+const saveExerciseClick = () => {
+  console.log("before save exercise", exercise.value)
+  console.log("flatmap", exercise.value.musclegroups.flatMap(element => [{id: element.id}]))
+  console.log("flatmap", exercise.value.equipment.flatMap(element => [{id: element.id}]))
+
+  // Set a mutation to use
+  let mutationToUse = null
+  if (exercise.value.id == null) {
+    console.log("no id, setting to use addExercise")
+    mutationToUse = addExercise
+  }
+  else {
+    console.log("found id, using updateExercise")
+    mutationToUse = updateExercise
+  }
+
+  client.mutate({
+    mutation: mutationToUse,
+    variables: {
+      id: parseInt(exercise.value.id),
+      name: exercise.value.name,
+      picture: exercise.value.picture,
+      video: exercise.value.video,
+      instructions: exercise.value.instructions,
+      difficulty: exercise.value.difficulty,
+      reps: exercise.value.reps,
+      duration: exercise.value.duration,
+      exercises: exercise.value.equipment.flatMap(element => [{
+        id: parseInt(element.id)
+      }]),
+      exercises: exercise.value.musclegroups.flatMap(element => [{
+        id: parseInt(element.id)
+      }])
+    }
+  })
+  .then(result => {
+    console.log("results", result)
+    if (exercise.value.id == null) {
+      exercise.value.id = result.data.addExercise.id
+      console.log("exercise id", exercise.value.id)
+    }
+    else {
+      console.log("nothing to do with returned id as we already have it")
+    }
+    // TODO probably do something to let user know it succeded
+  })
+
+  console.log("after save exercise")
+}
 </script>
 
 <template>
   <!-- TODO sorta need to make this editable -->
-  <h1>{{ exercise.name }}</h1>
+  <div class="input-group input-group-lg">
+    <span class="input-group-text" id="exerciseNameLabel">Exercise Name</span>
+    <input type="text" class="form-control" id="exerciseName" v-model="exercise.name" aria-label="Exercise Name" aria-describedby="exerciseNameLabel" />
+  </div>
   <img src="/pic1.jpg" alt="pic1" style="max-width: 94vw; padding-top: 15px; padding-bottom: 15px" />
 
   <div class="row align-items-start" style="padding-bottom: 20px">
@@ -183,14 +293,14 @@ client.query({
 
   <div style="padding-bottom: 20px">
     <h4>Instructions</h4>
-    <input type="text" class="form-control" id="workoutDescription" v-model="exercise.instructions" aria-label="Workout Description" />
+    <input type="text" class="form-control" id="exerciseDescription" v-model="exercise.instructions" aria-label="Exercise Description" />
   </div>
 
   <div class="dropdown" style="padding-bottom: 20px">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="muscleGroupDropdown" @click="muscleGroupDropdown()" aria-haspopup="true" aria-expanded="false">Muscle Groups</button>
     <div class="dropdown-menu" aria-labelledby="muscleGroupDropdown" id="muscleGroupForm">
       <div v-for="musclegroup in muscleGroupsList" :key="musclegroup.id">
-        <input type="checkbox" class="custom-control-input" :id="musclegroup.id" />
+        <input type="checkbox" class="custom-control-input" :id="musclegroup.id" @click="muscleGroupCheckChange(musclegroup)" />
         <label class="custom-control-label" :for="musclegroup.id"> {{ musclegroup.name }} </label>
       </div>
     </div>
@@ -210,25 +320,25 @@ client.query({
   <!-- TODO lock 1 down after the other is filled in Reps/Duration -->
   <div v-if="reps != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto" style="padding-bottom: 10px">
     <span class="input-group-text" id="repsText" style="width: 75px">Reps</span>
-    <input type="number" :value="exercise.reps" class="form-control" aria-describedby="repsText" style="max-width: 75px" />
+    <input type="number" v-model="exercise.reps" class="form-control" aria-describedby="repsText" style="max-width: 75px" />
   </div>
   <div v-if="duration != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto" style="padding-bottom: 10px">
     <span class="input-group-text" id="durationText" style="width: 75px">Duration</span>
-    <input type="number" :value="exercise.duration" class="form-control" placeholder="Seconds" aria-describedby="durationText" style="max-width: 75px" />
+    <input type="number" v-model="exercise.duration" class="form-control" placeholder="Seconds" aria-describedby="durationText" style="max-width: 75px" />
   </div>
 
   <div class="dropdown" style="padding-bottom: 20px">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="equipmentDropdown" @click="equipmentDropdown()" aria-haspopup="true" aria-expanded="false">Equipment</button>
     <div class="dropdown-menu" aria-labelledby="equipmentDropdown" id="equipmentForm">
       <div v-for="piece in equipmentList" :key="piece.id">
-        <input type="checkbox" class="custom-control-input" :id="piece.id + 1000" />
+        <input type="checkbox" class="custom-control-input" :id="piece.id + 1000" @click="equipmentCheckChange(piece)" />
         <label class="custom-control-label" :for="piece.id + 1000"> {{ piece.name }} </label>
       </div>
     </div>
   </div>
 
   <div style="padding-bottom: 10px">
-    <button type="button" class="btn btn-primary" @click="saveWorkoutClick()">Save</button>
+    <button type="button" class="btn btn-primary" @click="saveExerciseClick()">Save</button>
   </div>
 </template>
 

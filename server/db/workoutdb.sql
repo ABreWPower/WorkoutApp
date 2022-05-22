@@ -97,10 +97,10 @@ INSERT INTO `exercise` (`name`, video, picture, instructions, difficulty, reps, 
 
   ('Skull Crusher',NULL,NULL,'Lower weight near your head while on bench, palms facing up, upper arm should be mostly verical',2,8,NULL),
 
-  ('Pushup',NULL, 'pushup.jpg','Push off of the ground while keeping the core tight',3,20,NULL),
-  ('Wide *** Pushup',NULL, 'pushup.jpg','Push off of the ground while keeping the core tight',3,20,NULL),
-
-
+  ('Wide Grip Pushup',NULL, 'pushup.jpg','Push off of the ground while keeping the core tight',2,20,NULL),
+  ('Pushup',NULL, 'pushup.jpg','Push off of the ground while keeping the core tight',2,20,NULL),
+  ('Dimond Pushup',NULL, 'pushup.jpg','Push off of the ground while keeping the core tight',3,20,NULL),
+  
 
   ('Plank',NULL,NULL,'On elbow and toes with body straight out keeping your core tight',3,NULL,60),
 

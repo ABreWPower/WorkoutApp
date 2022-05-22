@@ -81,12 +81,13 @@ let updateWorkout = gql`
     }
   }
 `
+
 // TODO: After saving a new workout, switch to edit page
 const saveWorkoutClick = () => {
-  console.log("before save workout", workout.value)
-  console.log("exercises", workout.value.exercises)
-  console.log("type of", typeof workout.value.exercises)
-  console.log("flatmap", workout.value.exercises.flatMap(element => [{id: element.id}]))
+  // console.log("before save workout", workout.value)
+  // console.log("exercises", workout.value.exercises)
+  // console.log("type of", typeof workout.value.exercises)
+  // console.log("flatmap", workout.value.exercises.flatMap(element => [{id: element.id}]))
 
   // Set a mutation to use
   let mutationToUse = null
