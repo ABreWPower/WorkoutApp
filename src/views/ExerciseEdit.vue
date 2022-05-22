@@ -51,8 +51,6 @@ let getExercise = gql`
   }
 ` 
 
-console.log("a", routeObj.params.exerciseid)
-console.log("b", exercise.value.name)
 if (routeObj.params.exerciseid != null && exercise.value.name == null) {
   console.log("page was refreshed, pulling data")
   client.query({
@@ -66,13 +64,13 @@ if (routeObj.params.exerciseid != null && exercise.value.name == null) {
     console.log("exercise", exercise)
     console.log("exercise.equipment", result.data.exercises[0].equipment)
     result.data.exercises[0].equipment.forEach(element => {
-      console.log("equipment", element)
-      exercise.value.equipment.push(element.name)
+      // exercise.value.equipment.push(element.name)
+      equipmentCheckChange(element)
     })
     console.log("exercise.musclegroups", result.data.exercises[0].musclegroups)
     result.data.exercises[0].musclegroups.forEach(element => {
-      console.log("musclegroups", element)
-      exercise.value.musclegroups.push(element.name)
+      // exercise.value.musclegroups.push(element.name)
+      muscleGroupCheckChange(element)
     })
   })
 }
@@ -294,7 +292,8 @@ const saveExerciseClick = () => {
     <button class="btn btn-secondary dropdown-toggle" type="button" id="muscleGroupDropdown" @click="muscleGroupDropdown()" aria-haspopup="true" aria-expanded="false">Muscle Groups</button>
     <div class="dropdown-menu" aria-labelledby="muscleGroupDropdown" id="muscleGroupForm">
       <div v-for="musclegroup in muscleGroupsList" :key="musclegroup.id">
-        <input type="checkbox" class="custom-control-input" :id="musclegroup.id" @click="muscleGroupCheckChange(musclegroup)" />
+        <!-- TODO checked property not working yet -->
+        <input type="checkbox" class="custom-control-input" :id="musclegroup.id" @click="muscleGroupCheckChange(musclegroup)" :checked="exercise.musclegroups.includes(musclegroup)" />
         <label class="custom-control-label" :for="musclegroup.id"> {{ musclegroup.name }} </label>
       </div>
     </div>
