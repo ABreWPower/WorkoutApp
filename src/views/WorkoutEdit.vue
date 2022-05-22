@@ -15,7 +15,8 @@ console.log("workout edit router params", routeObj.params)
 
 const workout = ref({
   id: null,
-  name: null
+  name: null,
+  exercises: []
 })
 
 // If we get an workout object passed in, overwrite the defaults
@@ -80,7 +81,7 @@ let updateWorkout = gql`
     }
   }
 `
-
+// TODO: After saving a new workout, switch to edit page
 const saveWorkoutClick = () => {
   console.log("before save workout", workout.value)
   console.log("exercises", workout.value.exercises)

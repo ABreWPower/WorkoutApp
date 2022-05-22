@@ -49,6 +49,7 @@ const resolvers = {
         WHERE workout.id = ?`, [parent.id])
     },
     // TODO add in duration
+    // TODO Allow multiple instances of an exercise per workout (workout_exercise table)
     difficulty(parent) {
       return querySQLDB(`SELECT exercise.difficulty AS difficulty
         FROM exercise
@@ -57,7 +58,7 @@ const resolvers = {
         WHERE workout.id = ?
         GROUP BY exercise.difficulty
         ORDER BY count(exercise.difficulty) DESC
-        LIMIT 1`, [parent.id]).then(result => result[0].difficulty)
+        LIMIT 1`, [parent.id]).then(result => result[0] ? result[0].difficulty : null)
     }
   },
   Exercise: { // TODO fix the rest of them to match these examples
@@ -128,8 +129,12 @@ const resolvers = {
           workoutid = result.insertId
           let inserts = []
           exercises.forEach(element => {
-            // TODO umm maybe we should like add this to the insert array??
-            querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest) VALUES (?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest])
+            ["id", "reps", "sets", "duration", "rest"].forEach(function(columnName) {
+              if (element[columnName] === undefined) {
+                element[columnName] = null
+              }
+            })
+            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest) VALUES (?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest]))
           })
           // return promise all
           return Promise.all(inserts)
@@ -151,8 +156,12 @@ const resolvers = {
           // then re-add the new ones
           let inserts = []
           exercises.forEach(element => {
-            // TODO umm maybe we should like add this to the insert array??
-            querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest) VALUES (?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest])
+            ["id", "reps", "sets", "duration", "rest"].forEach(function(columnName) {
+              if (element[columnName] === undefined) {
+                element[columnName] = null
+              }
+            })
+            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest) VALUES (?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest]))
           })
           // return promise all
           return Promise.all(inserts)
