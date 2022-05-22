@@ -11,8 +11,8 @@ import Workout2Pic from "/pic2.jpg"
 import Workout3Pic from "/pic3.jpg"
 
 const getImages = function () {
-  let images = [Workout1Pic, Workout2Pic, Workout3Pic];
-  return images[Math.floor(Math.random() * images.length)];
+  let images = [Workout1Pic, Workout2Pic, Workout3Pic]
+  return images[Math.floor(Math.random() * images.length)]
 }
 
 const routeObj = useRoute()
@@ -46,6 +46,7 @@ let getExercise = gql`
 const exercise = ref([])
 const equipment = ref([])
 const musclegroups = ref([])
+let imageURI = ""
 
 client.query({
   query: getExercise,
@@ -82,8 +83,8 @@ let editClick = function() {
 
 <template>
   <h1>{{ exercise.name }}</h1>
-  <!-- TODO <img src="/pic1.jpg" alt="pic1" style="max-width: 100vw" /> -->
-  <img v-bind:src="getImages(picture)" v-bind:alt="name" class="img-fluid rounded-start w-100" style="" />
+  <img v-if="exercise.picture != null" :src="`/${exercise.picture}`" v-bind:alt="name" class="img-fluid rounded-start w-100" />
+  <img v-if="exercise.picture == null" :src="getImages(picture)" v-bind:alt="name" class="img-fluid rounded-start w-100" />
 
   <div class="row align-items-start">
     <div class="col">
