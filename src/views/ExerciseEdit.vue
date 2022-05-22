@@ -195,6 +195,7 @@ client.query({
     </div>
   </div>
 
+  <!-- TODO make this an input and start with incoming values -->
   <div class="" style="padding-bottom: 10px">
     <p>
       Difficulty:
