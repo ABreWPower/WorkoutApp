@@ -64,12 +64,10 @@ if (routeObj.params.exerciseid != null && exercise.value.name == null) {
     console.log("exercise", exercise)
     console.log("exercise.equipment", result.data.exercises[0].equipment)
     result.data.exercises[0].equipment.forEach(element => {
-      // exercise.value.equipment.push(element.name)
       equipmentCheckChange(element)
     })
     console.log("exercise.musclegroups", result.data.exercises[0].musclegroups)
     result.data.exercises[0].musclegroups.forEach(element => {
-      // exercise.value.musclegroups.push(element.name)
       muscleGroupCheckChange(element)
     })
   })
@@ -194,8 +192,6 @@ function equipmentCheckChange(piece) {
     // Add the muscle group to the exercise
     exercise.value.equipment.push(piece)
   }
-
-  console.log("exercise.value.equipment", exercise.value.equipment)
 }
 
 // **************
@@ -218,7 +214,6 @@ let updateExercise = gql`
   }
 `
 
-// TODO: After saving a new exercise, switch to edit page
 const saveExerciseClick = () => {
   console.log("before save exercise", exercise.value)
   console.log("flatmap", exercise.value.musclegroups.flatMap(element => [element.id]))
@@ -255,6 +250,13 @@ const saveExerciseClick = () => {
     if (exercise.value.id == null) {
       exercise.value.id = result.data.addExercise.id
       console.log("exercise id", exercise.value.id)
+      router.push({
+        name: 'Exercise Edit',
+        params: {
+          exercise: JSON.stringify(exercise.value),
+          exerciseid: exercise.value.id
+        }
+      })
     }
     else {
       console.log("nothing to do with returned id as we already have it")

@@ -82,12 +82,7 @@ let updateWorkout = gql`
   }
 `
 
-// TODO: After saving a new workout, switch to edit page
 const saveWorkoutClick = () => {
-  // console.log("before save workout", workout.value)
-  // console.log("exercises", workout.value.exercises)
-  // console.log("type of", typeof workout.value.exercises)
-  // console.log("flatmap", workout.value.exercises.flatMap(element => [{id: element.id}]))
 
   // Set a mutation to use
   let mutationToUse = null
@@ -122,6 +117,13 @@ const saveWorkoutClick = () => {
     if (workout.value.id == null) {
       workout.value.id = result.data.addWorkout.id
       console.log("workout id", workout.value.id)
+      router.push({
+        name: 'Workout Edit',
+        params: {
+          workout: JSON.stringify(workout.value),
+          workoutid: workout.value.id
+        }
+      })
     }
     else {
       console.log("nothing to do with returned id as we already have it")

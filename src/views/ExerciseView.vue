@@ -82,7 +82,7 @@ let editClick = function() {
 
 <template>
   <h1>{{ exercise.name }}</h1>
-  <!-- <img src="/pic1.jpg" alt="pic1" style="max-width: 100vw" /> -->
+  <!-- TODO <img src="/pic1.jpg" alt="pic1" style="max-width: 100vw" /> -->
   <img v-bind:src="getImages(picture)" v-bind:alt="name" class="img-fluid rounded-start w-100" style="" />
 
   <div class="row align-items-start">
@@ -116,18 +116,7 @@ let editClick = function() {
     {{ exercise.instructions }}
   </p>
 
-  <!-- <div v-for="exercise in workout.exercises" :key="exercise">
-    <card-view :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :description="exercise.instructions" :exerciseid="exercise.id"></card-view>
-  </div> -->
-
-  <!-- <div class="row">
-    <div class="col">
-      <button type="button" class="btn btn-primary">Start</button>
-    </div> 
-    <div class="col"> -->
   <button type="button" class="btn btn-outline-secondary" @click="editClick()">Edit</button>
-  <!-- </div>
-  </div> -->
 </template>
 
 <style scoped>
