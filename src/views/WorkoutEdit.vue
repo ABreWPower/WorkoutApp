@@ -178,6 +178,7 @@ const addExerciseClick = () => {
   <div v-for="exercise in workout.exercises" :key="exercise.id">
     <workout-edit-exercise-card-view
       :name="exercise.name"
+      :picture="exercise.picture"
       :sets="exercise.sets"
       @update:sets="exercise.sets = parseInt($event)"
       :reps="exercise.reps"
