@@ -105,7 +105,7 @@ let editClick = function() {
 
   <div class="row align-items-start">
     <div class="col">
-      <p>Duration: {{ exercise.duration }} minutes</p>
+      <p>Duration: {{ exercise.duration }} seconds</p>
     </div>
     <div class="col">
       <p>Required Equipment: {{ equipment }}</p>
