@@ -269,7 +269,6 @@ const saveExerciseClick = () => {
 </script>
 
 <template>
-  <!-- TODO sorta need to make this editable -->
   <div class="input-group input-group-lg">
     <span class="input-group-text" id="exerciseNameLabel">Exercise Name</span>
     <input type="text" class="form-control" id="exerciseName" v-model="exercise.name" aria-label="Exercise Name" aria-describedby="exerciseNameLabel" />
@@ -295,7 +294,7 @@ const saveExerciseClick = () => {
     <button class="btn btn-secondary dropdown-toggle" type="button" id="muscleGroupDropdown" @click="muscleGroupDropdown()" aria-haspopup="true" aria-expanded="false">Muscle Groups</button>
     <div class="dropdown-menu" aria-labelledby="muscleGroupDropdown" id="muscleGroupForm">
       <div v-for="musclegroup in muscleGroupsList" :key="musclegroup.id">
-        <!-- TODO checked property not working yet -->
+        <!-- TODO checked property not working yet, do we need to make this a component and a calculated value or something? -->
         <input type="checkbox" class="custom-control-input" :id="musclegroup.id" @click="muscleGroupCheckChange(musclegroup)" :checked="exercise.musclegroups.includes(musclegroup)" />
         <label class="custom-control-label" :for="musclegroup.id"> {{ musclegroup.name }} </label>
       </div>
