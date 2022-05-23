@@ -84,7 +84,7 @@ let editClick = function() {
 <template>
   <h1>{{ exercise.name }}</h1>
   <img v-if="exercise.picture != null" :src="`/${exercise.picture}`" v-bind:alt="name" class="img-fluid rounded-start w-100" />
-  <img v-if="exercise.picture == null" :src="getImages(picture)" v-bind:alt="name" class="img-fluid rounded-start w-100" />
+  <img v-else :src="getImages()" v-bind:alt="name" class="img-fluid rounded-start w-100" />
 
   <div class="row align-items-start">
     <div class="col">

@@ -274,7 +274,8 @@ const saveExerciseClick = () => {
     <span class="input-group-text" id="exerciseNameLabel">Exercise Name</span>
     <input type="text" class="form-control" id="exerciseName" v-model="exercise.name" aria-label="Exercise Name" aria-describedby="exerciseNameLabel" />
   </div>
-  <img src="/pic1.jpg" alt="pic1" style="max-width: 94vw; padding-top: 15px; padding-bottom: 15px" />
+  <img v-if="exercise.picture != null" :src="`/${exercise.picture}`" v-bind:alt="name" class="img-fluid rounded-start w-100" style="max-width: 94vw; padding-top: 15px; padding-bottom: 15px" />
+  <img v-else :src="getImages()" v-bind:alt="name" class="img-fluid rounded-start w-100" style="max-width: 94vw; padding-top: 15px; padding-bottom: 15px" />
 
   <div class="row align-items-start" style="padding-bottom: 20px">
     <div class="col">

@@ -67,7 +67,8 @@ const cardClick = () => {
     <div class="row g-0">
       <!-- TODO put video if there is one otherwise picture -->
       <div class="col-4 align-self-center">
-        <img v-bind:src="getImages(picture)" v-bind:alt="name" class="img-fluid rounded-start w-100" style="max-height: 8em; max-width: 180px" />
+        <img v-if="picture != null" :src="`/${picture}`" v-bind:alt="name" class="img-fluid rounded-start w-100" style="max-height: 8em; max-width: 180px" />
+        <img v-else :src="getImages()" v-bind:alt="name" class="img-fluid rounded-start w-100" style="max-height: 8em; max-width: 180px" />
       </div>
       <div class="col-8">
         <div class="card-body">
