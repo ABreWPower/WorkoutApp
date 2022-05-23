@@ -433,6 +433,12 @@ const saveExerciseClick = () => {
         <i id="star3" class="bi" :class="star3Icon" style="font-size: 25px; padding-right: 10px" @click="star3Change()"></i>
       </span>
     </p>
+    <p>
+      Patrick's difficulty:
+      <span>
+        <i v-for="star in [1,2,3]" :key="star" :class="{bi: true, 'bi-star': exercise.difficulty < star, 'bi-star-fill': exercise.difficulty >= star}" style="font-size: 25px; padding-right: 10px" @click="exercise.difficulty = star"></i>
+      </span>
+    </p>
   </div>
 
   <!-- TODO lock 1 down after the other is filled in Reps/Duration -->
