@@ -213,105 +213,6 @@ function equipmentCheckChange(piece) {
   }
 }
 
-// ******************
-// Star Rating System
-// ******************
-console.log("Exercise starting difficulty", exercise.value.difficulty)
-// Set initla state
-let star1Icon = null
-if (exercise.value.difficulty < 1) {
-  star1Icon = "bi-star"
-}
-else {
-  star1Icon = "bi-star-fill"
-}
-
-let star2Icon = null
-if (exercise.value.difficulty < 2) {
-  star2Icon = "bi-star"
-}
-else {
-  star2Icon = "bi-star-fill"
-}
-
-let star3Icon = null
-if (exercise.value.difficulty < 3) {
-  star3Icon = "bi-star"
-}
-else {
-  star3Icon = "bi-star-fill"
-}
-
-// TODO need to change difficulty
-function star1Change() {
-  let star1 = document.getElementById("star1")
-  let star2 = document.getElementById("star2")
-  let star3 = document.getElementById("star3")
-  console.log("star 1:", star1.classList)
-  if (star1.classList.contains("bi-star")) {
-    // If it is empty fill star1 and empty the other 2
-    star1.classList.remove('bi-star')
-    star1.classList.add('bi-star-fill')
-    star2.classList.remove('bi-star-fill')
-    star2.classList.add('bi-star')    
-    star3.classList.remove('bi-star-fill')
-    star3.classList.add('bi-star')    
-  }
-  else {
-    // If it is filled empty star1 and empty the other 2
-    star1.classList.remove('bi-star-fill')
-    star1.classList.add('bi-star')    
-    star2.classList.remove('bi-star-fill')
-    star2.classList.add('bi-star')    
-    star3.classList.remove('bi-star-fill')
-    star3.classList.add('bi-star')    
-  }  
-}
-
-function star2Change() {
-  let star1 = document.getElementById("star1")
-  let star2 = document.getElementById("star2")
-  let star3 = document.getElementById("star3")
-  console.log("star 2:", star2.classList)
-  if (star2.classList.contains("bi-star")) {
-    // If star 2 is empty fill it and start 1, empty star 3
-    star1.classList.remove('bi-star')
-    star1.classList.add('bi-star-fill')
-    star2.classList.remove('bi-star')
-    star2.classList.add('bi-star-fill')
-    star3.classList.remove('bi-star-fill')
-    star3.classList.add('bi-star')   
-  }
-  else {
-    // If star 2 is filled, empty it and start 3
-    star2.classList.remove('bi-star-fill')
-    star2.classList.add('bi-star')
-    star3.classList.remove('bi-star-fill')
-    star3.classList.add('bi-star') 
-  }  
-}
-
-function star3Change() {
-  let star1 = document.getElementById("star1")
-  let star2 = document.getElementById("star2")
-  let star3 = document.getElementById("star3")
-  console.log("star 3:", star3.classList)
-  if (star3.classList.contains("bi-star")) {
-    // If star 2 is empty fill it and start 1, empty star 3
-    star1.classList.remove('bi-star')
-    star1.classList.add('bi-star-fill')
-    star2.classList.remove('bi-star')
-    star2.classList.add('bi-star-fill')
-    star3.classList.remove('bi-star')   
-    star3.classList.add('bi-star-fill')
-  }
-  else {
-    // If star 3 is filled, empty it
-    star3.classList.remove('bi-star-fill')
-    star3.classList.add('bi-star') 
-  }  
-}
-
 // **************
 // Saving section
 // **************
@@ -421,22 +322,9 @@ const saveExerciseClick = () => {
   <!-- TODO make this an input and start with incoming values -->
   <div class="" style="padding-bottom: 10px">
     <p>
-      Rate Difficulty:
-      <!-- <span v-for="i in [0, 1, 2]" :key="i"> -->
-      <!-- <span id="StarRating"> -->
-      <!-- <i v-if="i < filledStars" class="bi bi-star-fill" style="font-size: 25px; padding-right: 10px"></i> -->
-      <!-- <i v-else class="bi bi-star" style="font-size: 25px; padding-right: 10px"></i> -->
-      <!-- </span> -->
+      Rate difficulty:
       <span>
-        <i id="star1" class="bi" :class="star1Icon" style="font-size: 25px; padding-right: 10px" @click="star1Change()"></i>
-        <i id="star2" class="bi" :class="star2Icon" style="font-size: 25px; padding-right: 10px" @click="star2Change()"></i>
-        <i id="star3" class="bi" :class="star3Icon" style="font-size: 25px; padding-right: 10px" @click="star3Change()"></i>
-      </span>
-    </p>
-    <p>
-      Patrick's difficulty:
-      <span>
-        <i v-for="star in [1,2,3]" :key="star" :class="{bi: true, 'bi-star': exercise.difficulty < star, 'bi-star-fill': exercise.difficulty >= star}" style="font-size: 25px; padding-right: 10px" @click="exercise.difficulty = star"></i>
+        <i v-for="star in [1, 2, 3]" :key="star" :class="{ 'bi': true, 'bi-star': exercise.difficulty < star, 'bi-star-fill': exercise.difficulty >= star }" style="font-size: 25px; padding-right: 10px" @click="exercise.difficulty = star"></i>
       </span>
     </p>
   </div>
