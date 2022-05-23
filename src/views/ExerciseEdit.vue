@@ -139,6 +139,17 @@ function muscleGroupCheckChange(musclegroup) {
   }
 }
 
+// ******************** TEST
+let mgtestlist = [{
+  __typename: "MuscleGroup",
+  id: "1",
+  name: "Chest",
+  picture: null
+}]
+console.log("mgtestlist", mgtestlist)
+
+
+
 // *********
 // Equipment
 // *********
@@ -294,8 +305,7 @@ const saveExerciseClick = () => {
     <button class="btn btn-secondary dropdown-toggle" type="button" id="muscleGroupDropdown" @click="muscleGroupDropdown()" aria-haspopup="true" aria-expanded="false">Muscle Groups</button>
     <div class="dropdown-menu" aria-labelledby="muscleGroupDropdown" id="muscleGroupForm">
       <div v-for="musclegroup in muscleGroupsList" :key="musclegroup.id">
-        <!-- TODO checked property not working yet, do we need to make this a component and a calculated value or something? -->
-        <input type="checkbox" class="custom-control-input" :id="musclegroup.id" @click="muscleGroupCheckChange(musclegroup)" :checked="exercise.musclegroups.includes(musclegroup)" />
+        <input type="checkbox" class="custom-control-input" :id="musclegroup.id" @click="muscleGroupCheckChange(musclegroup)" :checked="exercise.musclegroups.findIndex((el) => el.id == musclegroup.id) != -1" />
         <label class="custom-control-label" :for="musclegroup.id"> {{ musclegroup.name }} </label>
       </div>
     </div>
@@ -326,7 +336,7 @@ const saveExerciseClick = () => {
     <button class="btn btn-secondary dropdown-toggle" type="button" id="equipmentDropdown" @click="equipmentDropdown()" aria-haspopup="true" aria-expanded="false">Equipment</button>
     <div class="dropdown-menu" aria-labelledby="equipmentDropdown" id="equipmentForm">
       <div v-for="piece in equipmentList" :key="piece.id">
-        <input type="checkbox" class="custom-control-input" :id="piece.id + 1000" @click="equipmentCheckChange(piece)" />
+        <input type="checkbox" class="custom-control-input" :id="piece.id + 1000" @click="equipmentCheckChange(piece)" :checked="exercise.equipment.findIndex((el) => el.id == piece.id) != -1" />
         <label class="custom-control-label" :for="piece.id + 1000"> {{ piece.name }} </label>
       </div>
     </div>
