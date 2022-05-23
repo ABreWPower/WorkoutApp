@@ -73,8 +73,6 @@ if (routeObj.params.exerciseid != null && exercise.value.name == null) {
   })
 }
 
-// TODO need to match up the existing equipment and musclegroups
-
 // **********************
 // Array Removal Function
 // **********************
