@@ -186,7 +186,9 @@ const addExerciseClick = () => {
       :duration="exercise.duration"
       @update:duration="exercise.duration = parseInt($event)"
       :rest="exercise.rest"
-      @update:rest="exercise.rest = parseInt($event)">
+      @update:rest="exercise.rest = parseInt($event)"
+      @delete="workout.exercises.splice(workout.exercises.indexOf(exercise), 1)"
+    >
     </workout-edit-exercise-card-view>
   </div>
 

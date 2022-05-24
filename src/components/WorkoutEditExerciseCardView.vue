@@ -51,7 +51,7 @@ const getImages = function () {
           <img v-if="picture != null" :src="`/${picture}`" v-bind:alt="name" class="img-fluid rounded-start smallpics" />
           <img v-else :src="getImages()" v-bind:alt="name" class="img-fluid rounded-start smallpics" />
           <div class="d-flex float-end">
-            <i class="bi bi-trash bi-2x" style="font-size: 35px; padding-right: 10px"></i>
+            <i class="bi bi-trash bi-2x" style="font-size: 35px; padding-right: 10px" @click="$emit('delete')"></i>
             <i class="bi bi-three-dots-vertical" style="font-size: 35px; padding-right: 10px"></i>
           </div>
         </div>
