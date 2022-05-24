@@ -46,7 +46,8 @@ const resolvers = {
         FROM exercise
           INNER JOIN workout_exercise ON exercise.id = workout_exercise.exerciseid
           INNER JOIN workout ON workout_exercise.workoutid = workout.id
-        WHERE workout.id = ?`, [parent.id])
+        WHERE workout.id = ?
+        ORDER BY workout_exercise.sort`, [parent.id])
     },
     // TODO add in duration
     // TODO Allow multiple instances of an exercise per workout (workout_exercise table)
