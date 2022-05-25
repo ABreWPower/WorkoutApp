@@ -53,6 +53,8 @@ const getImages = function () {
           <div class="d-flex float-end">
             <i class="bi bi-trash bi-2x" style="font-size: 35px; padding-right: 10px" @click="$emit('delete')"></i>
             <i class="bi bi-three-dots-vertical" style="font-size: 35px; padding-right: 10px"></i>
+            <i class="bi bi-caret-down-fill" style="font-size: 35px; padding-right: 10px" @click="$emit('move:down')"></i>
+            <i class="bi bi-caret-up-fill" style="font-size: 35px; padding-right: 10px" @click="$emit('move:up')"></i>
           </div>
         </div>
         <div class="col-md-8">

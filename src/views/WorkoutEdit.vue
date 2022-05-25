@@ -103,12 +103,13 @@ const saveWorkoutClick = () => {
       picture: workout.value.picture,
       description: workout.value.description,
       user: workout.value.user,
-      exercises: workout.value.exercises.flatMap(element => [{
+      exercises: workout.value.exercises.flatMap((element, index) => [{
         id: parseInt(element.id),
         reps: element.reps,
         sets: element.sets,
         duration: element.duration,
-        rest: element.rest
+        rest: element.rest,
+        sort: index
       }])
     }
   })
@@ -150,6 +151,17 @@ const addExerciseClick = () => {
     }
   })
 }
+
+function exerciseMove(fromIndex, offset) {
+  if(fromIndex + offset < 0 || fromIndex + offset >= workout.value.exercises.length) {
+    return
+  }
+  let arr = workout.value.exercises
+  let element = arr[fromIndex]
+  arr.splice(fromIndex, 1)
+  arr.splice(fromIndex + offset, 0, element)
+}
+
 </script>
 
 <template>
@@ -175,7 +187,7 @@ const addExerciseClick = () => {
   </div>
 
   <!-- I think part of the problem is we are only pulling back a number not the whole object -->
-  <div v-for="exercise in workout.exercises" :key="exercise.id">
+  <div v-for="(exercise, index) in workout.exercises" :key="exercise.id">
     <workout-edit-exercise-card-view
       :name="exercise.name"
       :picture="exercise.picture"
@@ -188,6 +200,8 @@ const addExerciseClick = () => {
       :rest="exercise.rest"
       @update:rest="exercise.rest = parseInt($event)"
       @delete="workout.exercises.splice(workout.exercises.indexOf(exercise), 1)"
+      @move:up="exerciseMove(index, -1)"
+      @move:down="exerciseMove(index, 1)"
     >
     </workout-edit-exercise-card-view>
   </div>

@@ -120,12 +120,12 @@ const resolvers = {
           workoutid = result.insertId
           let inserts = []
           exercises.forEach(element => {
-            ["id", "reps", "sets", "duration", "rest"].forEach(function (columnName) {
+            ["id", "reps", "sets", "duration", "rest", "sort"].forEach(function (columnName) {
               if (element[columnName] === undefined) {
                 element[columnName] = null
               }
             })
-            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest) VALUES (?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest]))
+            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest, sort) VALUES (?, ?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest, elements.sort]))
           })
           // return promise all
           return Promise.all(inserts)
@@ -147,12 +147,12 @@ const resolvers = {
           // then re-add the new ones
           let inserts = []
           exercises.forEach(element => {
-            ["id", "reps", "sets", "duration", "rest"].forEach(function (columnName) {
+            ["id", "reps", "sets", "duration", "rest", "sort"].forEach(function (columnName) {
               if (element[columnName] === undefined) {
                 element[columnName] = null
               }
             })
-            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest) VALUES (?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest]))
+            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest, sort) VALUES (?, ?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest, element.sort]))
           })
           // return promise all
           return Promise.all(inserts)
