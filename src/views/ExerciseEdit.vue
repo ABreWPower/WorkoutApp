@@ -10,6 +10,8 @@ import Workout1Pic from "/pic1.jpg"
 import Workout2Pic from "/pic2.jpg"
 import Workout3Pic from "/pic3.jpg"
 
+// TODO if you go back to excerise add it updates existing instead of adding new
+
 const getImages = function () {
   let images = [Workout1Pic, Workout2Pic, Workout3Pic]
   return images[Math.floor(Math.random() * images.length)]
@@ -267,6 +269,7 @@ const saveExerciseClick = () => {
   .then(result => {
     console.log("results", result)
     if (exercise.value.id == null) {
+      // Commented out the line below, when the user goes back to make another new workout, it overrights it instead of creating new
       exercise.value.id = result.data.addExercise.id
       console.log("exercise id", exercise.value.id)
       router.push({

@@ -36,7 +36,7 @@ CREATE TABLE `equipment` (
 
 LOCK TABLES `equipment` WRITE;
 /*!40000 ALTER TABLE `equipment` DISABLE KEYS */;
-INSERT INTO `equipment` VALUES (1,'Dumbbell',NULL),(2,'Bench',NULL),(3,'Treadmill',NULL),(4,'Pullup bar',NULL),(5,'Stationary Bicyle',NULL),(6,'Jump Rope',NULL),(7,'Resistance Bands',NULL),(8,'Elliptical',NULL),(9,'Barbell',NULL),(10,'Kettlebell',NULL),(11,'Squat Rack',NULL),(12,'Benchpress Rack',NULL),(13,'Row Machine',NULL),(14,'Medicine Ball',NULL),(15,'Foam Roller',NULL),(16,'Ropes',NULL),(17,'Platform',NULL);
+INSERT INTO `equipment` VALUES (1,'Dumbbell',NULL),(2,'Bench',NULL),(3,'Treadmill',NULL),(4,'Pullup bar',NULL),(5,'Stationary Bicyle',NULL),(6,'Jump Rope',NULL),(7,'Resistance Bands',NULL),(8,'Elliptical',NULL),(9,'Barbell',NULL),(10,'Kettlebell',NULL),(11,'Squat Rack',NULL),(12,'Benchpress Rack',NULL),(13,'Row Machine',NULL),(14,'Medicine Ball',NULL),(15,'Foam Roller',NULL),(16,'Ropes',NULL),(17,'Platform',NULL),(18,'Speed Bag',NULL),(19,'Heavy Bag',NULL);
 /*!40000 ALTER TABLE `equipment` ENABLE KEYS */;
 UNLOCK TABLES;
 
