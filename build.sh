@@ -1,3 +1,7 @@
+###
+### Server deployment section
+###
+
 cd server
 
 DIR=".serverless"
@@ -12,3 +16,14 @@ else
 fi
 
 cd ..
+
+
+###
+### Client deployment section
+###
+
+
+#TODO cleanup icons in order to clean-out dist folder
+npm run build
+
+aws s3 sync ./dist/ s3://workoutapp.adamwickersham.com/ --profile adam
