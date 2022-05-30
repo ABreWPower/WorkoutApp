@@ -214,7 +214,7 @@ const saveExerciseClick = () => {
 
   // Set a mutation to use
   let mutationToUse = null
-  if (exercise.value.id == null) {
+  if (routeObj.params.exerciseid === undefined) {
     console.log("no id, setting to use addExercise")
     mutationToUse = addExercise
   }
@@ -241,7 +241,6 @@ const saveExerciseClick = () => {
   .then(result => {
     console.log("results", result)
     if (exercise.value.id == null) {
-      // Commented out the line below, when the user goes back to make another new workout, it overrights it instead of creating new
       exercise.value.id = result.data.addExercise.id
       console.log("exercise id", exercise.value.id)
       router.push({
