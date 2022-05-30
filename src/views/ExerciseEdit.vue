@@ -10,8 +10,6 @@ import Workout1Pic from "/pic1.jpg"
 import Workout2Pic from "/pic2.jpg"
 import Workout3Pic from "/pic3.jpg"
 
-// TODO if you go back to excerise add it updates existing instead of adding new
-
 const getImages = function () {
   let images = [Workout1Pic, Workout2Pic, Workout3Pic]
   return images[Math.floor(Math.random() * images.length)]
@@ -283,16 +281,6 @@ const saveExerciseClick = () => {
     <!-- <input type="text" class="form-control" id="exerciseDescription" v-model="exercise.instructions" aria-label="Exercise Description" /> -->
     <textarea type="text" class="form-control textarea" id="exerciseDescription" v-model="exercise.instructions" aria-label="Exercise Description" />
   </div>
-
-  <!-- <div class="dropdown dropright dropdown-menu-right" style="padding-bottom: 20px">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="muscleGroupDropdown" @click="muscleGroupDropdown()" aria-haspopup="true" aria-expanded="false">Muscle Groups</button>
-    <div class="dropdown-menu" aria-labelledby="muscleGroupDropdown" id="muscleGroupForm">
-      <div v-for="musclegroup in muscleGroupsList" :key="musclegroup.id">
-        <input type="checkbox" class="custom-control-input" :id="musclegroup.id" @click="muscleGroupCheckChange(musclegroup)" :checked="exercise.musclegroups.findIndex((el) => el.id == musclegroup.id) != -1" />
-        <label class="custom-control-label" :for="musclegroup.id"> {{ musclegroup.name }} </label>
-      </div>
-    </div>
-  </div> -->
 
   <!-- TODO should we only save if they click a save button?  currently we save and update as soon as they click on an object -->
   <div style="padding-bottom: 10px">
