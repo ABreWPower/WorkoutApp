@@ -12,9 +12,13 @@ import Workout3Pic from "/pic3.jpg"
 
 // TODO if you go back to excerise add it updates existing instead of adding new
 
+let image = null
 const getImages = function () {
-  let images = [Workout1Pic, Workout2Pic, Workout3Pic]
-  return images[Math.floor(Math.random() * images.length)]
+  if(image === null) {
+    let images = [Workout1Pic, Workout2Pic, Workout3Pic]
+    image = images[Math.floor(Math.random() * images.length)]
+  }
+  return image
 }
 
 const routeObj = useRoute()
@@ -134,17 +138,6 @@ function muscleGroupCheckChange(musclegroup) {
     exercise.value.musclegroups.push(musclegroup)
   }
 }
-
-// ******************** TEST
-let mgtestlist = [{
-  __typename: "MuscleGroup",
-  id: "1",
-  name: "Chest",
-  picture: null
-}]
-console.log("mgtestlist", mgtestlist)
-
-
 
 // *********
 // Equipment
