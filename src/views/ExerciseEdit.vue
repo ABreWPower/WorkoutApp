@@ -123,20 +123,6 @@ client.query({
   })
 })
 
-// Enable and disable the muscle group form
-let muscleGroupToggle = false
-function muscleGroupDropdown() {
-  let dropdown = document.getElementById("muscleGroupForm")
-  if (muscleGroupToggle == false) {
-    dropdown.style.display = "block"
-    muscleGroupToggle = true
-  }
-  else {
-    dropdown.style.display = "none"
-    muscleGroupToggle = false
-  }
-}
-
 // Add each clicked item to the exercise.musclegroups
 function muscleGroupCheckChange(musclegroup) {
   if (exercise.value.musclegroups.includes(musclegroup)) {
@@ -188,20 +174,6 @@ client.query({
     equipmentList.value.push(element)
   })
 })
-
-// Enable and disable the equipment form
-let equipmentToggle = false
-function equipmentDropdown() {
-  let dropdown = document.getElementById("equipmentForm")
-  if (equipmentToggle == false) {
-    dropdown.style.display = "block"
-    equipmentToggle = true
-  }
-  else {
-    dropdown.style.display = "none"
-    equipmentToggle = false
-  }
-}
 
 // Add each clicked item to the exercise.musclegroups
 function equipmentCheckChange(piece) {
@@ -312,7 +284,7 @@ const saveExerciseClick = () => {
     <input type="text" class="form-control" id="exerciseDescription" v-model="exercise.instructions" aria-label="Exercise Description" />
   </div>
 
-  <div class="dropdown" style="padding-bottom: 20px">
+  <!-- <div class="dropdown dropright dropdown-menu-right" style="padding-bottom: 20px">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="muscleGroupDropdown" @click="muscleGroupDropdown()" aria-haspopup="true" aria-expanded="false">Muscle Groups</button>
     <div class="dropdown-menu" aria-labelledby="muscleGroupDropdown" id="muscleGroupForm">
       <div v-for="musclegroup in muscleGroupsList" :key="musclegroup.id">
@@ -320,9 +292,32 @@ const saveExerciseClick = () => {
         <label class="custom-control-label" :for="musclegroup.id"> {{ musclegroup.name }} </label>
       </div>
     </div>
+  </div> -->
+
+  <!-- TODO should we only save if they click a save button?  currently we save and update as soon as they click on an object -->
+  <div style="padding-bottom: 10px">
+    <button class="btn btn-secondary" type="button" id="muscleGroupModalButton" data-bs-toggle="modal" data-bs-target="#muscleGroupModalForm">Select Muscle Groups</button>
+  </div>
+  <div class="modal fade" id="muscleGroupModalForm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Select Muscle Group</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div v-for="musclegroup in muscleGroupsList" :key="musclegroup.id">
+            <input type="checkbox" class="custom-control-input" :id="musclegroup.id" @click="muscleGroupCheckChange(musclegroup)" :checked="exercise.musclegroups.findIndex((el) => el.id == musclegroup.id) != -1" />
+            <label class="custom-control-label" :for="musclegroup.id"> {{ musclegroup.name }} </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- TODO make this an input and start with incoming values -->
   <div class="" style="padding-bottom: 10px">
     <p>
       Rate difficulty:
@@ -342,12 +337,26 @@ const saveExerciseClick = () => {
     <input type="number" v-model="exercise.duration" class="form-control" placeholder="Seconds" aria-describedby="durationText" style="max-width: 75px" />
   </div>
 
-  <div class="dropdown" style="padding-bottom: 20px">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="equipmentDropdown" @click="equipmentDropdown()" aria-haspopup="true" aria-expanded="false">Equipment</button>
-    <div class="dropdown-menu" aria-labelledby="equipmentDropdown" id="equipmentForm">
-      <div v-for="piece in equipmentList" :key="piece.id">
-        <input type="checkbox" class="custom-control-input" :id="piece.id + 1000" @click="equipmentCheckChange(piece)" :checked="exercise.equipment.findIndex((el) => el.id == piece.id) != -1" />
-        <label class="custom-control-label" :for="piece.id + 1000"> {{ piece.name }} </label>
+  <!-- TODO should we only save if they click a save button?  currently we save and update as soon as they click on an object -->
+  <div style="padding-bottom: 10px">
+    <button class="btn btn-secondary" type="button" id="equipmentModalButton" data-bs-toggle="modal" data-bs-target="#equipmentModalForm">Select Equipment</button>
+  </div>
+  <div class="modal fade" id="equipmentModalForm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Select Equipment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div v-for="piece in equipmentList" :key="piece.id">
+            <input type="checkbox" class="custom-control-input" :id="piece.id + 1000" @click="equipmentCheckChange(piece)" :checked="exercise.equipment.findIndex((el) => el.id == piece.id) != -1" />
+            <label class="custom-control-label" :for="piece.id + 1000" style="padding-bottom: 5px; padding-left: 10px"> {{ piece.name }} </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
@@ -358,4 +367,10 @@ const saveExerciseClick = () => {
 </template>
 
 <style scoped>
+#element-toggle {
+  display: none;
+}
+#element-toggle:checked ~ #exampleModal {
+  display: block;
+}
 </style>
