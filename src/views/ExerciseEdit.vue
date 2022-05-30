@@ -281,7 +281,8 @@ const saveExerciseClick = () => {
 
   <div style="padding-bottom: 20px">
     <h4>Instructions</h4>
-    <input type="text" class="form-control" id="exerciseDescription" v-model="exercise.instructions" aria-label="Exercise Description" />
+    <!-- <input type="text" class="form-control" id="exerciseDescription" v-model="exercise.instructions" aria-label="Exercise Description" /> -->
+    <textarea type="text" class="form-control textarea" id="exerciseDescription" v-model="exercise.instructions" aria-label="Exercise Description" />
   </div>
 
   <!-- <div class="dropdown dropright dropdown-menu-right" style="padding-bottom: 20px">
@@ -367,10 +368,10 @@ const saveExerciseClick = () => {
 </template>
 
 <style scoped>
-#element-toggle {
-  display: none;
-}
-#element-toggle:checked ~ #exampleModal {
+.textarea {
   display: block;
+  width: 100%;
+  overflow: auto;
+  resize: none;
 }
 </style>
