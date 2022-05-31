@@ -231,7 +231,7 @@ const saveExerciseClick = () => {
   })
   .then(result => {
     console.log("results", result)
-    if (exercise.value.id == null) {
+    if (routeObj.params.exerciseid === undefined) {
       exercise.value.id = result.data.addExercise.id
       console.log("exercise id", exercise.value.id)
       router.push({
