@@ -29,8 +29,8 @@ const routes = [
     path: '/exerciseedit/:exerciseid',
     name: 'Exercise Edit',
     props: {
-      exercise: true,
-      exerciseid: true
+      exercise: null,
+      exerciseid: null
     },
     component: () => import('../views/ExerciseEdit.vue')
   },
