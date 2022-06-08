@@ -1,27 +1,19 @@
--- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.29, for Linux (x86_64)
 --
--- Host: workoutdb.cluster-calr2vgnmar3.us-east-1.rds.amazonaws.com    Database: workoutapp
+-- Host: localhost    Database: workoutapp
 -- ------------------------------------------------------
--- Server version	5.7.12
+-- Server version	8.0.29-0ubuntu0.21.10.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
-
---
--- GTID state at the beginning of the backup 
---
-
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '';
 
 --
 -- Table structure for table `equipment`
@@ -31,9 +23,9 @@ DROP TABLE IF EXISTS `equipment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `equipment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `icon` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `icon` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -56,14 +48,14 @@ DROP TABLE IF EXISTS `exercise`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `exercise` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `video` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `picture` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `instructions` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `difficulty` int(11) DEFAULT NULL,
-  `reps` int(11) DEFAULT NULL,
-  `duration` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `video` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `picture` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `instructions` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `difficulty` int DEFAULT NULL,
+  `reps` int DEFAULT NULL,
+  `duration` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -86,8 +78,8 @@ DROP TABLE IF EXISTS `exercise_equipment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `exercise_equipment` (
-  `exerciseid` int(11) NOT NULL,
-  `equipmentid` int(11) NOT NULL,
+  `exerciseid` int NOT NULL,
+  `equipmentid` int NOT NULL,
   PRIMARY KEY (`exerciseid`,`equipmentid`),
   KEY `fk_exercise_has_equipment_equipment1_idx` (`equipmentid`),
   KEY `fk_exercise_has_equipment_exercise1_idx` (`exerciseid`),
@@ -114,8 +106,8 @@ DROP TABLE IF EXISTS `exercise_musclegroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `exercise_musclegroup` (
-  `exerciseid` int(11) NOT NULL,
-  `musclegroupid` int(11) NOT NULL,
+  `exerciseid` int NOT NULL,
+  `musclegroupid` int NOT NULL,
   PRIMARY KEY (`exerciseid`,`musclegroupid`),
   KEY `fk_exercise_has_musclegroup_musclegroup1_idx` (`musclegroupid`),
   KEY `fk_exercise_has_musclegroup_exercise1_idx` (`exerciseid`),
@@ -142,9 +134,9 @@ DROP TABLE IF EXISTS `musclegroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `musclegroup` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `picture` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `picture` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -167,10 +159,10 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -193,13 +185,14 @@ DROP TABLE IF EXISTS `workout`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `workout` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `picture` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `description` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `user` int(11) DEFAULT NULL,
-  `duration` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `picture` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `description` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `userid` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_workout_users1_idx` (`userid`),
+  CONSTRAINT `fk_workout_users1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -209,7 +202,7 @@ CREATE TABLE `workout` (
 
 LOCK TABLES `workout` WRITE;
 /*!40000 ALTER TABLE `workout` DISABLE KEYS */;
-INSERT INTO `workout` VALUES (1,'Workout 1',NULL,'Lots of workouts',1,90),(2,'Super B',NULL,'Hard workout',2,60),(3,'Short',NULL,'Small number of exercies',3,30);
+INSERT INTO `workout` VALUES (1,'Workout 1',NULL,'Lots of workouts',1),(2,'Super B',NULL,'Hard workout',2),(3,'Short',NULL,'Small number of exercies',3);
 /*!40000 ALTER TABLE `workout` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -221,20 +214,20 @@ DROP TABLE IF EXISTS `workout_exercise`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `workout_exercise` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `workoutid` int(11) NOT NULL,
-  `exerciseid` int(11) NOT NULL,
-  `reps` int(10) unsigned DEFAULT NULL,
-  `sets` int(10) unsigned DEFAULT NULL,
-  `duration` int(10) unsigned DEFAULT NULL,
-  `rest` int(10) unsigned DEFAULT NULL,
-  `sort` int(10) unsigned DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `workoutid` int NOT NULL,
+  `exerciseid` int NOT NULL,
+  `reps` int unsigned DEFAULT NULL,
+  `sets` int unsigned DEFAULT NULL,
+  `duration` int unsigned DEFAULT NULL,
+  `rest` int unsigned DEFAULT NULL,
+  `sort` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_workout_has_exercise_exercise1_idx` (`exerciseid`),
   KEY `fk_workout_has_exercise_workout_idx` (`workoutid`),
   CONSTRAINT `fk_workout_has_exercise_exercise1` FOREIGN KEY (`exerciseid`) REFERENCES `exercise` (`id`),
   CONSTRAINT `fk_workout_has_exercise_workout` FOREIGN KEY (`workoutid`) REFERENCES `workout` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,7 +236,7 @@ CREATE TABLE `workout_exercise` (
 
 LOCK TABLES `workout_exercise` WRITE;
 /*!40000 ALTER TABLE `workout_exercise` DISABLE KEYS */;
-INSERT INTO `workout_exercise` VALUES (1,1,7,NULL,NULL,NULL,NULL,NULL),(2,1,8,NULL,NULL,NULL,NULL,NULL),(3,1,9,NULL,NULL,NULL,NULL,NULL),(4,1,10,NULL,NULL,NULL,NULL,NULL),(5,1,11,NULL,NULL,NULL,NULL,NULL),(6,2,7,NULL,NULL,NULL,NULL,NULL),(7,2,8,NULL,NULL,NULL,NULL,NULL),(8,2,9,NULL,NULL,NULL,NULL,NULL),(9,2,10,NULL,NULL,NULL,NULL,NULL),(10,3,8,NULL,NULL,NULL,NULL,NULL),(11,3,10,NULL,NULL,NULL,NULL,NULL),(12,3,12,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `workout_exercise` VALUES (6,2,7,NULL,NULL,NULL,NULL,NULL),(7,2,8,NULL,NULL,NULL,NULL,NULL),(8,2,9,NULL,NULL,NULL,NULL,NULL),(9,2,10,NULL,NULL,NULL,NULL,NULL),(10,3,8,NULL,NULL,NULL,NULL,NULL),(11,3,10,NULL,NULL,NULL,NULL,NULL),(12,3,12,NULL,NULL,NULL,NULL,NULL),(13,1,7,NULL,1,NULL,NULL,0),(14,1,8,NULL,NULL,NULL,NULL,1),(15,1,9,NULL,NULL,NULL,NULL,2),(16,1,10,NULL,NULL,NULL,NULL,3),(17,1,11,NULL,NULL,NULL,NULL,4);
 /*!40000 ALTER TABLE `workout_exercise` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,13 +248,16 @@ DROP TABLE IF EXISTS `workoutlog`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `workoutlog` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user` int(11) NOT NULL,
-  `workout` int(11) NOT NULL,
-  `totalduration` int(11) DEFAULT NULL,
-  `starteddatetime` int(11) DEFAULT NULL,
-  `wlexercises` json DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int NOT NULL AUTO_INCREMENT,
+  `workoutid` int NOT NULL,
+  `userid` int NOT NULL,
+  `totalduration` int DEFAULT NULL,
+  `datecompleted` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_workoutlog_users1_idx` (`userid`),
+  KEY `fk_workoutlog_workout1_idx` (`workoutid`),
+  CONSTRAINT `fk_workoutlog_users1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_workoutlog_workout1` FOREIGN KEY (`workoutid`) REFERENCES `workout` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -282,16 +278,22 @@ DROP TABLE IF EXISTS `workoutlogexercise`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `workoutlogexercise` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `workoutlog` int(11) NOT NULL,
-  `exercise` int(11) NOT NULL,
-  `sets` int(11) DEFAULT NULL,
-  `reps` int(11) DEFAULT NULL,
-  `duration` int(11) DEFAULT NULL,
-  `rest` int(11) DEFAULT NULL,
-  `weight` int(11) DEFAULT NULL,
-  `actualduration` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int NOT NULL AUTO_INCREMENT,
+  `workoutlogid` int NOT NULL,
+  `exerciseid` int NOT NULL,
+  `sets` int DEFAULT NULL,
+  `reps` int DEFAULT NULL,
+  `duration` int DEFAULT NULL,
+  `rest` int DEFAULT NULL,
+  `weight` int DEFAULT NULL,
+  `actualduration` int DEFAULT NULL,
+  `actualreps` int DEFAULT NULL,
+  `sort` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_workoutlogexercise_workoutlog1_idx` (`workoutlogid`),
+  KEY `fk_workoutlogexercise_exercise1_idx` (`exerciseid`),
+  CONSTRAINT `fk_workoutlogexercise_exercise1` FOREIGN KEY (`exerciseid`) REFERENCES `exercise` (`id`),
+  CONSTRAINT `fk_workoutlogexercise_workoutlog1` FOREIGN KEY (`workoutlogid`) REFERENCES `workoutlog` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -303,7 +305,6 @@ LOCK TABLES `workoutlogexercise` WRITE;
 /*!40000 ALTER TABLE `workoutlogexercise` DISABLE KEYS */;
 /*!40000 ALTER TABLE `workoutlogexercise` ENABLE KEYS */;
 UNLOCK TABLES;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -314,4 +315,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-07 23:22:31
+-- Dump completed on 2022-06-08  0:03:13
