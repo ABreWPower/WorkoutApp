@@ -172,22 +172,13 @@ function exerciseMove(fromIndex, offset) {
   <!-- Fix picture size like it is on the other pages, currently extending to far -->
   <img src="/pic1.jpg" alt="pic1" style="max-width: 94vw; padding-top: 15px; padding-bottom: 15px" />
 
-  <div class="row align-items-start" style="padding-bottom: 20px">
-    <div class="col">
-      <button type="button" class="btn btn-outline-primary">Upload Photo</button>
-    </div>
-    <div class="col">
-      <button type="button" class="btn btn-outline-warning">Remove Photo</button>
-    </div>
-  </div>
-
-  <div style="padding-bottom: 20px">
-    <h4>Description</h4>
-    <input type="text" class="form-control" id="workoutDescription" v-model="workout.description" aria-label="Workout Description" />
-  </div>
+  <h4>Description</h4>
+  <p>
+    {{ workout.description }}
+  </p>
 
   <!-- I think part of the problem is we are only pulling back a number not the whole object -->
-  <div v-for="(exercise, index) in workout.exercises" :key="exercise.id">
+  <div v-for="exercise in workout.exercises" :key="exercise.id">
     <workout-edit-exercise-card-view
       :name="exercise.name"
       :picture="exercise.picture"
@@ -199,19 +190,14 @@ function exerciseMove(fromIndex, offset) {
       @update:duration="exercise.duration = parseInt($event)"
       :rest="exercise.rest"
       @update:rest="exercise.rest = parseInt($event)"
-      @delete="workout.exercises.splice(workout.exercises.indexOf(exercise), 1)"
-      @move:up="exerciseMove(index, -1)"
-      @move:down="exerciseMove(index, 1)">
+      :weight="exercise.weight"
+      @update:weight="exercise.weight = parseInt($event)"
+      :startWorkout="true">
     </workout-edit-exercise-card-view>
   </div>
 
-  <div class="row" style="padding-bottom: 10px">
-    <div class="col">
-      <button type="button" class="btn btn-outline-secondary" @click="addExerciseClick()">Add Exercise</button>
-    </div>
-    <div class="col">
-      <button type="button" class="btn btn-primary" @click="saveWorkoutClick()">Save</button>
-    </div>
+  <div style="padding-bottom: 10px">
+    <button type="button" class="btn btn-primary" @click="startClick()">Start</button>
   </div>
 </template>
 

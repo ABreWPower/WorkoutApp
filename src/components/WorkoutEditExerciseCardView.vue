@@ -27,7 +27,17 @@ const props = defineProps({
   rest: {
     type: Number,
     required: false,
-  }
+  },
+  weight: {
+    type: Number,
+    required: false,
+  },
+  startWorkout:
+  {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 })
 
 defineEmits(['update:sets', 'update:reps', 'update:duration', 'update:rest'])
@@ -51,10 +61,10 @@ const getImages = function () {
           <img v-if="picture != null" :src="`/${picture}`" v-bind:alt="name" class="img-fluid rounded-start smallpics" />
           <img v-else :src="getImages()" v-bind:alt="name" class="img-fluid rounded-start smallpics" />
           <div class="d-flex float-end">
-            <i class="bi bi-trash bi-2x" style="font-size: 35px; padding-right: 10px" @click="$emit('delete')"></i>
-            <i class="bi bi-three-dots-vertical" style="font-size: 35px; padding-right: 10px"></i>
-            <i class="bi bi-caret-down-fill" style="font-size: 35px; padding-right: 10px" @click="$emit('move:down')"></i>
-            <i class="bi bi-caret-up-fill" style="font-size: 35px; padding-right: 10px" @click="$emit('move:up')"></i>
+            <i v-if="startWorkout == false" class="bi bi-trash bi-2x" style="font-size: 35px; padding-right: 10px" @click="$emit('delete')"></i>
+            <i v-if="startWorkout == false" class="bi bi-three-dots-vertical" style="font-size: 35px; padding-right: 10px"></i>
+            <i v-if="startWorkout == false" class="bi bi-caret-down-fill" style="font-size: 35px; padding-right: 10px" @click="$emit('move:down')"></i>
+            <i v-if="startWorkout == false" class="bi bi-caret-up-fill" style="font-size: 35px; padding-right: 10px" @click="$emit('move:up')"></i>
           </div>
         </div>
         <div class="col-md-8">
@@ -103,6 +113,18 @@ const getImages = function () {
                 aria-label="Number of time to rest for this exercise: {{ name }}"
                 placeholder="Seconds"
                 aria-describedby="restText"
+                style="max-width: 75px" />
+            </div>
+            <div v-if="startWorkout == true" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto">
+              <span class="input-group-text" id="weightText" style="width: 75px">Weight</span>
+              <input
+                type="number"
+                :value="props.weight"
+                @input="$emit('update:weight', $event.target.value)"
+                class="form-control"
+                aria-label="Number of weight for this exercise: {{ name }}"
+                placeholder="Pounds"
+                aria-describedby="weightText"
                 style="max-width: 75px" />
             </div>
           </div>

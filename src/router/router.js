@@ -55,7 +55,7 @@ const routes = [
     component: () => import('../views/EditWorkout.vue')
   },
   {
-    path: '/Startworkout/:workoutid',
+    path: '/startworkout/:workoutid',
     name: 'Start Workout',
     props: {
       workout: true,

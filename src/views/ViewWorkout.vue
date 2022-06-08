@@ -52,6 +52,18 @@ client.query({
   })
 })
 
+let startClick = function() {
+  console.log("startClick")
+  console.log("workoutid", workout.value.id)
+  router.push({
+    name: 'Start Workout',
+    params: {
+      workout: JSON.stringify(workout.value),
+      workoutid: workout.value.id
+    }
+  })
+}
+
 let editClick = function() {
   console.log("editClick")
   console.log("workoutid", workout.value.id)
@@ -97,7 +109,7 @@ let editClick = function() {
 
   <div class="row">
     <div class="col">
-      <button type="button" class="btn btn-primary">Start</button>
+      <button type="button" class="btn btn-primary" @click="startClick()">Start</button>
     </div>
     <div class="col">
       <button type="button" class="btn btn-outline-secondary" @click="editClick()">Edit</button>
