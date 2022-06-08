@@ -119,7 +119,7 @@ const saveWorkoutClick = () => {
       workout.value.id = result.data.addWorkout.id
       console.log("workout id", workout.value.id)
       router.push({
-        name: 'Workout Edit',
+        name: 'Edit Workout',
         params: {
           workout: JSON.stringify(workout.value),
           workoutid: workout.value.id
@@ -201,8 +201,7 @@ function exerciseMove(fromIndex, offset) {
       @update:rest="exercise.rest = parseInt($event)"
       @delete="workout.exercises.splice(workout.exercises.indexOf(exercise), 1)"
       @move:up="exerciseMove(index, -1)"
-      @move:down="exerciseMove(index, 1)"
-    >
+      @move:down="exerciseMove(index, 1)">
     </workout-edit-exercise-card-view>
   </div>
 

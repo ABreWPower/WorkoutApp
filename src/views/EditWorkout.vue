@@ -119,7 +119,7 @@ const saveWorkoutClick = () => {
       workout.value.id = result.data.addWorkout.id
       console.log("workout id", workout.value.id)
       router.push({
-        name: 'Workout Edit',
+        name: 'Edit Workout',
         params: {
           workout: JSON.stringify(workout.value),
           workoutid: workout.value.id

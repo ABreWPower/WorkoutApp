@@ -72,7 +72,7 @@ let editClick = function() {
   console.log("editClick")
   console.log("exerciseid", exercise.value.id)
   router.push({
-    name: 'Exercise Edit',
+    name: 'Edit Exercise',
     params: {
       exercise: JSON.stringify(exercise.value),
       exerciseid: exercise.value.id

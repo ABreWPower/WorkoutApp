@@ -50,12 +50,12 @@ const cardClick = () => {
     console.log("CardView cardClick cardHandler not found")
     if (props.workoutid != null) {
       console.log("props.workoutid", props.workoutid)
-      router.push({ name: 'Workout View', params: { workoutid: props.workoutid } })
+      router.push({ name: 'View Workout', params: { workoutid: props.workoutid } })
       console.log("after router push")
     }
     if (props.exerciseid != null) {
       console.log("props.exerciseid", props.exerciseid)
-      router.push({ name: 'Exercise View', params: { exerciseid: props.exerciseid } })
+      router.push({ name: 'View Exercise', params: { exerciseid: props.exerciseid } })
       console.log("after router push")
     }
   }

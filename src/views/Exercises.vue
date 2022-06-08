@@ -28,7 +28,7 @@ if (routeObj.params.mode == "AddExerciseToWorkout") {
       workout.id = parseInt(workout.id)
 
       router.push({
-        name: "Workout Edit",
+        name: "Edit Workout",
         params: {
           workout: JSON.stringify(workout),
           workoutid: workout.id
@@ -77,7 +77,7 @@ client.query({
 
 const newExerciseClick = () => {
     console.log("before new exercise")
-    router.push({ name: 'Exercise Add' })
+    router.push({ name: 'Add Exercise' })
     console.log("after router push for new exercise")
 }
 </script>

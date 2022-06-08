@@ -16,18 +16,18 @@ const routes = [
   },
   {
     path: '/exerciseview/:exerciseid',
-    name: 'Exercise View',
+    name: 'View Exercise',
     props: { exerciseid: null },
     component: () => import('../views/ViewExercise.vue')
   },
   {
     path: '/exerciseedit',
-    name: 'Exercise Add',
+    name: 'Add Exercise',
     component: () => import('../views/EditExercise.vue')
   },
   {
     path: '/exerciseedit/:exerciseid',
-    name: 'Exercise Edit',
+    name: 'Edit Exercise',
     props: {
       exercise: null,
       exerciseid: null
@@ -35,19 +35,19 @@ const routes = [
     component: () => import('../views/EditExercise.vue')
   },
   {
-    path: '/workoutview/:workoutid',
-    name: 'Workout View',
+    path: '/viewworkout/:workoutid',
+    name: 'View Workout',
     props: { workoutid: null },
     component: () => import('../views/ViewWorkout.vue')
   },
   {
-    path: '/workoutedit',
-    name: 'Workout Add',
+    path: '/editworkout',
+    name: 'Add Workout',
     component: () => import('../views/EditWorkout.vue')
   },
   {
-    path: '/workoutedit/:workoutid',
-    name: 'Workout Edit',
+    path: '/editworkout/:workoutid',
+    name: 'Edit Workout',
     props: {
       workout: true,
       workoutid: true
@@ -55,13 +55,13 @@ const routes = [
     component: () => import('../views/EditWorkout.vue')
   },
   {
-    path: '/workoutedit/:workoutid',
-    name: 'Workout Edit',
+    path: '/Startworkout/:workoutid',
+    name: 'Start Workout',
     props: {
       workout: true,
       workoutid: true
     },
-    component: () => import('../views/EditWorkout.vue')
+    component: () => import('../views/StartWorkout.vue')
   },
 ]
 

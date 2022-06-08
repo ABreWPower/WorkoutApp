@@ -30,7 +30,7 @@ client.query({
 
 const newWorkoutClick = () => {
     console.log("before new workout")
-    router.push({ name: 'Workout Add' })
+    router.push({ name: 'Add Workout' })
     console.log("after router push for new workout")
 }
 </script>
