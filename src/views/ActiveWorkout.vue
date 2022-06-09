@@ -11,6 +11,18 @@ import router from "../router/router.js"
   <h1>TODO Exercise Name</h1>
   <p>Equipment: TODO Equipment</p>
 
+  <!-- TODO Split the rest of the space into 3 equal parts -->
+  <div class="row">
+    <!-- TODO Clock countdown/reps/duration -->
+  </div>
+  <div class="row">
+    <!-- TODO Video/instructions -->
+  </div>
+  <div class="row">
+    <!-- TODO Rep stuff -->
+    <button type="button" class="btn btn-success btn-lg">Continue</button>
+  </div>
+
   <nav class="navbar fixed-bottom navbar-dark bg-primary" style="color: white; padding-left: 20px; padding-right 20px;">
     <div class="container-fluid">
       <!-- <form class="container-fluid justify-content-start"> -->
