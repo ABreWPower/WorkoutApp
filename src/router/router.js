@@ -63,6 +63,12 @@ const routes = [
     },
     component: () => import('../views/StartWorkout.vue')
   },
+  {
+    path: '/activeworkout',
+    name: 'Active Workout',
+    component: () => import('../views/ActiveWorkout.vue')
+    // TODO add props for new log data type
+  },
 ]
 
 const router = createRouter({

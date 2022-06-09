@@ -66,100 +66,22 @@ if (routeObj.params.workoutid != null && workout.value.name == null) {
 // Saving section
 // **************
 
-let addWorkout = gql`
-  mutation Mutation($name: String!, $description: String, $user: Int, $exercises: [WorkoutExerciseInput]) {
-    addWorkout(name: $name, description: $description, user: $user, exercises: $exercises) {
-      id
-    }
-  }
-`
 
-let updateWorkout = gql`
-  mutation Mutation($id: Int!, $name: String!, $description: String, $user: Int, $exercises: [WorkoutExerciseInput]) {
-    updateWorkout(id: $id, name: $name, description: $description, user: $user, exercises: $exercises) {
-      id
-    }
-  }
-`
-
-const saveWorkoutClick = () => {
-
-  // Set a mutation to use
-  let mutationToUse = null
-  if (workout.value.id == null) {
-    console.log("no id, setting to use addWorkout")
-    mutationToUse = addWorkout
-  }
-  else {
-    console.log("found id, using updateWorkout")
-    mutationToUse = updateWorkout
-  }
-
-  client.mutate({
-    mutation: mutationToUse,
-    variables: {
-      id: parseInt(workout.value.id),
-      name: workout.value.name,
-      picture: workout.value.picture,
-      description: workout.value.description,
-      user: workout.value.user,
-      exercises: workout.value.exercises.flatMap((element, index) => [{
-        id: parseInt(element.id),
-        reps: element.reps,
-        sets: element.sets,
-        duration: element.duration,
-        rest: element.rest,
-        sort: index
-      }])
-    }
-  })
-  .then(result => {
-    console.log("results", result)
-    if (workout.value.id == null) {
-      workout.value.id = result.data.addWorkout.id
-      console.log("workout id", workout.value.id)
-      router.push({
-        name: 'Edit Workout',
-        params: {
-          workout: JSON.stringify(workout.value),
-          workoutid: workout.value.id
-        }
-      })
-    }
-    else {
-      console.log("nothing to do with returned id as we already have it")
-    }
-    // TODO probably do something to let user know it succeded
-  })
-
-  console.log("after save workout")
-}
 
 // *********************
 //  Other Button section
 // *********************
 
-const addExerciseClick = () => {
-  console.log("add exercise click")
-  console.log("workout", workout.value)
-
-  router.push({ 
-    name: 'Exercises',
+let startClick = function() {
+  console.log("startClick")
+  console.log("workoutid", workout.value.id)
+  router.push({
+    name: 'Active Workout',
     params: {
-      mode: "AddExerciseToWorkout",
-      workout: JSON.stringify(workout.value)
+      workout: JSON.stringify(workout.value),
+      workoutid: workout.value.id
     }
   })
-}
-
-function exerciseMove(fromIndex, offset) {
-  if(fromIndex + offset < 0 || fromIndex + offset >= workout.value.exercises.length) {
-    return
-  }
-  let arr = workout.value.exercises
-  let element = arr[fromIndex]
-  arr.splice(fromIndex, 1)
-  arr.splice(fromIndex + offset, 0, element)
 }
 
 </script>
