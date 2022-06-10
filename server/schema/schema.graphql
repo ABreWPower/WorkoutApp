@@ -58,25 +58,35 @@ type MuscleGroup {
 
 type WorkoutLog {
   id: ID!
-  user: User!
-  workout: Workout!
+  workout: Workout
+  user: User
+  exerciselog: [ExerciseLog]
   totalduration: Int
-  starteddatetime: Int
-  wlexercises: [WorkoutLogExercise]
+  datestarted: String
+  datecompleted: String
 }
 
-type WorkoutLogExercise {
+type ExerciseLog {
   id: ID!
   workoutlog: WorkoutLog
-  exercise: Exercise!
+  exercise: Exercise
   sets: Int
   reps: Int
   duration: Int
   rest: Int
   weight: Int
   actualduration: Int
+  actualreps: Int
 }
 
+input ExerciseLogInput {
+  exerciseid: Int!
+  sets: Int
+  reps: Int
+  duration: Int
+  rest: Int
+  weight: Int
+}
 
 type Query {
   users: [User]
@@ -85,15 +95,11 @@ type Query {
   musclegroups: [MuscleGroup]
   exercises(id: ID): [Exercise]
   workoutlogs: [WorkoutLog]
-  workoutlogexercises: [WorkoutLogExercise]
 }
 
 
 type Mutation {
-  setupdb(idk: String): User
-
   addUser(name: String!, email: String, avatar: String): User
-#   updateUser(id: ID!, name: String, email: String, avatar: String): User
 
   addWorkout(name: String!, picture: String, description: String, user: Int, exercises: [WorkoutExerciseInput]): Workout
   updateWorkout(id: Int!, name: String!, picture: String, description: String, user: Int, exercises: [WorkoutExerciseInput]): Workout
@@ -101,9 +107,7 @@ type Mutation {
   addExercise(name: String!, video: String, picture: String, instructions: String, difficulty: Int, musclegroups: [Int], reps: Int, duration: Int, equipment: [Int]): Exercise
   updateExercise(id: Int!, name: String!, video: String, picture: String, instructions: String, difficulty: Int, musclegroups: [Int], reps: Int, duration: Int, equipment: [Int]): Exercise
 
-#   addWorkoutLog(user: Int, workout: Workout!, totalduration: Int, starteddatetime: Int, wlexercises: [WorkoutLogExercise]): WorkoutLog
-#   updateWorkoutLog(id: ID!, user: Int, workout: Workout, totalduration: Int, starteddatetime: Int, wlexercises: [WorkoutLogExercise]): WorkoutLog
-  
-#   addWorkoutLogExercise(workoutlog: Int, exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int): WorkoutLogExercise
-#   updateWorkoutLogExercise(id: ID!, workoutlog: Int, exercise: Exercise!, sets: Int, reps: Int, duration: Int, rest: Int, weight: Int, actualduration: Int): WorkoutLogExercise
+  startWorkoutLog(workoutid: Int!, exerciselog: [ExerciseLogInput]!): WorkoutLog
+  updateExercsiseLog(id: Int!, actualduration: Int, actualreps: Int): ExerciseLog
+  endWorkoutLog(id: Int!): WorkoutLog
 }

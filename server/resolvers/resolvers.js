@@ -15,12 +15,11 @@ const resolvers = {
       if (args.id == undefined) args.id = null
       return querySQLDB("SELECT * FROM exercise WHERE id like IFNULL(?, '%')", [args.id]).then(result => result)
     },
-    workoutlogs: () => querySQLDB("SELECT * FROM workoutlog").then(result => result),
-    workoutlogexercises: () => querySQLDB("SELECT * FROM workoutlogexercise").then(result => result),
+    workoutlogs: () => querySQLDB("SELECT * FROM workoutlog").then(result => result)
   },
   Workout: {
     user(parent) {
-      return querySQLDB("SELECT * FROM users WHERE id = ?", [parent.user]).then(result => result[0])
+      return querySQLDB("SELECT * FROM users WHERE id = ?", [parent.userid]).then(result => result[0])
     },
     equipment(parent) {
       return querySQLDB(`SELECT DISTINCT eq.*
@@ -79,35 +78,25 @@ const resolvers = {
     }
   },
   WorkoutLog: {
-    user(parent) {
-      return querySQLDB("SELECT * FROM users WHERE id = ?", [parent.user]).then(result => result[0])
-    },
     workout(parent) {
-      return querySQLDB("SELECT * FROM workout WHERE id = ?", [parent.workout]).then(result => result[0])
+      return querySQLDB("SELECT * FROM workout WHERE id = ?", [parent.workoutid]).then(result => result[0])
     },
-    wlexercises(parent) {
-      let returnObj = []
-      if (parent.workoutlogexercise != null) {
-        parent.workoutlogexercise.forEach(element => {
-          returnObj.push(querySQLDB("SELECT * FROM workoutlogexercise WHERE id = ?", [element]).then(result => result[0]))
-        })
-      }
-      return returnObj
+    user(parent) {
+      return querySQLDB("SELECT * FROM users WHERE id = ?", [parent.userid]).then(result => result[0])
+    },
+    exerciselog(parent) {
+      return querySQLDB("SELECT * FROM workoutlogexercise WHERE workoutlogid = ?", [parent.id])
     }
   },
-  WorkoutLogExercise: {
+  ExerciseLog: {
     workoutlog(parent) {
-      return querySQLDB("SELECT * FROM workoutlog WHERE id = ?", [parent.workoutlog]).then(result => result[0])
+      return querySQLDB("SELECT * FROM workoutlog WHERE id = ?", [parent.workoutlogid]).then(result => result[0])
     },
     exercise(parent) {
-      return querySQLDB("SELECT * FROM exercise WHERE id = ?", [parent.exercise]).then(result => result[0])
-    }
+      return querySQLDB("SELECT * FROM exercise WHERE id = ?", [parent.exerciseid]).then(result => result[0])
+    },
   },
   Mutation: {
-    setupdb: () => {
-      require('../db/setupdb.js')
-      return querySQLDB("SELECT * FROM users").then(result => result)
-    },
     addUser: (parent, { name = null, email = null, avatar = null }) => {
       return querySQLDB("INSERT into users (name, email, avatar) VALUES (?, ?, ?)", [name, email, avatar]).then(
         result => querySQLDB("SELECT * FROM users WHERE id = ?", [result.insertId]).then(result => result[0])
