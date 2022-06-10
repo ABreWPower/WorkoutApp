@@ -251,7 +251,7 @@ CREATE TABLE `workoutlog` (
   `id` int NOT NULL AUTO_INCREMENT,
   `workoutid` int NOT NULL,
   `userid` int NOT NULL,
-  `totalduration` int DEFAULT NULL,
+  `datestarted` datetime DEFAULT NULL,
   `datecompleted` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_workoutlog_users1_idx` (`userid`),
@@ -315,4 +315,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-10  0:02:07
+-- Dump completed on 2022-06-10  0:27:01
