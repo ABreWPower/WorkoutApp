@@ -209,7 +209,7 @@ const resolvers = {
           return querySQLDB("SELECT * FROM exercise WHERE id = ?", [exerciseId]).then(result => result[0])
         })
     },
-    startWorkoutLog: (parent, {workoutid = null, exerciselog = []}) => {
+    startWorkoutLog: (parent, { workoutid = null, exerciselog = [] }) => {
       let workoutlogid = null
       return querySQLDB("INSERT into workoutlog (workoutid, userid, datestarted) VALUES (?, 1, NOW())", [workoutid])
         .then(function (result) {
@@ -228,6 +228,12 @@ const resolvers = {
         })
         .then(function () {
           return querySQLDB("SELECT * FROM workoutlog WHERE id = ?", [workoutlogid]).then(result => result[0])
+        })
+    },
+    updateExerciseLog: (parent, { id = null, actualduration = null, actualreps = null }) => {
+      return querySQLDB("UPDATE workoutlogexercise SET actualduration = ?, actualreps = ? WHERE id = ?", [actualduration, actualreps, id])
+        .then(function () {
+          return querySQLDB("SELECT * FROM workoutlogexercise WHERE id = ?", [id]).then(result => result[0])
         })
     }
   },
