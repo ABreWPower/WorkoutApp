@@ -235,6 +235,12 @@ const resolvers = {
         .then(function () {
           return querySQLDB("SELECT * FROM workoutlogexercise WHERE id = ?", [id]).then(result => result[0])
         })
+    },
+    endWorkoutLog: (parent, { id = null }) => {
+      return querySQLDB("UPDATE workoutlog SET datecompleted = NOW() WHERE id = ?", [id])
+        .then(function () {
+          return querySQLDB("SELECT * FROM workoutlog WHERE id = ?", [id]).then(result => result[0])
+        })
     }
   },
 }
