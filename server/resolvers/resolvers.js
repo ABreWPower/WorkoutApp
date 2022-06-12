@@ -85,7 +85,7 @@ const resolvers = {
       return querySQLDB("SELECT * FROM users WHERE id = ?", [parent.userid]).then(result => result[0])
     },
     exerciselog(parent) {
-      return querySQLDB("SELECT * FROM workoutlogexercise WHERE workoutlogid = ?", [parent.id])
+      return querySQLDB("SELECT * FROM workoutlogexercise WHERE workoutlogid = ? ORDER BY workoutlogexercise.sort", [parent.id])
     }
   },
   ExerciseLog: {
@@ -209,8 +209,28 @@ const resolvers = {
           return querySQLDB("SELECT * FROM exercise WHERE id = ?", [exerciseId]).then(result => result[0])
         })
     },
-    // TODO need to make the rest of the adds and then all of the updates
-  }
+    startWorkoutLog: (parent, {workoutid = null, exerciselog = []}) => {
+      let workoutlogid = null
+      return querySQLDB("INSERT into workoutlog (workoutid, userid, datestarted) VALUES (?, 1, NOW())", [workoutid])
+        .then(function (result) {
+          workoutlogid = result.insertId
+          let inserts = []
+          exerciselog.forEach((element, exerciseIndex) => {
+            ["exerciseid", "reps", "sets", "duration", "rest", "weight"].forEach(function (columnName) {
+              if (element[columnName] === undefined) {
+                element[columnName] = null
+              }
+            })
+            inserts.push(querySQLDB("INSERT into workoutlogexercise (workoutlogid, exerciseid, reps, sets, duration, rest, weight, sort) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [workoutlogid, element.exerciseid, element.reps, element.sets, element.duration, element.rest, element.weight, exerciseIndex]))
+          })
+          // return promise all
+          return Promise.all(inserts)
+        })
+        .then(function () {
+          return querySQLDB("SELECT * FROM workoutlog WHERE id = ?", [workoutlogid]).then(result => result[0])
+        })
+    }
+  },
 }
 
 exports.resolvers = resolvers
