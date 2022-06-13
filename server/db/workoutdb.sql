@@ -186,10 +186,10 @@ DROP TABLE IF EXISTS `workout`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `workout` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `userid` int NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `picture` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `description` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `userid` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_workout_users1_idx` (`userid`),
   CONSTRAINT `fk_workout_users1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
@@ -202,7 +202,7 @@ CREATE TABLE `workout` (
 
 LOCK TABLES `workout` WRITE;
 /*!40000 ALTER TABLE `workout` DISABLE KEYS */;
-INSERT INTO `workout` VALUES (1,'Workout 1',NULL,'Lots of workouts',1),(2,'Super B',NULL,'Hard workout',2),(3,'Short',NULL,'Small number of exercies',3),(4,'Week 0-2 PT 1',NULL,'Week 0-2 PT 1',1),(5,'Week 0-2 PT 2',NULL,'Week 0-2 PT 2',1);
+INSERT INTO `workout` VALUES (1,1,'Workout 1',NULL,'Lots of workouts'),(2,2,'Super B',NULL,'Hard workout'),(3,3,'Short',NULL,'Small number of exercies'),(4,1,'Week 0-2 PT 1',NULL,'Week 0-2 PT 1'),(5,1,'Week 0-2 PT 2',NULL,'Week 0-2 PT 2');
 /*!40000 ALTER TABLE `workout` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -253,12 +253,13 @@ CREATE TABLE `workoutlog` (
   `userid` int NOT NULL,
   `datestarted` datetime DEFAULT NULL,
   `datecompleted` datetime DEFAULT NULL,
+  `completed` tinyint GENERATED ALWAYS AS ((`datecompleted` is not null)) VIRTUAL,
   PRIMARY KEY (`id`),
   KEY `fk_workoutlog_users1_idx` (`userid`),
   KEY `fk_workoutlog_workout1_idx` (`workoutid`),
   CONSTRAINT `fk_workoutlog_users1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`),
   CONSTRAINT `fk_workoutlog_workout1` FOREIGN KEY (`workoutid`) REFERENCES `workout` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,6 +268,7 @@ CREATE TABLE `workoutlog` (
 
 LOCK TABLES `workoutlog` WRITE;
 /*!40000 ALTER TABLE `workoutlog` DISABLE KEYS */;
+INSERT INTO `workoutlog` (`id`, `workoutid`, `userid`, `datestarted`, `datecompleted`) VALUES (1,3,1,'2022-06-13 12:00:00','2022-06-13 12:10:30'),(2,3,1,'2022-06-13 12:20:00',NULL);
 /*!40000 ALTER TABLE `workoutlog` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -289,12 +291,16 @@ CREATE TABLE `workoutlogexercise` (
   `actualduration` int DEFAULT NULL,
   `actualreps` int DEFAULT NULL,
   `sort` int DEFAULT NULL,
+  `datestarted` datetime DEFAULT NULL,
+  `datecompleted` datetime DEFAULT NULL,
+  `span` int DEFAULT NULL,
+  `completed` tinyint GENERATED ALWAYS AS ((`datecompleted` is not null)) VIRTUAL,
   PRIMARY KEY (`id`),
   KEY `fk_workoutlogexercise_workoutlog1_idx` (`workoutlogid`),
   KEY `fk_workoutlogexercise_exercise1_idx` (`exerciseid`),
   CONSTRAINT `fk_workoutlogexercise_exercise1` FOREIGN KEY (`exerciseid`) REFERENCES `exercise` (`id`),
   CONSTRAINT `fk_workoutlogexercise_workoutlog1` FOREIGN KEY (`workoutlogid`) REFERENCES `workoutlog` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -303,6 +309,7 @@ CREATE TABLE `workoutlogexercise` (
 
 LOCK TABLES `workoutlogexercise` WRITE;
 /*!40000 ALTER TABLE `workoutlogexercise` DISABLE KEYS */;
+INSERT INTO `workoutlogexercise` (`id`, `workoutlogid`, `exerciseid`, `sets`, `reps`, `duration`, `rest`, `weight`, `actualduration`, `actualreps`, `sort`, `datestarted`, `datecompleted`, `span`) VALUES (2,1,8,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2022-06-13 12:17:00','2022-06-13 12:18:00',455),(3,1,9,NULL,12,NULL,NULL,NULL,NULL,NULL,NULL,'2022-06-13 12:19:00',NULL,300);
 /*!40000 ALTER TABLE `workoutlogexercise` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -315,4 +322,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-12 15:14:21
+-- Dump completed on 2022-06-13 16:20:51
