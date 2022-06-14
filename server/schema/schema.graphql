@@ -61,9 +61,11 @@ type WorkoutLog {
   workout: Workout
   user: User
   exerciselog: [ExerciseLog]
-  totalduration: Int
+  span: Int
+  actualspan: Int
   datestarted: String
   datecompleted: String
+  completed: Boolean
 }
 
 type ExerciseLog {
@@ -75,8 +77,11 @@ type ExerciseLog {
   duration: Int
   rest: Int
   weight: Int
-  actualduration: Int
-  actualreps: Int
+  span: Int
+  actualspan: Int
+  datestarted: String
+  datecompleted: String
+  completed: Boolean
 }
 
 input ExerciseLogInput {

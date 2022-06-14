@@ -86,6 +86,12 @@ const resolvers = {
     },
     exerciselog(parent) {
       return querySQLDB("SELECT * FROM workoutlogexercise WHERE workoutlogid = ? ORDER BY workoutlogexercise.sort", [parent.id])
+    },
+    span(parent) {
+      return querySQLDB("SELECT SUM(span) AS span FROM workoutlogexercise WHERE workoutlogid = ?", [parent.id]).then(result => result[0].span)
+    },
+    actualspan(parent) {
+      return querySQLDB("SELECT SUM(actualspan) AS actualspan FROM workoutlogexercise WHERE workoutlogid = ?", [parent.id]).then(result => result[0].actualspan)
     }
   },
   ExerciseLog: {
@@ -94,7 +100,7 @@ const resolvers = {
     },
     exercise(parent) {
       return querySQLDB("SELECT * FROM exercise WHERE id = ?", [parent.exerciseid]).then(result => result[0])
-    },
+    }
   },
   Mutation: {
     addUser: (parent, { name = null, email = null, avatar = null }) => {
