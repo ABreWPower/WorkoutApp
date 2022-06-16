@@ -1,9 +1,12 @@
 <script setup>
-import cardView from '../components/CardView.vue'
 import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
+import { useRoute } from 'vue-router'
 import { ref } from "vue"
 import router from "../router/router.js"
+
+const routeObj = useRoute()
+console.log("workout edit router params", routeObj.params)
 
 </script>
 
@@ -37,4 +40,7 @@ import router from "../router/router.js"
 div.card-view:last-child div.card {
   margin-bottom: 0 !important;
 }
+
+/* top nav -56px
+   bottom nav -56px */
 </style>

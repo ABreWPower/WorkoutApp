@@ -66,31 +66,59 @@ if (routeObj.params.workoutid != null && workout.value.name == null) {
 // Saving section
 // **************
 
-
-
-// *********************
-//  Other Button section
-// *********************
+let startWorkoutLog = gql`
+  mutation Mutation($workoutid: Int!, $exerciselogs: [ExerciseLogInput]!) {
+    startWorkoutLog(workoutid: $workoutid, exerciselogs: $exerciselogs) {
+      id
+      exerciselogs {
+        id
+      }
+    }
+  }
+`
 
 let startClick = function() {
   console.log("startClick")
-  console.log("workoutid", workout.value.id)
-  router.push({
-    name: 'Active Workout',
-    params: {
-      workout: JSON.stringify(workout.value),
-      workoutid: workout.value.id
+
+  // TODO save the workoutlog 
+  client.mutate({
+    mutation: startWorkoutLog,
+    variables: {
+      workoutid: parseInt(workout.value.id),
+      exerciselogs: workout.value.exercises.flatMap(element => [{
+        exerciseid: parseInt(element.id),
+        reps: element.reps,
+        sets: element.sets,
+        duration: element.duration,
+        rest: element.rest,
+        weight: element.weight
+        // TODO how and when do we set date started on an exercise, it is not in startWorkoutLog or in updateExerciseLog
+      }])
     }
   })
+  .then(result => {
+    console.log("results", result)
+    console.log("result.data.startWorkoutLog.id", result.data.startWorkoutLog.id)
+    console.log("result.data.startWorkoutLog.exerciselogs", result.data.startWorkoutLog.exerciselogs)
+
+      router.push({
+        name: 'Active Workout',
+        params: {          
+          workoutlogid: result.data.startWorkoutLog.id,
+          exerciselogids: result.data.startWorkoutLog.exerciselogs.flatMap(element => [element.id])
+        }
+      })
+
+      console.log("after start workout save and push")
+      // TODO something if it fails
+  })
+
 }
 
 </script>
 
 <template>
-  <div class="input-group input-group-lg">
-    <span class="input-group-text" id="workoutNameLabel">Workout Name</span>
-    <input type="text" class="form-control" id="workoutName" v-model="workout.name" aria-label="Workout Name" aria-describedby="workoutNameLabel" />
-  </div>
+  <h1>{{ workout.name }}</h1>
   <!-- Fix picture size like it is on the other pages, currently extending to far -->
   <img src="/pic1.jpg" alt="pic1" style="max-width: 94vw; padding-top: 15px; padding-bottom: 15px" />
 

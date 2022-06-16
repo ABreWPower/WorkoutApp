@@ -84,7 +84,7 @@ const resolvers = {
     user(parent) {
       return querySQLDB("SELECT * FROM users WHERE id = ?", [parent.userid]).then(result => result[0])
     },
-    exerciselog(parent) {
+    exerciselogs(parent) {
       return querySQLDB("SELECT * FROM workoutlogexercise WHERE workoutlogid = ? ORDER BY workoutlogexercise.sort", [parent.id])
     },
     span(parent) {
@@ -215,13 +215,13 @@ const resolvers = {
           return querySQLDB("SELECT * FROM exercise WHERE id = ?", [exerciseId]).then(result => result[0])
         })
     },
-    startWorkoutLog: (parent, { workoutid = null, exerciselog = [] }) => {
+    startWorkoutLog: (parent, { workoutid = null, exerciselogs = [] }) => {
       let workoutlogid = null
       return querySQLDB("INSERT into workoutlog (workoutid, userid, datestarted) VALUES (?, 1, NOW())", [workoutid])
         .then(function (result) {
           workoutlogid = result.insertId
           let inserts = []
-          exerciselog.forEach((element, exerciseIndex) => {
+          exerciselogs.forEach((element, exerciseIndex) => {
             ["exerciseid", "reps", "sets", "duration", "rest", "weight"].forEach(function (columnName) {
               if (element[columnName] === undefined) {
                 element[columnName] = null

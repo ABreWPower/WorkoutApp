@@ -60,7 +60,7 @@ type WorkoutLog {
   id: ID!
   workout: Workout
   user: User
-  exerciselog: [ExerciseLog]
+  exerciselogs: [ExerciseLog]
   span: Int
   actualspan: Int
   datestarted: String
@@ -112,7 +112,7 @@ type Mutation {
   addExercise(name: String!, video: String, picture: String, instructions: String, difficulty: Int, musclegroups: [Int], reps: Int, duration: Int, equipment: [Int]): Exercise
   updateExercise(id: Int!, name: String!, video: String, picture: String, instructions: String, difficulty: Int, musclegroups: [Int], reps: Int, duration: Int, equipment: [Int]): Exercise
 
-  startWorkoutLog(workoutid: Int!, exerciselog: [ExerciseLogInput]!): WorkoutLog
+  startWorkoutLog(workoutid: Int!, exerciselogs: [ExerciseLogInput]!): WorkoutLog
   updateExerciseLog(id: Int!, actualduration: Int, actualreps: Int): ExerciseLog
   endWorkoutLog(id: Int!): WorkoutLog
 }
