@@ -113,6 +113,8 @@ type Mutation {
   updateExercise(id: Int!, name: String!, video: String, picture: String, instructions: String, difficulty: Int, musclegroups: [Int], reps: Int, duration: Int, equipment: [Int]): Exercise
 
   startWorkoutLog(workoutid: Int!, exerciselogs: [ExerciseLogInput]!): WorkoutLog
-  updateExerciseLog(id: Int!, actualduration: Int, actualreps: Int): ExerciseLog
   endWorkoutLog(id: Int!): WorkoutLog
+
+  startExerciseLog(id: Int!): ExerciseLog  
+  endExerciseLog(id: Int!, span: Int): ExerciseLog
 }

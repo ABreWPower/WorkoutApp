@@ -227,7 +227,8 @@ const resolvers = {
                 element[columnName] = null
               }
             })
-            inserts.push(querySQLDB("INSERT into workoutlogexercise (workoutlogid, exerciseid, reps, sets, duration, rest, weight, sort) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [workoutlogid, element.exerciseid, element.reps, element.sets, element.duration, element.rest, element.weight, exerciseIndex]))
+            inserts.push(querySQLDB("INSERT into workoutlogexercise (workoutlogid, exerciseid, reps, sets, duration, rest, weight, sort) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
+                                      [workoutlogid, element.exerciseid, element.reps, element.sets, element.duration, element.rest, element.weight, exerciseIndex]))
           })
           // return promise all
           return Promise.all(inserts)
@@ -235,17 +236,23 @@ const resolvers = {
         .then(function () {
           return querySQLDB("SELECT * FROM workoutlog WHERE id = ?", [workoutlogid]).then(result => result[0])
         })
-    },
-    updateExerciseLog: (parent, { id = null, actualduration = null, actualreps = null }) => {
-      return querySQLDB("UPDATE workoutlogexercise SET actualduration = ?, actualreps = ? WHERE id = ?", [actualduration, actualreps, id])
-        .then(function () {
-          return querySQLDB("SELECT * FROM workoutlogexercise WHERE id = ?", [id]).then(result => result[0])
-        })
-    },
+    },    
     endWorkoutLog: (parent, { id = null }) => {
       return querySQLDB("UPDATE workoutlog SET datecompleted = NOW() WHERE id = ?", [id])
         .then(function () {
           return querySQLDB("SELECT * FROM workoutlog WHERE id = ?", [id]).then(result => result[0])
+        })
+    },
+    startExerciseLog: (parent, { id = null }) => {
+      return querySQLDB("UPDATE workoutlogexercise SET datestarted = NOW() WHERE id = ?", [id])
+        .then(function () {
+          return querySQLDB("SELECT * FROM workoutlogexercise WHERE id = ?", [id]).then(result => result[0])
+        })
+    },
+    endExerciseLog: (parent, { span = null, id = null }) => {
+      return querySQLDB("UPDATE workoutlogexercise SET span = ?, datecompleted = NOW() WHERE id = ?", [span, id])
+        .then(function () {
+          return querySQLDB("SELECT * FROM workoutlogexercise WHERE id = ?", [id]).then(result => result[0])
         })
     }
   },
