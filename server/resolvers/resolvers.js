@@ -15,7 +15,10 @@ const resolvers = {
       if (args.id == undefined) args.id = null
       return querySQLDB("SELECT * FROM exercise WHERE id like IFNULL(?, '%')", [args.id]).then(result => result)
     },
-    workoutlogs: () => querySQLDB("SELECT * FROM workoutlog").then(result => result)
+    workoutlogs: (parent, args) => {
+      if (args.id == undefined) args.id = null
+      return querySQLDB("SELECT * FROM workoutlog WHERE id like IFNULL(?, '%')", [args.id]).then(result => result)
+    }
   },
   Workout: {
     user(parent) {
@@ -227,8 +230,8 @@ const resolvers = {
                 element[columnName] = null
               }
             })
-            inserts.push(querySQLDB("INSERT into workoutlogexercise (workoutlogid, exerciseid, reps, sets, duration, rest, weight, sort) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
-                                      [workoutlogid, element.exerciseid, element.reps, element.sets, element.duration, element.rest, element.weight, exerciseIndex]))
+            inserts.push(querySQLDB("INSERT into workoutlogexercise (workoutlogid, exerciseid, reps, sets, duration, rest, weight, sort) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+              [workoutlogid, element.exerciseid, element.reps, element.sets, element.duration, element.rest, element.weight, exerciseIndex]))
           })
           // return promise all
           return Promise.all(inserts)
@@ -236,7 +239,7 @@ const resolvers = {
         .then(function () {
           return querySQLDB("SELECT * FROM workoutlog WHERE id = ?", [workoutlogid]).then(result => result[0])
         })
-    },    
+    },
     endWorkoutLog: (parent, { id = null }) => {
       return querySQLDB("UPDATE workoutlog SET datecompleted = NOW() WHERE id = ?", [id])
         .then(function () {
