@@ -99,7 +99,7 @@ type Query {
   equipment: [Equipment]
   musclegroups: [MuscleGroup]
   exercises(id: ID): [Exercise]
-  workoutlogs: [WorkoutLog]
+  workoutlogs(id: ID): [WorkoutLog]
 }
 
 
