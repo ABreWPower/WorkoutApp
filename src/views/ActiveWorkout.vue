@@ -10,17 +10,7 @@ console.log("workout edit router params", routeObj.params)
 
 
 // Objects for Vue to render
-const activeSets = ref()
-const activeReps = ref()
-const activeDuration = ref()
-const activeRest = ref()
-const activeWeight = ref()
-const activeExerciseName = ref()
-const activeExercisePicture = ref()
-const activeExerciseVideo = ref()
-const activeExerciseInstructions = ref()
-const activeExerciseEquipment = ref()
-
+const activeRecord = ref({})
 
 /*
 load data from the server
@@ -31,6 +21,7 @@ supply handler/function to move next
 const workoutController = {
   workoutLogId: null,       //int
   workoutData: null,        //object
+  workoutQueue: [],       //array
   activeExercise: null,     //int
 
   // Load workout/exercise data from apollo server
@@ -68,31 +59,51 @@ const workoutController = {
     })
     .then(result => {
       console.log("loadWorkout result", result)
-      workoutController.workoutData = result.data.workoutlogs[0]   //TODO: json parse/stringify??
+      workoutController.workoutData = result.data.workoutlogs[0]
+      workoutController.workoutData.exerciselogs.forEach(exercise => {
+        if(exercise.sets == null || exercise.sets == 0) exercise.sets = 1   //if no sets, set to 1
+        for(let i = 0; i < exercise.sets; i++) {
+          //TODO: include exercise ID in exerciuse and rest
+          workoutController.workoutQueue.push({
+            reps: exercise.reps,
+            duration: exercise.duration,
+            weight: exercise.weight,
+            exerciseName: exercise.exercise.name,
+            exercisePicture: exercise.exercise.picture,
+            exerciseVideo: exercise.exercise.video,
+            exerciseInstructions: exercise.exercise.instructions,
+            exerciseEquipment: exercise.exercise.equipment.flatMap(element => [element.name]).join(", ")
+          })
+          workoutController.workoutQueue.push({
+            reps: null,
+            duration: exercise.rest ? exercise.rest : 5,
+            weight: null,
+            exerciseName: "Rest",
+            exercisePicture: "rest.jpg",
+            exerciseVideo: null,
+            exerciseInstructions: "Rest",
+            exerciseEquipment: "The floor"
+          })
+        }
+      })
       workoutController.activeExercise = 0
       workoutController.copyActiveRecord()
+      //TODO: Call start exercise mutator
+      //TODO: Start timer
     })
   },
   // copy "active" record to activeVariables
   copyActiveRecord: function() {
-    console.log("copyActiveRecord, activeExercise", this.activeExercise)
-    console.log("copyActiveRecord, name: ", workoutController.workoutData.exerciselogs[this.activeExercise].exercise.name)
-    activeSets.value = workoutController.workoutData.exerciselogs[this.activeExercise].sets
-    activeReps.value = workoutController.workoutData.exerciselogs[this.activeExercise].reps
-    activeDuration.value = workoutController.workoutData.exerciselogs[this.activeExercise].duration
-    activeRest.value = workoutController.workoutData.exerciselogs[this.activeExercise].rest
-    activeWeight.value = workoutController.workoutData.exerciselogs[this.activeExercise].weight
-    activeExerciseName.value = workoutController.workoutData.exerciselogs[this.activeExercise].exercise.name
-    activeExercisePicture.value = workoutController.workoutData.exerciselogs[this.activeExercise].exercise.picture
-    activeExerciseVideo.value = workoutController.workoutData.exerciselogs[this.activeExercise].exercise.video
-    activeExerciseInstructions.value = workoutController.workoutData.exerciselogs[this.activeExercise].exercise.instructions
-    activeExerciseEquipment.value = workoutController.workoutData.exerciselogs[this.activeExercise].exercise.equipment.flatMap(element => [element.name]).join(", ")
+    activeRecord.value = workoutController.workoutQueue[workoutController.activeExercise]
   },
   // move to next exercise
   moveNext: function() {
-    //TODO: check if last exercise
+    //TODO: check if last exercise and call endExercise & endWorkout mutator
     this.activeExercise++
     this.copyActiveRecord()
+    //if exerciseid changed; call end/start exercise mutator & reset timer
+    //setInterval(function() {console.log("Interval")}, 2000)
+    //clearInterval()
   }
 }
 
@@ -104,19 +115,17 @@ workoutController.loadWorkout()
 </script>
 
 <template>
-  <h1>{{ activeExerciseName }}</h1>
-  <p>Equipment: {{ activeExerciseEquipment }}</p>
+  <h1>{{ activeRecord.exerciseName }}</h1>
+  <p>Equipment: {{ activeRecord.exerciseEquipment }}</p>
 
   <pre>
-    activeSets: {{ activeSets }}
-    activeReps: {{ activeReps }}
-    activeDuration: {{ activeDuration }}
-    activeRest: {{ activeRest }}
-    activeWeight: {{ activeWeight }}
-    activeExerciseName: {{ activeExerciseName }}
-    activeExercisePicture: {{ activeExercisePicture }}
-    activeExerciseVideo: {{ activeExerciseVideo }}
-    activeExerciseInstructions: {{ activeExerciseInstructions }}
+    activeRecord.Reps: {{ activeRecord.reps }}
+    activeRecord.Duration: {{ activeRecord.duration }}
+    activeRecord.Weight: {{ activeRecord.weight }}
+    activeRecord.ExerciseName: {{ activeRecord.exerciseName }}
+    activeRecord.ExercisePicture: {{ activeRecord.exercisePicture }}
+    activeRecord.ExerciseVideo: {{ activeRecord.exerciseVideo }}
+    activeRecord.ExerciseInstructions: {{ activeRecord.exerciseInstructions }}
   </pre>
 
   <!-- TODO Split the rest of the space into 3 equal parts -->
