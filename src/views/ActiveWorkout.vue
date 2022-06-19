@@ -8,64 +8,116 @@ import router from "../router/router.js"
 const routeObj = useRoute()
 console.log("workout edit router params", routeObj.params)
 
-let getActiveWorkoutData = gql`
-  query Query($workoutlogsId: ID) {
-    workoutlogs(id: $workoutlogsId) {
-      id
-      exerciselogs {
-        id
-        sets
-        reps
-        duration
-        rest
-        weight
-        exercise {
+
+// Objects for Vue to render
+const activeSets = ref()
+const activeReps = ref()
+const activeDuration = ref()
+const activeRest = ref()
+const activeWeight = ref()
+const activeExerciseName = ref()
+const activeExercisePicture = ref()
+const activeExerciseVideo = ref()
+const activeExerciseInstructions = ref()
+const activeExerciseEquipment = ref()
+
+
+/*
+load data from the server
+copy active record to activeVariables
+supply handler/function to move next
+*/
+
+const workoutController = {
+  workoutLogId: null,       //int
+  workoutData: null,        //object
+  activeExercise: null,     //int
+
+  // Load workout/exercise data from apollo server
+  loadWorkout: function() {
+    const getActiveWorkoutData = gql`
+      query Query($workoutlogsId: ID) {
+        workoutlogs(id: $workoutlogsId) {
           id
-          name
-          picture
-          video
-          instructions
-          equipment {
-            name
-            icon
+          exerciselogs {
+            id
+            sets
+            reps
+            duration
+            rest
+            weight
+            exercise {
+              id
+              name
+              picture
+              video
+              instructions
+              equipment {
+                name
+                icon
+              }
+            }
           }
         }
       }
-    }
+    `
+    client.query({
+      query: getActiveWorkoutData,
+      variables: { workoutlogsId: this.workoutLogId },
+      fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+    })
+    .then(result => {
+      console.log("loadWorkout result", result)
+      workoutController.workoutData = result.data.workoutlogs[0]   //TODO: json parse/stringify??
+      workoutController.activeExercise = 0
+      workoutController.copyActiveRecord()
+    })
+  },
+  // copy "active" record to activeVariables
+  copyActiveRecord: function() {
+    console.log("copyActiveRecord, activeExercise", this.activeExercise)
+    console.log("copyActiveRecord, name: ", workoutController.workoutData.exerciselogs[this.activeExercise].exercise.name)
+    activeSets.value = workoutController.workoutData.exerciselogs[this.activeExercise].sets
+    activeReps.value = workoutController.workoutData.exerciselogs[this.activeExercise].reps
+    activeDuration.value = workoutController.workoutData.exerciselogs[this.activeExercise].duration
+    activeRest.value = workoutController.workoutData.exerciselogs[this.activeExercise].rest
+    activeWeight.value = workoutController.workoutData.exerciselogs[this.activeExercise].weight
+    activeExerciseName.value = workoutController.workoutData.exerciselogs[this.activeExercise].exercise.name
+    activeExercisePicture.value = workoutController.workoutData.exerciselogs[this.activeExercise].exercise.picture
+    activeExerciseVideo.value = workoutController.workoutData.exerciselogs[this.activeExercise].exercise.video
+    activeExerciseInstructions.value = workoutController.workoutData.exerciselogs[this.activeExercise].exercise.instructions
+    activeExerciseEquipment.value = workoutController.workoutData.exerciselogs[this.activeExercise].exercise.equipment.flatMap(element => [element.name]).join(", ")
+  },
+  // move to next exercise
+  moveNext: function() {
+    //TODO: check if last exercise
+    this.activeExercise++
+    this.copyActiveRecord()
   }
-`
+}
 
-// Objects for Vue to render
-let activeSets = null
-let activeReps = null
-let activeDuration = null
-let activeRest = null
-let activeWeight = null
-let activeExerciseName = null
-let activeExercisePicture = null
-let activeExerciseVideo = null
-let activeExerciseInstructions = null
-let activeExerciseEquipmentName = null
-let activeExerciseEquipmentIcon = null
 
-client.query({
-  query: getActiveWorkoutData,
-  variables: { workoutlogsId: parseInt(routeObj.params.workoutlogid)},
-  fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
-})
-.then(result => {
-  console.log("results", result)
-  somethingcool = result.data.workoutlogs[0]
-  exerciseName.value = somethingcool.exerciselogs[0].exercise.name
-})
-
+workoutController.workoutLogId = parseInt(routeObj.params.workoutlogid)
+workoutController.loadWorkout()
 
 
 </script>
 
 <template>
-  <h1>Here {{ exerciseName }}</h1>
-  <p>Equipment: TODO Equipment</p>
+  <h1>{{ activeExerciseName }}</h1>
+  <p>Equipment: {{ activeExerciseEquipment }}</p>
+
+  <pre>
+    activeSets: {{ activeSets }}
+    activeReps: {{ activeReps }}
+    activeDuration: {{ activeDuration }}
+    activeRest: {{ activeRest }}
+    activeWeight: {{ activeWeight }}
+    activeExerciseName: {{ activeExerciseName }}
+    activeExercisePicture: {{ activeExercisePicture }}
+    activeExerciseVideo: {{ activeExerciseVideo }}
+    activeExerciseInstructions: {{ activeExerciseInstructions }}
+  </pre>
 
   <!-- TODO Split the rest of the space into 3 equal parts -->
   <div class="row">
@@ -75,9 +127,10 @@ client.query({
     <!-- TODO Video/instructions -->
   </div>
   <div class="row">
-    <!-- TODO Rep stuff -->
-    <button type="button" class="btn btn-success btn-lg">Continue</button>
-    <!-- TODO make the button not cross the whole screen -->
+    <div class="col1">
+      <!-- TODO Rep stuff -->
+      <button type="button" class="btn btn-success btn-lg" @click="workoutController.moveNext()">Continue</button>
+    </div>
   </div>
 
   <nav class="navbar fixed-bottom navbar-dark bg-primary" style="color: white; padding-left: 20px; padding-right 20px;">
