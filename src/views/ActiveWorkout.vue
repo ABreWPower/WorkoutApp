@@ -106,7 +106,7 @@ const workoutController = {
             exerciseName: "Rest",
             exercisePicture: "rest.jpg",
             exerciseVideo: null,
-            exerciseInstructions: "Rest",
+            exerciseInstructions: "Take a break, let your heart rate lower, drink water if needed, and get ready for the next set.",
             exerciseEquipment: "The floor"
           })
         }
