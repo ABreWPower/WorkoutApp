@@ -210,10 +210,10 @@ workoutController.loadWorkout()
 </script>
 
 <template>
-  <h1>{{ activeRecord.exerciseName }}</h1>
-  <p>Equipment: {{ activeRecord.exerciseEquipment }}</p>
+  <h1 style="font-size: 50px">{{ activeRecord.exerciseName }}</h1>
+  <p style="font-size: 30px">Equipment: {{ activeRecord.exerciseEquipment }}</p>
 
-  <pre>
+  <!-- <pre>
     activeRecord.Reps: {{ activeRecord.reps }}
     activeRecord.Duration: {{ activeRecord.duration }}
     activeRecord.Weight: {{ activeRecord.weight }}
@@ -221,18 +221,19 @@ workoutController.loadWorkout()
     activeRecord.ExercisePicture: {{ activeRecord.exercisePicture }}
     activeRecord.ExerciseVideo: {{ activeRecord.exerciseVideo }}
     activeRecord.ExerciseInstructions: {{ activeRecord.exerciseInstructions }}
-  </pre>
+  </pre> -->
 
   <!-- TODO Split the rest of the space into 3 equal parts -->
   <div class="row">
-    <!-- TODO Clock countdown/reps/duration -->
+    <!-- Clock countdown/reps/duration -->
+    <h1 class="display-1">{{ activeRecord.reps ? activeRecord.reps + ' Reps' : activeRecord.duration + ' Seconds' }} {{ activeRecord.weight ? activeRecord.weight + ' lbs' : '' }}</h1>
   </div>
   <div class="row">
-    <!-- TODO Video/instructions -->
+    <!-- Video/instructions -->
+    <h1 class="display-4">Instructions: {{ activeRecord.exerciseInstructions }}</h1>
   </div>
   <div class="row">
     <div class="col1">
-      <!-- TODO Rep stuff -->
       <button type="button" class="btn btn-success btn-lg" @click="workoutController.moveNext()">Continue</button>
     </div>
   </div>
