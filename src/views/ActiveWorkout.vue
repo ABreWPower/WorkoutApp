@@ -35,8 +35,18 @@ let getActiveWorkoutData = gql`
   }
 `
 
-var somethingcool = null
-var exerciseName = ref()
+// Objects for Vue to render
+let activeSets = null
+let activeReps = null
+let activeDuration = null
+let activeRest = null
+let activeWeight = null
+let activeExerciseName = null
+let activeExercisePicture = null
+let activeExerciseVideo = null
+let activeExerciseInstructions = null
+let activeExerciseEquipmentName = null
+let activeExerciseEquipmentIcon = null
 
 client.query({
   query: getActiveWorkoutData,
