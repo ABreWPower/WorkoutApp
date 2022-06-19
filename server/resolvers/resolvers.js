@@ -123,7 +123,7 @@ const resolvers = {
                 element[columnName] = null
               }
             })
-            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest, sort) VALUES (?, ?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest, elements.sort]))
+            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest, sort) VALUES (?, ?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest, element.sort]))
           })
           // return promise all
           return Promise.all(inserts)
