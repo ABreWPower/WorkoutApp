@@ -8,21 +8,44 @@ import router from "../router/router.js"
 const routeObj = useRoute()
 console.log("workout edit router params", routeObj.params)
 
+// Start exercise mutator
+const startExerciseLog = gql`
+  mutation StartExerciseLog($startExerciseLogId: Int!) {
+    startExerciseLog(id: $startExerciseLogId) {
+      id
+    }
+  }
+`
+
+// End exercise mutator
+const endExerciseLog = gql`
+  mutation EndExerciseLog($endExerciseLogId: Int!, $span: Int) {
+    endExerciseLog(id: $endExerciseLogId, span: $span) {
+      id
+    }
+  }
+`
+
+// End workout mutator
+const endWorkoutLog = gql`
+  mutation EndWorkoutLog($endWorkoutLogId: Int!) {
+    endWorkoutLog(id: $endWorkoutLogId) {
+      id
+    }
+  }
+`
 
 // Objects for Vue to render
 const activeRecord = ref({})
 
-/*
-load data from the server
-copy active record to activeVariables
-supply handler/function to move next
-*/
-
+// Class that pulls data from GraphQL and store it so Vue can render it
 const workoutController = {
-  workoutLogId: null,       //int
-  workoutData: null,        //object
-  workoutQueue: [],       //array
-  activeExercise: null,     //int
+  workoutLogId: null,       // int
+  workoutData: null,        // object
+  workoutQueue: [],         // array
+  activeExercise: null,     // int
+  timer: 0,                 // int
+  timerIntervalID: null,    // int
 
   // Load workout/exercise data from apollo server
   loadWorkout: function() {
@@ -60,11 +83,12 @@ const workoutController = {
     .then(result => {
       console.log("loadWorkout result", result)
       workoutController.workoutData = result.data.workoutlogs[0]
+      // TODO add a 5 second transition into the new workout???
       workoutController.workoutData.exerciselogs.forEach(exercise => {
-        if(exercise.sets == null || exercise.sets == 0) exercise.sets = 1   //if no sets, set to 1
+        if(exercise.sets == null || exercise.sets == 0) exercise.sets = 1   // Assume the user meant to have at least 1 set
         for(let i = 0; i < exercise.sets; i++) {
-          //TODO: include exercise ID in exerciuse and rest
           workoutController.workoutQueue.push({
+            id: exercise.id,
             reps: exercise.reps,
             duration: exercise.duration,
             weight: exercise.weight,
@@ -75,6 +99,7 @@ const workoutController = {
             exerciseEquipment: exercise.exercise.equipment.flatMap(element => [element.name]).join(", ")
           })
           workoutController.workoutQueue.push({
+            id: exercise.id,
             reps: null,
             duration: exercise.rest ? exercise.rest : 5,
             weight: null,
@@ -88,29 +113,99 @@ const workoutController = {
       })
       workoutController.activeExercise = 0
       workoutController.copyActiveRecord()
-      //TODO: Call start exercise mutator
-      //TODO: Start timer
+
+      console.log("id", parseInt(activeRecord.value.id))
+      // Start the first exerciselog
+      client.mutate({
+        mutation: startExerciseLog,
+        variables: { startExerciseLogId: parseInt(activeRecord.value.id)}
+      }).then(result => {
+        // console.log("startExerciseLog result", result)
+        // TODO validate this query didn't fail
+      })
+
+      // Start timer
+      workoutController.timerIntervalID = setInterval(function() {workoutController.timer++}, 1000)
+      console.log("timer", workoutController.timer)
     })
   },
-  // copy "active" record to activeVariables
+
+  // Current exercise over to the active record for use by Vue
   copyActiveRecord: function() {
     activeRecord.value = workoutController.workoutQueue[workoutController.activeExercise]
   },
-  // move to next exercise
+
+  // Move to next exercise
   moveNext: function() {
-    //TODO: check if last exercise and call endExercise & endWorkout mutator
-    this.activeExercise++
-    this.copyActiveRecord()
-    //if exerciseid changed; call end/start exercise mutator & reset timer
-    //setInterval(function() {console.log("Interval")}, 2000)
-    //clearInterval()
+    console.log("timer", workoutController.timer)
+    
+    let currentExerciseID = parseInt(workoutController.workoutQueue[workoutController.activeExercise].id)
+    console.log("currentExerciseID", currentExerciseID)
+
+    // Check if last exercise and call endExercise & endWorkout mutator
+    console.log("activeExercise & workoutQueue.length", this.activeExercise, this.workoutQueue.length)
+    if(this.activeExercise == this.workoutQueue.length - 1) {
+      // Finish the workout
+      // TODO need to change the button text to "Finish" instead of "continue"
+      console.log("end workout")
+      client.mutate({
+        mutation: endExerciseLog,
+        variables: { endExerciseLogId: currentExerciseID, span: parseInt(workoutController.timer) }
+      }).then(result => {
+        // console.log("endExerciseLog result", result)
+        // TODO validate this query didn't fail
+      })
+
+      client.mutate({
+        mutation: endWorkoutLog,
+        variables: { endWorkoutLogId: this.workoutLogId }
+      }).then(result => {
+        // console.log("endWorkoutLog result", result)
+        // TODO validate this query didn't fail
+      })
+      
+      // Clear the interval
+      clearInterval(workoutController.timerIntervalID)
+
+      // TODO go to another page (workout summary)
+      router.push({ name: "Workouts"})
+    }
+    else {
+      // Move to the next exercise          
+      this.activeExercise++
+      this.copyActiveRecord()
+      
+      // If exerciseid changed; call end/start exercise mutator & reset timer
+      if(currentExerciseID != activeRecord.value.id) {
+        console.log("end exercise")
+        client.mutate({
+          mutation: endExerciseLog,
+          variables: { endExerciseLogId: currentExerciseID, span: parseInt(workoutController.timer) }
+        }).then(result => {
+          // console.log("endExerciseLog result", result)
+          // TODO validate this query didn't fail
+        })
+
+        // Start the next exerciselog
+        client.mutate({
+          mutation: startExerciseLog,
+          variables: { startExerciseLogId: parseInt(activeRecord.value.id)}
+        }).then(result => {
+          // console.log("startExerciseLog result", result)
+          // TODO validate this query didn't fail
+        })
+
+        workoutController.timer = 0
+        console.log("workoutController.timer", workoutController.timer)
+      }
+    }
+    
   }
 }
 
-
+// Start the workout controller and exercises
 workoutController.workoutLogId = parseInt(routeObj.params.workoutlogid)
 workoutController.loadWorkout()
-
 
 </script>
 
