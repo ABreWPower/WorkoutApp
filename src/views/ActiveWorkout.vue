@@ -207,6 +207,22 @@ const workoutController = {
 workoutController.workoutLogId = parseInt(routeObj.params.workoutlogid)
 workoutController.loadWorkout()
 
+function pauseContinueButtonClick() {
+  let pauseContinue = document.getElementById("pauseContinueButton")
+
+  if(workoutController.timerIntervalID == null) {
+    workoutController.timerIntervalID = setInterval(function() {workoutController.timer++}, 1000)
+    pauseContinue.style.backgroundColor = "transparent"
+    pauseContinue.innerText = "Pause"
+  }
+  else {
+    clearInterval(workoutController.timerIntervalID)
+    workoutController.timerIntervalID = null
+    pauseContinue.style.backgroundColor = "#ffc107"
+    pauseContinue.innerText  = "Continue"
+  }
+}
+
 </script>
 
 <template>
@@ -241,7 +257,7 @@ workoutController.loadWorkout()
   <nav class="navbar fixed-bottom navbar-dark bg-primary" style="color: white; padding-left: 20px; padding-right 20px;">
     <div class="container-fluid">
       <!-- <form class="container-fluid justify-content-start"> -->
-      <button class="btn btn-outline-danger" type="button" style="color: white">Pause</button>
+      <button id="pauseContinueButton" class="btn btn-outline-warning" type="button" style="color: white" @click="pauseContinueButtonClick()">Pause</button>
       <!-- </form> -->
       <span class="navbar-text"> Total Time: TODO Total Time</span>
     </div>
