@@ -17,7 +17,7 @@ let getWorkout = gql`
       name
       picture
       description
-      duration
+      duration_calculated
       difficulty
       equipment {
         name
@@ -82,7 +82,7 @@ let editClick = function() {
   <!-- <img src="/pic1.jpg" alt="pic1" style="max-width: 100vw" /> -->
 
   <div class="row align-items-start">
-    <div class="col">Duration: {{ workout.duration / 60 }} hours</div>
+    <div class="col">Duration: {{ Math.round(workout.duration_calculated / 60) }} minutes</div>
     <div class="col">
       <div class="row align-items-start">
         <p>

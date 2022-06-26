@@ -14,7 +14,7 @@ type Workout {
   picture: String
   description: String
   user: User
-  duration: Int
+  duration_calculated: Int
   difficulty: Int
   equipment: [Equipment]
   exercises: [Exercise]
@@ -30,6 +30,7 @@ type Exercise {
   musclegroups: [MuscleGroup]
   reps: Int
   duration: Int
+  duration_calculated: Int
   equipment: [Equipment]
   sets: Int
   rest: Int

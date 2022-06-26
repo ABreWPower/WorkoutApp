@@ -24,6 +24,12 @@ const resolvers = {
     user(parent) {
       return querySQLDB("SELECT * FROM users WHERE id = ?", [parent.userid]).then(result => result[0])
     },
+    duration_calculated(parent) {
+      return querySQLDB(`SELECT sum((ifnull(workout_exercise.duration, workout_exercise.reps * 4) + ifnull(workout_exercise.rest, 5)) * ifnull(workout_exercise.sets, 1)) AS duration_calculated
+        FROM workout_exercise
+          INNER JOIN workout ON workout.id = workout_exercise.workoutid
+        WHERE workout.id = ?`, [parent.id]).then(result => result[0].duration_calculated)
+    },
     equipment(parent) {
       return querySQLDB(`SELECT DISTINCT eq.*
         FROM equipment AS eq
@@ -42,17 +48,16 @@ const resolvers = {
             exercise.instructions,
             exercise.difficulty,
             workout_exercise.reps,
-            workout_exercise.sets,
+            ifnull(workout_exercise.sets, 1) AS sets,
             workout_exercise.duration,
-            workout_exercise.rest
+            workout_exercise.rest,
+            ifnull(workout_exercise.duration, workout_exercise.reps * 4) + ifnull(workout_exercise.rest, 5) AS duration_calculated
         FROM exercise
           INNER JOIN workout_exercise ON exercise.id = workout_exercise.exerciseid
           INNER JOIN workout ON workout_exercise.workoutid = workout.id
         WHERE workout.id = ?
         ORDER BY workout_exercise.sort`, [parent.id])
     },
-    // TODO add in duration
-    // TODO Allow multiple instances of an exercise per workout (workout_exercise table)
     difficulty(parent) {
       return querySQLDB(`SELECT exercise.difficulty AS difficulty
         FROM exercise
