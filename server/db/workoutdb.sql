@@ -190,6 +190,8 @@ CREATE TABLE `workout` (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `picture` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `description` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `circuit_rounds` int DEFAULT NULL,
+  `circuit_rest` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_workout_users1_idx` (`userid`),
   CONSTRAINT `fk_workout_users1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
@@ -202,7 +204,7 @@ CREATE TABLE `workout` (
 
 LOCK TABLES `workout` WRITE;
 /*!40000 ALTER TABLE `workout` DISABLE KEYS */;
-INSERT INTO `workout` VALUES (1,1,'Workout 1',NULL,'Lots of workouts'),(2,2,'Super B',NULL,'Hard workout'),(3,3,'Short',NULL,'Small number of exercies'),(4,1,'Week 0-2 PT 1',NULL,'Week 0-2 PT 1'),(5,1,'Week 0-2 PT 2',NULL,'Week 0-2 PT 2'),(6,1,'SenMoCor Lvl 1 Ex 1',NULL,'SenMoCor Level 1 exercise 1 only'),(7,1,'SenMoCor Lvl 1 Ex 2',NULL,'SenMoCor Level 1 exercise 2 only'),(8,1,'SenMoCor Lvl 1 Ex 2 + Ex 1',NULL,'SenMoCor Level 1 exercise 2 and exercise 1 back to back, then 10 sets of each');
+INSERT INTO `workout` VALUES (1,1,'Workout 1',NULL,'Lots of workouts',NULL,NULL),(2,2,'Super B',NULL,'Hard workout',NULL,NULL),(3,3,'Short',NULL,'Small number of exercies',NULL,NULL),(4,1,'Week 0-2 PT 1',NULL,'Week 0-2 PT 1',NULL,NULL),(5,1,'Week 0-2 PT 2',NULL,'Week 0-2 PT 2',NULL,NULL),(6,1,'SenMoCor Lvl 1 Ex 1',NULL,'SenMoCor Level 1 exercise 1 only',NULL,NULL),(7,1,'SenMoCor Lvl 1 Ex 2',NULL,'SenMoCor Level 1 exercise 2 only',NULL,NULL),(8,1,'SenMoCor Lvl 1 Ex 2 + Ex 1',NULL,'SenMoCor Level 1 exercise 2 and exercise 1 back to back, then 10 sets of each',NULL,NULL);
 /*!40000 ALTER TABLE `workout` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -319,4 +321,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-27 17:27:24
+-- Dump completed on 2022-06-27 17:33:41
