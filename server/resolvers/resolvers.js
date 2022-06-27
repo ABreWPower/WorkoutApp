@@ -116,9 +116,9 @@ const resolvers = {
         result => querySQLDB("SELECT * FROM users WHERE id = ?", [result.insertId]).then(result => result[0])
       )
     },
-    addWorkout: (parent, { name = null, picture = null, description = null, user = null, exercises = [] }) => {
+    addWorkout: (parent, { name = null, picture = null, description = null, user = null, circuit_rounds = null, exercises = [] }) => {
       let workoutid = null
-      return querySQLDB("INSERT into workout (name, picture, description, userid) VALUES (?, ?, ?, 1)", [name, picture, description])
+      return querySQLDB("INSERT into workout (name, picture, description, circuit_rounds, userid) VALUES (?, ?, ?, ?, 1)", [name, picture, description, circuit_rounds])
         .then(function (result) {
           workoutid = result.insertId
           let inserts = []
@@ -137,10 +137,10 @@ const resolvers = {
           return querySQLDB("SELECT * FROM workout WHERE id = ?", [workoutid]).then(result => result[0])
         })
     },
-    updateWorkout: (parent, { id = null, name = null, picture = null, description = null, user = null, exercises = [] }) => {
+    updateWorkout: (parent, { id = null, name = null, picture = null, description = null, user = null, circuit_rounds = null, exercises = [] }) => {
       console.log("starting update function")
       let workoutid = id
-      return querySQLDB("UPDATE workout SET name = ?, picture = ?, description = ?, userid = 1 WHERE ID = ?", [name, picture, description, workoutid])
+      return querySQLDB("UPDATE workout SET name = ?, picture = ?, description = ?, circuit_rounds = ?, userid = 1 WHERE ID = ?", [name, picture, description, circuit_rounds, workoutid])
         .then(function () {
           console.log("workout id is: ", workoutid)
           // delete all element containing workout id

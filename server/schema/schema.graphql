@@ -16,6 +16,7 @@ type Workout {
   user: User
   duration_calculated: Int
   difficulty: Int
+  circuit_rounds: Int
   equipment: [Equipment]
   exercises: [Exercise]
 }
@@ -107,8 +108,8 @@ type Query {
 type Mutation {
   addUser(name: String!, email: String, avatar: String): User
 
-  addWorkout(name: String!, picture: String, description: String, user: Int, exercises: [WorkoutExerciseInput]): Workout
-  updateWorkout(id: Int!, name: String!, picture: String, description: String, user: Int, exercises: [WorkoutExerciseInput]): Workout
+  addWorkout(name: String!, picture: String, description: String, circuit_rounds: Int, user: Int, exercises: [WorkoutExerciseInput]): Workout
+  updateWorkout(id: Int!, name: String!, picture: String, description: String, circuit_rounds: Int, user: Int, exercises: [WorkoutExerciseInput]): Workout
 
   addExercise(name: String!, video: String, picture: String, instructions: String, difficulty: Int, musclegroups: [Int], reps: Int, duration: Int, equipment: [Int]): Exercise
   updateExercise(id: Int!, name: String!, video: String, picture: String, instructions: String, difficulty: Int, musclegroups: [Int], reps: Int, duration: Int, equipment: [Int]): Exercise
