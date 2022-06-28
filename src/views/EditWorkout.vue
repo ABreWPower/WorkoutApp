@@ -32,6 +32,7 @@ let getWorkoutFromID = gql`
       name
       picture
       description
+      circuit_rounds
       exercises {
         id
         name
@@ -58,9 +59,14 @@ if (routeObj.params.workoutid != null && workout.value.name == null) {
     console.log("results", result)
     console.log("result.data.workouts[0]", result.data.workouts[0])
     workout.value = JSON.parse(JSON.stringify(result.data.workouts[0]))
+    if (workout.circuit_rounds === undefined || workout.circuit_rounds == null || workout.circuit_rounds == 0 ) {
+      workout.value.circuit_rounds = 1
+    }
     console.log("workout after load from server", workout.value)
   })
 }
+
+let circuitCheckboxValue = ref()
 
 // **************
 // Saving section
@@ -186,7 +192,26 @@ function exerciseMove(fromIndex, offset) {
     <input type="text" class="form-control" id="workoutDescription" v-model="workout.description" aria-label="Workout Description" />
   </div>
 
-  <!-- I think part of the problem is we are only pulling back a number not the whole object -->
+  <!-- TODO the circuit stuff: checkbox to enable circuits, number of rounds, round rest (linked to last exercise rest time (needs to change when exercises added)) -->
+  <div class="row" style="padding-bottom: 20px">
+    <div class="col">
+      <!-- <div class="input-group m-1 d-inline-flex align-items-center w-auto"> -->
+      <div class="form-check mr-1 d-inline-flex align-items-center w-auto">
+        <input class="form-check-input" type="checkbox" v-model="circuitCheckboxValue" id="circuitCheckbox" aria-label="Check the box to turn on circuits for the workout" />
+      </div>
+      <h3 class="m-1 d-inline-flex align-items-center w-auto">Circuit</h3>
+      <!-- </div> -->
+      <div class="input-group m-1 d-inline-flex align-items-center w-auto">
+        <span class="input-group-text" id="circuitRountsLabel">Rounds</span>
+        <input type="text" class="form-control" id="circuitRounds" v-model="workout.circuit_rounds" :readonly="!circuitCheckboxValue" aria-label="Number of Rounds in a Circuit" aria-describedby="circuitRountsLabel" style="max-width: 75px" />
+      </div>
+      <div class="input-group m-1 d-inline-flex align-items-center w-auto">
+        <span class="input-group-text" id="circuitRestLabel">Round Rest</span>
+        <input type="text" class="form-control" id="circuitRest" v-model="workout.circuit_rounds" :readonly="!circuitCheckboxValue" aria-label="The amount of rest between rounds" aria-describedby="circuitRestLabel" style="max-width: 75px" />
+      </div>
+    </div>
+  </div>
+
   <div v-for="(exercise, index) in workout.exercises" :key="exercise.id">
     <workout-edit-exercise-card-view
       :name="exercise.name"
@@ -201,8 +226,7 @@ function exerciseMove(fromIndex, offset) {
       @update:rest="exercise.rest = parseInt($event)"
       @delete="workout.exercises.splice(workout.exercises.indexOf(exercise), 1)"
       @move:up="exerciseMove(index, -1)"
-      @move:down="exerciseMove(index, 1)"
-    >
+      @move:down="exerciseMove(index, 1)">
     </workout-edit-exercise-card-view>
   </div>
 
@@ -217,4 +241,7 @@ function exerciseMove(fromIndex, offset) {
 </template>
 
 <style scoped>
+input[type='checkbox'] {
+  transform: scale(1.25);
+}
 </style>

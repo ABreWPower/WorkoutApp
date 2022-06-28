@@ -19,6 +19,7 @@ let getWorkout = gql`
       description
       duration_calculated
       difficulty
+      circuit_rounds
       equipment {
         name
         icon
@@ -48,7 +49,7 @@ client.query({
 .then(result => {
   workout.value = structuredClone(result.data.workouts[0])
   result.data.workouts[0].equipment.forEach(element => {
-    equipment.value.push(element.name)
+    equipment.value.push(element)
   })
 })
 
@@ -82,21 +83,18 @@ let editClick = function() {
   <!-- <img src="/pic1.jpg" alt="pic1" style="max-width: 100vw" /> -->
 
   <div class="row align-items-start">
-    <div class="col">Duration: {{ Math.round(workout.duration_calculated / 60) }} minutes</div>
-    <div class="col">
-      <div class="row align-items-start">
-        <p>
-          Difficulty:
-          <span v-for="i in [0, 1, 2]" :key="i">
-            <i v-if="i < workout.difficulty" class="bi bi-star-fill" style="font-size: 25px; padding-right: 10px"></i>
-            <i v-else class="bi bi-star" style="font-size: 25px; padding-right: 10px"></i>
-          </span>
-        </p>
-      </div>
+    <div class="col-4">Duration: {{ Math.round(workout.duration_calculated / 60) }} minutes</div>
+    <div class="col-4">Circuit Rounds: {{ workout.circuit_rounds }}</div>
+    <div class="col-4">
+      Difficulty:
+      <span v-for="i in [0, 1, 2]" :key="i">
+        <i v-if="i < workout.difficulty" class="bi bi-star-fill" style="font-size: 25px; padding-right: 10px"></i>
+        <i v-else class="bi bi-star" style="font-size: 25px; padding-right: 10px"></i>
+      </span>
     </div>
   </div>
 
-  <p>Required Equipment: {{ equipment }}</p>
+  <p>Required Equipment: {{ equipment.flatMap((element) => [element.name]).join(', ') }}</p>
 
   <h4>Description</h4>
   <p>
