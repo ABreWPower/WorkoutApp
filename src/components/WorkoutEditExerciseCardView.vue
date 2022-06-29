@@ -16,6 +16,11 @@ const props = defineProps({
     type: Number,
     required: false,
   },
+  setsReadOnly: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
   reps: {
     type: Number,
     required: false,
@@ -79,6 +84,7 @@ const getImages = function () {
               <input
                 type="number"
                 :value="props.sets"
+                :readonly="setsReadOnly"
                 @input="$emit('update:sets', $event.target.value)"
                 class="form-control"
                 aria-label="Number of sets to complete for this exercise: {{ name }}"

@@ -67,8 +67,7 @@ const routes = [
     path: '/activeworkout/:workoutlogid',
     name: 'Active Workout',
     props: {
-      workoutlogid: true,
-      exerciselogids: true      
+      workoutlogid: true
     },
     component: () => import('../views/ActiveWorkout.vue')
     // TODO add props for new log data type

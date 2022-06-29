@@ -103,8 +103,7 @@ let startClick = function() {
       router.push({
         name: 'Active Workout',
         params: {          
-          workoutlogid: result.data.startWorkoutLog.id,
-          exerciselogids: result.data.startWorkoutLog.exerciselogs.flatMap(element => [element.id])
+          workoutlogid: result.data.startWorkoutLog.id
         }
       })
 

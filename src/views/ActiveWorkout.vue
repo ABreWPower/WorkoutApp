@@ -72,6 +72,9 @@ const workoutController = {
               }
             }
           }
+          workout {
+            circuit_rounds
+          }
         }
       }
     `
@@ -84,33 +87,35 @@ const workoutController = {
       console.log("loadWorkout result", result)
       workoutController.workoutData = result.data.workoutlogs[0]
       // TODO add a 5 second transition into the new workout???
-      workoutController.workoutData.exerciselogs.forEach(exercise => {
-        if(exercise.sets == null || exercise.sets == 0) exercise.sets = 1   // Assume the user meant to have at least 1 set
-        for(let i = 0; i < exercise.sets; i++) {
-          workoutController.workoutQueue.push({
-            id: exercise.id,
-            reps: exercise.reps,
-            duration: exercise.duration,
-            weight: exercise.weight,
-            exerciseName: exercise.exercise.name,
-            exercisePicture: exercise.exercise.picture,
-            exerciseVideo: exercise.exercise.video,
-            exerciseInstructions: exercise.exercise.instructions,
-            exerciseEquipment: exercise.exercise.equipment.flatMap(element => [element.name]).join(", ")
-          })
-          workoutController.workoutQueue.push({
-            id: exercise.id,
-            reps: null,
-            duration: exercise.rest ? exercise.rest : 5,
-            weight: null,
-            exerciseName: "Rest",
-            exercisePicture: "rest.jpg",
-            exerciseVideo: null,
-            exerciseInstructions: "Take a break, let your heart rate lower, drink water if needed, and get ready for the next set.",
-            exerciseEquipment: "The floor"
-          })
-        }
-      })
+      for(let i = 0; i < workoutController.workoutData.workout.circuit_rounds; i++ ) {
+        workoutController.workoutData.exerciselogs.forEach(exercise => {
+          if(exercise.sets == null || exercise.sets == 0) exercise.sets = 1   // Assume the user meant to have at least 1 set
+          for(let j = 0; j < exercise.sets; j++) {
+            workoutController.workoutQueue.push({
+              id: exercise.id,
+              reps: exercise.reps,
+              duration: exercise.duration,
+              weight: exercise.weight,
+              exerciseName: exercise.exercise.name,
+              exercisePicture: exercise.exercise.picture,
+              exerciseVideo: exercise.exercise.video,
+              exerciseInstructions: exercise.exercise.instructions,
+              exerciseEquipment: exercise.exercise.equipment.flatMap(element => [element.name]).join(", ")
+            })
+            workoutController.workoutQueue.push({
+              id: exercise.id,
+              reps: null,
+              duration: exercise.rest ? exercise.rest : 5,
+              weight: null,
+              exerciseName: "Rest",
+              exercisePicture: "rest.jpg",
+              exerciseVideo: null,
+              exerciseInstructions: "Take a break, let your heart rate lower, drink water if needed, and get ready for the next set.",
+              exerciseEquipment: "The floor"
+            })
+          }
+        })
+      }
       workoutController.activeExercise = 0
       workoutController.copyActiveRecord()
 

@@ -132,7 +132,7 @@ const saveWorkoutClick = () => {
       exercises: workout.value.exercises.flatMap((element, index) => [{
         id: parseInt(element.id),
         reps: element.reps,
-        sets: element.sets,
+        sets: circuitCheckboxValue.value ? 1: element.sets,
         duration: element.duration,
         rest: element.rest,
         sort: index 
@@ -237,6 +237,7 @@ function exerciseMove(fromIndex, offset) {
       :name="exercise.name"
       :picture="exercise.picture"
       :sets="exercise.sets"
+      :setsReadOnly="circuitCheckboxValue"
       @update:sets="exercise.sets = parseInt($event)"
       :reps="exercise.reps"
       @update:reps="exercise.reps = parseInt($event)"
