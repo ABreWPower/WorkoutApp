@@ -92,7 +92,6 @@ let startClick = function() {
         duration: element.duration,
         rest: element.rest,
         weight: element.weight
-        // TODO how and when do we set date started on an exercise, it is not in startWorkoutLog or in updateExerciseLog
       }])
     }
   })
@@ -126,6 +125,8 @@ let startClick = function() {
   <p>
     {{ workout.description }}
   </p>
+
+  <h5 style="padding-bottom: 15px">Circuit Rounds: {{ workout.circuit_rounds }}</h5>
 
   <!-- I think part of the problem is we are only pulling back a number not the whole object -->
   <div v-for="exercise in workout.exercises" :key="exercise.id">

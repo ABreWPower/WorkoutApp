@@ -28,6 +28,11 @@ const props = defineProps({
     type: Number,
     required: false,
   },
+  restReadOnly: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
   weight: {
     type: Number,
     required: false,
@@ -108,6 +113,7 @@ const getImages = function () {
               <input
                 type="number"
                 :value="props.rest"
+                :readonly="restReadOnly"
                 @input="$emit('update:rest', $event.target.value)"
                 class="form-control"
                 aria-label="Number of time to rest for this exercise: {{ name }}"

@@ -19,9 +19,20 @@ const workout = ref({
   exercises: []
 })
 
+const circuitCheckboxValue = ref(false)
+
 // If we get an workout object passed in, overwrite the defaults
 if(routeObj.params.workout !== undefined) {
   workout.value = JSON.parse(routeObj.params.workout)
+  if (workout.value.circuit_rounds === undefined || workout.value.circuit_rounds == null || workout.value.circuit_rounds == 0 ) {
+    workout.value.circuit_rounds = 1
+  }
+  if (workout.value.circuit_rounds > 1) {
+    circuitCheckboxValue.value = true
+  }
+  if (workout.value.circuitRoundRest === undefined) {
+    workout.value.circuitRoundRest = workout.value.exercises[workout.value.exercises.length - 1].rest
+  }
   console.log("new workout object", workout.value)
 }
 
@@ -59,30 +70,34 @@ if (routeObj.params.workoutid != null && workout.value.name == null) {
     console.log("results", result)
     console.log("result.data.workouts[0]", result.data.workouts[0])
     workout.value = JSON.parse(JSON.stringify(result.data.workouts[0]))
-    if (workout.circuit_rounds === undefined || workout.circuit_rounds == null || workout.circuit_rounds == 0 ) {
+    if (workout.value.circuit_rounds === undefined || workout.value.circuit_rounds == null || workout.value.circuit_rounds == 0 ) {
       workout.value.circuit_rounds = 1
+    }
+    if (workout.value.circuit_rounds > 1) {
+      circuitCheckboxValue.value = true
+    }    
+    if (workout.value.circuitRoundRest === undefined) {
+      workout.value.circuitRoundRest = workout.value.exercises[workout.value.exercises.length - 1].rest
     }
     console.log("workout after load from server", workout.value)
   })
 }
-
-let circuitCheckboxValue = ref()
 
 // **************
 // Saving section
 // **************
 
 let addWorkout = gql`
-  mutation Mutation($name: String!, $description: String, $user: Int, $exercises: [WorkoutExerciseInput]) {
-    addWorkout(name: $name, description: $description, user: $user, exercises: $exercises) {
+  mutation Mutation($name: String!, $description: String, $circuit_rounds: Int, $user: Int, $exercises: [WorkoutExerciseInput]) {
+    addWorkout(name: $name, description: $description, circuit_rounds: $circuit_rounds, user: $user, exercises: $exercises) {
       id
     }
   }
 `
 
 let updateWorkout = gql`
-  mutation Mutation($id: Int!, $name: String!, $description: String, $user: Int, $exercises: [WorkoutExerciseInput]) {
-    updateWorkout(id: $id, name: $name, description: $description, user: $user, exercises: $exercises) {
+  mutation Mutation($id: Int!, $name: String!, $description: String, $circuit_rounds: Int, $user: Int, $exercises: [WorkoutExerciseInput]) {
+    updateWorkout(id: $id, name: $name, description: $description, circuit_rounds: $circuit_rounds, user: $user, exercises: $exercises) {
       id
     }
   }
@@ -101,6 +116,10 @@ const saveWorkoutClick = () => {
     mutationToUse = updateWorkout
   }
 
+  if (circuitCheckboxValue) {
+    workout.value.exercises[workout.value.exercises.length -1].rest = parseInt(workout.value.circuitRoundRest)
+  }
+
   client.mutate({
     mutation: mutationToUse,
     variables: {
@@ -108,6 +127,7 @@ const saveWorkoutClick = () => {
       name: workout.value.name,
       picture: workout.value.picture,
       description: workout.value.description,
+      circuit_rounds: circuitCheckboxValue.value ? parseInt(workout.value.circuit_rounds): 1,
       user: workout.value.user,
       exercises: workout.value.exercises.flatMap((element, index) => [{
         id: parseInt(element.id),
@@ -115,7 +135,7 @@ const saveWorkoutClick = () => {
         sets: element.sets,
         duration: element.duration,
         rest: element.rest,
-        sort: index
+        sort: index 
       }])
     }
   })
@@ -207,7 +227,7 @@ function exerciseMove(fromIndex, offset) {
       </div>
       <div class="input-group m-1 d-inline-flex align-items-center w-auto">
         <span class="input-group-text" id="circuitRestLabel">Round Rest</span>
-        <input type="text" class="form-control" id="circuitRest" v-model="workout.circuit_rounds" :readonly="!circuitCheckboxValue" aria-label="The amount of rest between rounds" aria-describedby="circuitRestLabel" style="max-width: 75px" />
+        <input type="text" class="form-control" id="circuitRest" v-model="workout.circuitRoundRest" :readonly="!circuitCheckboxValue" aria-label="The amount of rest between rounds" aria-describedby="circuitRestLabel" style="max-width: 75px" />
       </div>
     </div>
   </div>
@@ -223,6 +243,7 @@ function exerciseMove(fromIndex, offset) {
       :duration="exercise.duration"
       @update:duration="exercise.duration = parseInt($event)"
       :rest="exercise.rest"
+      :restReadOnly="index == workout.exercises.length - 1 && circuitCheckboxValue"
       @update:rest="exercise.rest = parseInt($event)"
       @delete="workout.exercises.splice(workout.exercises.indexOf(exercise), 1)"
       @move:up="exerciseMove(index, -1)"
