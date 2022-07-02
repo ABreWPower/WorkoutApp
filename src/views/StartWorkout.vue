@@ -125,7 +125,7 @@ let startClick = function() {
     {{ workout.description }}
   </p>
 
-  <h5 style="padding-bottom: 15px">Circuit Rounds: {{ workout.circuit_rounds }}</h5>
+  <h4 style="padding-bottom: 15px">Circuit Rounds: {{ workout.circuit_rounds }}</h4>
 
   <!-- I think part of the problem is we are only pulling back a number not the whole object -->
   <div v-for="exercise in workout.exercises" :key="exercise.id">

@@ -234,16 +234,6 @@ function pauseContinueButtonClick() {
   <h1 style="font-size: 50px">{{ activeRecord.exerciseName }}</h1>
   <p style="font-size: 30px">Equipment: {{ activeRecord.exerciseEquipment }}</p>
 
-  <!-- <pre>
-    activeRecord.Reps: {{ activeRecord.reps }}
-    activeRecord.Duration: {{ activeRecord.duration }}
-    activeRecord.Weight: {{ activeRecord.weight }}
-    activeRecord.ExerciseName: {{ activeRecord.exerciseName }}
-    activeRecord.ExercisePicture: {{ activeRecord.exercisePicture }}
-    activeRecord.ExerciseVideo: {{ activeRecord.exerciseVideo }}
-    activeRecord.ExerciseInstructions: {{ activeRecord.exerciseInstructions }}
-  </pre> -->
-
   <!-- TODO Split the rest of the space into 3 equal parts -->
   <div class="row">
     <!-- Clock countdown/reps/duration -->
@@ -253,8 +243,8 @@ function pauseContinueButtonClick() {
     <!-- Video/instructions -->
     <h1 class="display-4">Instructions: {{ activeRecord.exerciseInstructions }}</h1>
   </div>
-  <div class="row">
-    <div class="col1">
+  <div class="row buttonBottom">
+    <div class="col-1">
       <button type="button" class="btn btn-success btn-lg" @click="workoutController.moveNext()">Continue</button>
     </div>
   </div>
@@ -274,6 +264,10 @@ div.card-view:last-child div.card {
   margin-bottom: 0 !important;
 }
 
+.buttonBottom {
+  position: fixed;
+  bottom: 100px;
+}
 /* top nav -56px
    bottom nav -56px */
 </style>
