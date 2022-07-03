@@ -37,6 +37,7 @@ const endWorkoutLog = gql`
 
 // Objects for Vue to render
 const activeRecord = ref({})
+const nextExerciseRecord = ref({})
 
 // Class that pulls data from GraphQL and store it so Vue can render it
 const workoutController = {
@@ -138,6 +139,7 @@ const workoutController = {
   // Current exercise over to the active record for use by Vue
   copyActiveRecord: function() {
     activeRecord.value = workoutController.workoutQueue[workoutController.activeExercise]
+    nextExerciseRecord.value = workoutController.workoutQueue[workoutController.activeExercise + 1]
   },
 
   // Move to next exercise
@@ -241,7 +243,22 @@ function pauseContinueButtonClick() {
   </div>
   <div class="row">
     <!-- Video/instructions -->
-    <h1 class="display-4">Instructions: {{ activeRecord.exerciseInstructions }}</h1>
+    <h1 v-if="activeRecord.exerciseName != 'Rest'" class="display-4">Instructions: {{ activeRecord.exerciseInstructions }}</h1>
+
+    <div v-if="activeRecord.exerciseName == 'Rest'" class="card mb-3 border-secondary" style="max-height: 12em; cursor: pointer" @click="cardClick">
+      <div class="row g-0">
+        <div class="col-4 align-self-center">
+          <img :src="`/${nextExerciseRecord.exercisePicture}`" class="img-fluid rounded-start w-100" style="max-height: 8em; max-width: 180px" />
+        </div>
+        <div class="col-8">
+          <div class="card-body">
+            <h5 class="card-title">Next Exercise: {{ nextExerciseRecord.exerciseName }}</h5>
+            <p class="card-text overflow-hidden" style="text-overflow: ellipsis; -webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box">Instructions: {{ nextExerciseRecord.exerciseInstructions }}</p>
+            <p>Equipment: {{ nextExerciseRecord.exerciseEquipment }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="row buttonBottom">
     <div class="col-1">
