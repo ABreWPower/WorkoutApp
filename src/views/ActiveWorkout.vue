@@ -39,11 +39,13 @@ const endWorkoutLog = gql`
 const activeRecord = ref({})
 const nextExerciseRecord = ref({})
 const activeCountDownTimer = ref()
+const totalDurationCounter = ref(0)
 
 var intervalFunction = function() {
   // console.log("timer, countDownTimer", workoutController.timer, activeCountDownTimer)
   workoutController.timer++           // Increment the workout timer
   activeCountDownTimer.value--  // Decrement the display timer for duration exercieses and rest
+  totalDurationCounter.value++
   console.log("timer, countDownTimer", workoutController.timer, activeCountDownTimer.value)
 }
 
@@ -304,7 +306,7 @@ function pauseContinueButtonClick() {
       <!-- <form class="container-fluid justify-content-start"> -->
       <button id="pauseContinueButton" class="btn btn-outline-warning" type="button" style="color: white" @click="pauseContinueButtonClick()">Pause</button>
       <!-- </form> -->
-      <span class="navbar-text"> Total Time: TODO Total Time</span>
+      <span class="navbar-text"> Total Time: {{ Math.round(totalDurationCounter / 60) }} minutes</span>
     </div>
   </nav>
 </template>
