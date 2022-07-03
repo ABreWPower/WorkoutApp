@@ -2,7 +2,7 @@
 import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { useRoute } from 'vue-router'
-import { ref } from "vue"
+import { ref, watch } from "vue"
 import router from "../router/router.js"
 
 const routeObj = useRoute()
@@ -38,6 +38,14 @@ const endWorkoutLog = gql`
 // Objects for Vue to render
 const activeRecord = ref({})
 const nextExerciseRecord = ref({})
+const activeCountDownTimer = ref()
+
+var intervalFunction = function() {
+  // console.log("timer, countDownTimer", workoutController.timer, activeCountDownTimer)
+  workoutController.timer++           // Increment the workout timer
+  activeCountDownTimer.value--  // Decrement the display timer for duration exercieses and rest
+  console.log("timer, countDownTimer", workoutController.timer, activeCountDownTimer.value)
+}
 
 // Class that pulls data from GraphQL and store it so Vue can render it
 const workoutController = {
@@ -47,6 +55,7 @@ const workoutController = {
   activeExercise: null,     // int
   timer: 0,                 // int
   timerIntervalID: null,    // int
+  
 
   // Load workout/exercise data from apollo server
   loadWorkout: function() {
@@ -87,7 +96,6 @@ const workoutController = {
     .then(result => {
       console.log("loadWorkout result", result)
       workoutController.workoutData = result.data.workoutlogs[0]
-      // TODO add a 5 second transition into the new workout???
       for(let i = 0; i < workoutController.workoutData.workout.circuit_rounds; i++ ) {
         workoutController.workoutData.exerciselogs.forEach(exercise => {
           if(exercise.sets == null || exercise.sets == 0) exercise.sets = 1   // Assume the user meant to have at least 1 set
@@ -131,7 +139,7 @@ const workoutController = {
       })
 
       // Start timer
-      workoutController.timerIntervalID = setInterval(function() {workoutController.timer++}, 1000)
+      workoutController.timerIntervalID = setInterval(intervalFunction, 1000)
       console.log("timer", workoutController.timer)
     })
   },
@@ -139,12 +147,29 @@ const workoutController = {
   // Current exercise over to the active record for use by Vue
   copyActiveRecord: function() {
     activeRecord.value = workoutController.workoutQueue[workoutController.activeExercise]
-    nextExerciseRecord.value = workoutController.workoutQueue[workoutController.activeExercise + 1]
+    activeCountDownTimer.value = activeRecord.value.duration
+    if (workoutController.activeExercise != workoutController.workoutQueue.length - 1) {
+      nextExerciseRecord.value = workoutController.workoutQueue[workoutController.activeExercise + 1]      
+    }
+    else {
+      nextExerciseRecord.value = {
+        id: null,
+        reps: 0,
+        duration: 0,
+        weight: 0,
+        exerciseName: "Finished",
+        exercisePicture: "finished.jfif",
+        exerciseVideo: null,
+        exerciseInstructions: "You have completed this workout",
+        exerciseEquipment: "The world"
+      }
+    }
   },
 
   // Move to next exercise
   moveNext: function() {
     console.log("timer", workoutController.timer)
+    console.log("activeCountDownTimer", activeCountDownTimer.value)
     
     let currentExerciseID = parseInt(workoutController.workoutQueue[workoutController.activeExercise].id)
     console.log("currentExerciseID", currentExerciseID)
@@ -210,6 +235,14 @@ const workoutController = {
   }
 }
 
+// Create watcher to move to the next workout when the value reaches 0
+watch(activeCountDownTimer, (newValue, oldValue) => {
+  console.log("count down timer watcher:", newValue, oldValue);
+  if (oldValue > 0 && newValue == 0) {
+    workoutController.moveNext()
+  }
+});
+
 // Start the workout controller and exercises
 workoutController.workoutLogId = parseInt(routeObj.params.workoutlogid)
 workoutController.loadWorkout()
@@ -218,7 +251,7 @@ function pauseContinueButtonClick() {
   let pauseContinue = document.getElementById("pauseContinueButton")
 
   if(workoutController.timerIntervalID == null) {
-    workoutController.timerIntervalID = setInterval(function() {workoutController.timer++}, 1000)
+    workoutController.timerIntervalID = setInterval(intervalFunction, 1000)
     pauseContinue.style.backgroundColor = "transparent"
     pauseContinue.innerText = "Pause"
   }
@@ -239,7 +272,7 @@ function pauseContinueButtonClick() {
   <!-- TODO Split the rest of the space into 3 equal parts -->
   <div class="row">
     <!-- Clock countdown/reps/duration -->
-    <h1 class="display-1">{{ activeRecord.reps ? activeRecord.reps + ' Reps' : activeRecord.duration + ' Seconds' }} {{ activeRecord.weight ? activeRecord.weight + ' lbs' : '' }}</h1>
+    <h1 class="display-1">{{ activeRecord.reps ? activeRecord.reps + ' Reps' : activeCountDownTimer + ' Seconds' }} {{ activeRecord.weight ? activeRecord.weight + ' lbs' : '' }}</h1>
   </div>
   <div class="row">
     <!-- Video/instructions -->
@@ -260,7 +293,7 @@ function pauseContinueButtonClick() {
       </div>
     </div>
   </div>
-  <div class="row buttonBottom">
+  <div v-if="activeRecord.reps > 0" class="row buttonBottom">
     <div class="col-1">
       <button type="button" class="btn btn-success btn-lg" @click="workoutController.moveNext()">Continue</button>
     </div>
