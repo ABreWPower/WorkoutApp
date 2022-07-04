@@ -1,7 +1,7 @@
 <script setup>
 import { client, forceNetworkJQL } from "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
-import { useRoute } from 'vue-router'
+import { useRoute, onBeforeRouteLeave } from 'vue-router'
 import { ref, watch } from "vue"
 import router from "../router/router.js"
 
@@ -41,6 +41,8 @@ const nextExerciseRecord = ref({})
 const activeCountDownTimer = ref()
 const totalDurationCounter = ref(0)
 
+// Speech reconition variables
+let recognition = null
 let continueRecognition = true
 
 var intervalFunction = function () {
@@ -241,7 +243,7 @@ const workoutController = {
   },
   startSpeechToText() {
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-    const recognition = new window.SpeechRecognition()
+    recognition = new window.SpeechRecognition()
     recognition.lang = "en-US"
     recognition.interimResults = false
     recognition.continuous = true
@@ -304,6 +306,15 @@ function pauseContinueButtonClick() {
     pauseContinue.innerText = "Continue"
   }
 }
+
+// Cleanup timer and speech recognition before moving to another page
+onBeforeRouteLeave((to, from) => {
+  clearInterval(workoutController.timerIntervalID)
+  continueRecognition = false
+  if (recognition != null) {
+    recognition.stop()
+  }
+})
 
 </script>
 
