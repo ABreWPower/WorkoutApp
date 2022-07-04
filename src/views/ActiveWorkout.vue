@@ -102,6 +102,19 @@ const workoutController = {
       .then(result => {
         console.log("loadWorkout result", result)
         workoutController.workoutData = result.data.workoutlogs[0]
+        // All users to prep before starting the working
+        workoutController.workoutQueue.push({
+          id: null,
+          reps: null,
+          duration: 5,
+          weight: null,
+          exerciseName: "Get Ready",
+          exercisePicture: null,
+          exerciseVideo: null,
+          exerciseInstructions: "Get Ready",
+          exerciseEquipment: ""
+        })
+        // Loop through and create the list of workouts to perform
         for (let i = 0; i < workoutController.workoutData.workout.circuit_rounds; i++) {
           workoutController.workoutData.exerciselogs.forEach(exercise => {
             if (exercise.sets == null || exercise.sets == 0) exercise.sets = 1   // Assume the user meant to have at least 1 set
@@ -331,7 +344,7 @@ onBeforeRouteLeave((to, from) => {
     <!-- Video/instructions -->
     <h1 v-if="activeRecord.exerciseName != 'Rest'" class="display-4">Instructions: {{ activeRecord.exerciseInstructions }}</h1>
 
-    <div v-if="activeRecord.exerciseName == 'Rest'" class="card mb-3 border-secondary" style="max-height: 12em; cursor: pointer" @click="cardClick">
+    <div v-if="activeRecord.exerciseName == 'Rest' || activeRecord.exerciseName == 'Get Ready'" class="card mb-3 border-secondary" style="max-height: 12em; cursor: pointer" @click="cardClick">
       <div class="row g-0">
         <div class="col-4 align-self-center">
           <img :src="`/${nextExerciseRecord.exercisePicture}`" class="img-fluid rounded-start w-100" style="max-height: 8em; max-width: 180px" />
