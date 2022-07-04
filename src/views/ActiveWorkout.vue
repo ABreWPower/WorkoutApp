@@ -1,5 +1,5 @@
 <script setup>
-import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
+import { client, forceNetworkJQL } from "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { useRoute } from 'vue-router'
 import { ref, watch } from "vue"
@@ -41,12 +41,14 @@ const nextExerciseRecord = ref({})
 const activeCountDownTimer = ref()
 const totalDurationCounter = ref(0)
 
-var intervalFunction = function() {
+let continueRecognition = true
+
+var intervalFunction = function () {
   // console.log("timer, countDownTimer", workoutController.timer, activeCountDownTimer)
   workoutController.timer++           // Increment the workout timer
   activeCountDownTimer.value--  // Decrement the display timer for duration exercieses and rest
   totalDurationCounter.value++
-  console.log("timer, countDownTimer", workoutController.timer, activeCountDownTimer.value)
+  //console.log("timer, countDownTimer", workoutController.timer, activeCountDownTimer.value)
 }
 
 // Class that pulls data from GraphQL and store it so Vue can render it
@@ -57,10 +59,10 @@ const workoutController = {
   activeExercise: null,     // int
   timer: 0,                 // int
   timerIntervalID: null,    // int
-  
+
 
   // Load workout/exercise data from apollo server
-  loadWorkout: function() {
+  loadWorkout: function () {
     const getActiveWorkoutData = gql`
       query Query($workoutlogsId: ID) {
         workoutlogs(id: $workoutlogsId) {
@@ -95,63 +97,63 @@ const workoutController = {
       variables: { workoutlogsId: this.workoutLogId },
       fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
     })
-    .then(result => {
-      console.log("loadWorkout result", result)
-      workoutController.workoutData = result.data.workoutlogs[0]
-      for(let i = 0; i < workoutController.workoutData.workout.circuit_rounds; i++ ) {
-        workoutController.workoutData.exerciselogs.forEach(exercise => {
-          if(exercise.sets == null || exercise.sets == 0) exercise.sets = 1   // Assume the user meant to have at least 1 set
-          for(let j = 0; j < exercise.sets; j++) {
-            workoutController.workoutQueue.push({
-              id: exercise.id,
-              reps: exercise.reps,
-              duration: exercise.duration,
-              weight: exercise.weight,
-              exerciseName: exercise.exercise.name,
-              exercisePicture: exercise.exercise.picture,
-              exerciseVideo: exercise.exercise.video,
-              exerciseInstructions: exercise.exercise.instructions,
-              exerciseEquipment: exercise.exercise.equipment.flatMap(element => [element.name]).join(", ")
-            })
-            workoutController.workoutQueue.push({
-              id: exercise.id,
-              reps: null,
-              duration: exercise.rest ? exercise.rest : 5,
-              weight: null,
-              exerciseName: "Rest",
-              exercisePicture: "rest.jpg",
-              exerciseVideo: null,
-              exerciseInstructions: "Take a break, let your heart rate lower, drink water if needed, and get ready for the next set.",
-              exerciseEquipment: "The floor"
-            })
-          }
+      .then(result => {
+        console.log("loadWorkout result", result)
+        workoutController.workoutData = result.data.workoutlogs[0]
+        for (let i = 0; i < workoutController.workoutData.workout.circuit_rounds; i++) {
+          workoutController.workoutData.exerciselogs.forEach(exercise => {
+            if (exercise.sets == null || exercise.sets == 0) exercise.sets = 1   // Assume the user meant to have at least 1 set
+            for (let j = 0; j < exercise.sets; j++) {
+              workoutController.workoutQueue.push({
+                id: exercise.id,
+                reps: exercise.reps,
+                duration: exercise.duration,
+                weight: exercise.weight,
+                exerciseName: exercise.exercise.name,
+                exercisePicture: exercise.exercise.picture,
+                exerciseVideo: exercise.exercise.video,
+                exerciseInstructions: exercise.exercise.instructions,
+                exerciseEquipment: exercise.exercise.equipment.flatMap(element => [element.name]).join(", ")
+              })
+              workoutController.workoutQueue.push({
+                id: exercise.id,
+                reps: null,
+                duration: exercise.rest ? exercise.rest : 5,
+                weight: null,
+                exerciseName: "Rest",
+                exercisePicture: "rest.jpg",
+                exerciseVideo: null,
+                exerciseInstructions: "Take a break, let your heart rate lower, drink water if needed, and get ready for the next set.",
+                exerciseEquipment: "The floor"
+              })
+            }
+          })
+        }
+        workoutController.activeExercise = 0
+        workoutController.copyActiveRecord()
+
+        console.log("id", parseInt(activeRecord.value.id))
+        // Start the first exerciselog
+        client.mutate({
+          mutation: startExerciseLog,
+          variables: { startExerciseLogId: parseInt(activeRecord.value.id) }
+        }).then(result => {
+          // console.log("startExerciseLog result", result)
+          // TODO validate this query didn't fail
         })
-      }
-      workoutController.activeExercise = 0
-      workoutController.copyActiveRecord()
 
-      console.log("id", parseInt(activeRecord.value.id))
-      // Start the first exerciselog
-      client.mutate({
-        mutation: startExerciseLog,
-        variables: { startExerciseLogId: parseInt(activeRecord.value.id)}
-      }).then(result => {
-        // console.log("startExerciseLog result", result)
-        // TODO validate this query didn't fail
+        // Start timer
+        workoutController.timerIntervalID = setInterval(intervalFunction, 1000)
+        console.log("timer", workoutController.timer)
       })
-
-      // Start timer
-      workoutController.timerIntervalID = setInterval(intervalFunction, 1000)
-      console.log("timer", workoutController.timer)
-    })
   },
 
   // Current exercise over to the active record for use by Vue
-  copyActiveRecord: function() {
+  copyActiveRecord: function () {
     activeRecord.value = workoutController.workoutQueue[workoutController.activeExercise]
     activeCountDownTimer.value = activeRecord.value.duration
     if (workoutController.activeExercise != workoutController.workoutQueue.length - 1) {
-      nextExerciseRecord.value = workoutController.workoutQueue[workoutController.activeExercise + 1]      
+      nextExerciseRecord.value = workoutController.workoutQueue[workoutController.activeExercise + 1]
     }
     else {
       nextExerciseRecord.value = {
@@ -166,19 +168,21 @@ const workoutController = {
         exerciseEquipment: "The world"
       }
     }
+    if (activeRecord.value.reps > 0) workoutController.startSpeechToText()
+    else continueRecognition = false
   },
 
   // Move to next exercise
-  moveNext: function() {
+  moveNext: function () {
     console.log("timer", workoutController.timer)
     console.log("activeCountDownTimer", activeCountDownTimer.value)
-    
+
     let currentExerciseID = parseInt(workoutController.workoutQueue[workoutController.activeExercise].id)
     console.log("currentExerciseID", currentExerciseID)
 
     // Check if last exercise and call endExercise & endWorkout mutator
     console.log("activeExercise & workoutQueue.length", this.activeExercise, this.workoutQueue.length)
-    if(this.activeExercise == this.workoutQueue.length - 1) {
+    if (this.activeExercise == this.workoutQueue.length - 1) {
       // Finish the workout
       // TODO need to change the button text to "Finish" instead of "continue"
       console.log("end workout")
@@ -197,20 +201,20 @@ const workoutController = {
         // console.log("endWorkoutLog result", result)
         // TODO validate this query didn't fail
       })
-      
+
       // Clear the interval
       clearInterval(workoutController.timerIntervalID)
 
       // TODO go to another page (workout summary)
-      router.push({ name: "Workouts"})
+      router.push({ name: "Workouts" })
     }
     else {
       // Move to the next exercise          
       this.activeExercise++
       this.copyActiveRecord()
-      
+
       // If exerciseid changed; call end/start exercise mutator & reset timer
-      if(currentExerciseID != activeRecord.value.id) {
+      if (currentExerciseID != activeRecord.value.id) {
         console.log("end exercise")
         client.mutate({
           mutation: endExerciseLog,
@@ -223,7 +227,7 @@ const workoutController = {
         // Start the next exerciselog
         client.mutate({
           mutation: startExerciseLog,
-          variables: { startExerciseLogId: parseInt(activeRecord.value.id)}
+          variables: { startExerciseLogId: parseInt(activeRecord.value.id) }
         }).then(result => {
           // console.log("startExerciseLog result", result)
           // TODO validate this query didn't fail
@@ -233,13 +237,49 @@ const workoutController = {
         console.log("workoutController.timer", workoutController.timer)
       }
     }
-    
+
+  },
+  startSpeechToText() {
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    const recognition = new window.SpeechRecognition()
+    recognition.lang = "en-US"
+    recognition.interimResults = false
+    recognition.continuous = true
+    continueRecognition = true
+
+    // event current voice reco word
+    recognition.addEventListener("result", event => {
+      var text = Array.from(event.results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+        .join("")
+      console.log("result:", text)
+      //check for phrases inside our result text
+      let phrases = [
+        "continue workout",
+        "workout continue",
+        "next exercise",
+        "next workout",
+        "i'm gonna die"
+      ]
+      if (phrases.find(phrases => text.search(phrases) != -1)) {
+        recognition.stop()
+        continueRecognition = false
+        workoutController.moveNext()
+      }
+    })
+    // end of transcription
+    recognition.addEventListener("end", () => {
+      recognition.stop()
+      if (continueRecognition) recognition.start()
+    })
+    recognition.start()
   }
 }
 
 // Create watcher to move to the next workout when the value reaches 0
 watch(activeCountDownTimer, (newValue, oldValue) => {
-  console.log("count down timer watcher:", newValue, oldValue);
+  //console.log("count down timer watcher:", newValue, oldValue);
   if (oldValue > 0 && newValue == 0) {
     workoutController.moveNext()
   }
@@ -252,7 +292,7 @@ workoutController.loadWorkout()
 function pauseContinueButtonClick() {
   let pauseContinue = document.getElementById("pauseContinueButton")
 
-  if(workoutController.timerIntervalID == null) {
+  if (workoutController.timerIntervalID == null) {
     workoutController.timerIntervalID = setInterval(intervalFunction, 1000)
     pauseContinue.style.backgroundColor = "transparent"
     pauseContinue.innerText = "Pause"
@@ -261,7 +301,7 @@ function pauseContinueButtonClick() {
     clearInterval(workoutController.timerIntervalID)
     workoutController.timerIntervalID = null
     pauseContinue.style.backgroundColor = "#ffc107"
-    pauseContinue.innerText  = "Continue"
+    pauseContinue.innerText = "Continue"
   }
 }
 
@@ -276,7 +316,7 @@ function pauseContinueButtonClick() {
     <!-- Clock countdown/reps/duration -->
     <h1 class="display-1">{{ activeRecord.reps ? activeRecord.reps + ' Reps' : activeCountDownTimer + ' Seconds' }} {{ activeRecord.weight ? activeRecord.weight + ' lbs' : '' }}</h1>
   </div>
-  <div class="row">
+  <div class="row" v-bind="$attrs">
     <!-- Video/instructions -->
     <h1 v-if="activeRecord.exerciseName != 'Rest'" class="display-4">Instructions: {{ activeRecord.exerciseInstructions }}</h1>
 
@@ -320,6 +360,7 @@ div.card-view:last-child div.card {
   position: fixed;
   bottom: 100px;
 }
+
 /* top nav -56px
    bottom nav -56px */
 </style>
