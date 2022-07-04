@@ -45,12 +45,40 @@ const totalDurationCounter = ref(0)
 let recognition = null
 let continueRecognition = true
 
+// Functions for Workout Controller
+// Function for the intervals to call and change values
 var intervalFunction = function () {
   // console.log("timer, countDownTimer", workoutController.timer, activeCountDownTimer)
   workoutController.timer++           // Increment the workout timer
   activeCountDownTimer.value--  // Decrement the display timer for duration exercieses and rest
   totalDurationCounter.value++
   //console.log("timer, countDownTimer", workoutController.timer, activeCountDownTimer.value)
+}
+
+// Starting an exercise function
+function startExerciseLogFunc() {
+  if (activeRecord.value.id != null) {
+    client.mutate({
+      mutation: startExerciseLog,
+      variables: { startExerciseLogId: parseInt(activeRecord.value.id) }
+    }).then(result => {
+      // console.log("startExerciseLog result", result)
+      // TODO validate this query didn't fail
+    })
+  }
+}
+
+// End an exercise function
+function endExerciseLogFunc(currentExerciseID) {
+  if (currentExerciseID != null && !isNaN(currentExerciseID)) {
+    client.mutate({
+      mutation: endExerciseLog,
+      variables: { endExerciseLogId: currentExerciseID, span: parseInt(workoutController.timer) }
+    }).then(result => {
+      // console.log("endExerciseLog result", result)
+      // TODO validate this query didn't fail
+    })
+  }
 }
 
 // Class that pulls data from GraphQL and store it so Vue can render it
@@ -100,7 +128,7 @@ const workoutController = {
       fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
     })
       .then(result => {
-        console.log("loadWorkout result", result)
+        // console.log("loadWorkout result", result)
         workoutController.workoutData = result.data.workoutlogs[0]
         // All users to prep before starting the working
         workoutController.workoutQueue.push({
@@ -147,19 +175,13 @@ const workoutController = {
         workoutController.activeExercise = 0
         workoutController.copyActiveRecord()
 
-        console.log("id", parseInt(activeRecord.value.id))
+        // console.log("id", parseInt(activeRecord.value.id))
         // Start the first exerciselog
-        client.mutate({
-          mutation: startExerciseLog,
-          variables: { startExerciseLogId: parseInt(activeRecord.value.id) }
-        }).then(result => {
-          // console.log("startExerciseLog result", result)
-          // TODO validate this query didn't fail
-        })
+        startExerciseLogFunc()
 
         // Start timer
         workoutController.timerIntervalID = setInterval(intervalFunction, 1000)
-        console.log("timer", workoutController.timer)
+        // console.log("timer", workoutController.timer)
       })
   },
 
@@ -184,30 +206,29 @@ const workoutController = {
       }
     }
     if (activeRecord.value.reps > 0) workoutController.startSpeechToText()
-    else continueRecognition = false
+    else {
+      continueRecognition = false
+      if (recognition != null) {
+        recognition.stop()
+      }
+    }
   },
 
   // Move to next exercise
   moveNext: function () {
-    console.log("timer", workoutController.timer)
-    console.log("activeCountDownTimer", activeCountDownTimer.value)
+    // console.log("timer", workoutController.timer)
+    // console.log("activeCountDownTimer", activeCountDownTimer.value)
 
     let currentExerciseID = parseInt(workoutController.workoutQueue[workoutController.activeExercise].id)
-    console.log("currentExerciseID", currentExerciseID)
+    // console.log("currentExerciseID", currentExerciseID)
 
     // Check if last exercise and call endExercise & endWorkout mutator
-    console.log("activeExercise & workoutQueue.length", this.activeExercise, this.workoutQueue.length)
+    // console.log("activeExercise & workoutQueue.length", this.activeExercise, this.workoutQueue.length)
     if (this.activeExercise == this.workoutQueue.length - 1) {
       // Finish the workout
       // TODO need to change the button text to "Finish" instead of "continue"
       console.log("end workout")
-      client.mutate({
-        mutation: endExerciseLog,
-        variables: { endExerciseLogId: currentExerciseID, span: parseInt(workoutController.timer) }
-      }).then(result => {
-        // console.log("endExerciseLog result", result)
-        // TODO validate this query didn't fail
-      })
+      endExerciseLogFunc(currentExerciseID)
 
       client.mutate({
         mutation: endWorkoutLog,
@@ -230,26 +251,14 @@ const workoutController = {
 
       // If exerciseid changed; call end/start exercise mutator & reset timer
       if (currentExerciseID != activeRecord.value.id) {
-        console.log("end exercise")
-        client.mutate({
-          mutation: endExerciseLog,
-          variables: { endExerciseLogId: currentExerciseID, span: parseInt(workoutController.timer) }
-        }).then(result => {
-          // console.log("endExerciseLog result", result)
-          // TODO validate this query didn't fail
-        })
+        // console.log("end exercise")
+        endExerciseLogFunc(currentExerciseID)
 
         // Start the next exerciselog
-        client.mutate({
-          mutation: startExerciseLog,
-          variables: { startExerciseLogId: parseInt(activeRecord.value.id) }
-        }).then(result => {
-          // console.log("startExerciseLog result", result)
-          // TODO validate this query didn't fail
-        })
+        startExerciseLogFunc()
 
         workoutController.timer = 0
-        console.log("workoutController.timer", workoutController.timer)
+        // console.log("workoutController.timer", workoutController.timer)
       }
     }
 
