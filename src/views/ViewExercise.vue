@@ -86,7 +86,7 @@ let editClick = function() {
   <img v-if="exercise.picture != null" :src="`/${exercise.picture}`" v-bind:alt="name" class="img-fluid rounded-start w-100" />
   <img v-else :src="getImages()" v-bind:alt="name" class="img-fluid rounded-start w-100" />
 
-  <div class="row align-items-start">
+  <div v-bind="$attrs" class="row align-items-start">
     <div class="col">
       <p>Muscle Group: {{ musclegroups }}</p>
     </div>

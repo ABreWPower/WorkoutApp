@@ -82,7 +82,7 @@ let editClick = function() {
   <h1>{{ workout.name }}</h1>
   <!-- <img src="/pic1.jpg" alt="pic1" style="max-width: 100vw" /> -->
 
-  <div class="row align-items-start">
+  <div v-bind="$attrs" class="row align-items-start">
     <div class="col-4">Duration: {{ Math.round(workout.duration_calculated / 60) }} minutes</div>
     <div class="col-4">Circuit Rounds: {{ workout.circuit_rounds }}</div>
     <div class="col-4">

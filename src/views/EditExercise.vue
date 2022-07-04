@@ -253,7 +253,7 @@ const saveExerciseClick = () => {
 </script>
 
 <template>
-  <div class="input-group input-group-lg">
+  <div v-bind="$attrs" class="input-group input-group-lg">
     <span class="input-group-text" id="exerciseNameLabel">Exercise Name</span>
     <input type="text" class="form-control" id="exerciseName" v-model="exercise.name" aria-label="Exercise Name" aria-describedby="exerciseNameLabel" />
   </div>
