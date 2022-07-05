@@ -374,8 +374,9 @@ onBeforeRouteLeave((to, from) => {
     <div v-if="activeRecord.reps > 0" class="col-4">
       <button type="button" class="btn btn-success btn-lg" @click="workoutController.moveNext()">Continue</button>
     </div>
-    <div class="col-4">
-      <p>Exercise: {{ workoutController.activeExercise }} out of {{ workoutController.workoutQueue.length }}</p>
+    <div v-if="activeRecord.exerciseName != 'Rest' && activeRecord.exerciseName != 'Get Ready'" class="col-4">
+      <!-- Add 1 to active exercise as it starts at 0, subtract 1 from workout queue length as we at the get ready step, divide both by 2 from mandatory rests/transitions -->
+      <p>Exercise: {{ (workoutController.activeExercise + 1) / 2 }} out of {{ (workoutController.workoutQueue.length - 1) / 2 }}</p>
     </div>
   </div>
 
