@@ -89,6 +89,7 @@ const workoutController = {
   activeExercise: null,     // int
   timer: 0,                 // int
   timerIntervalID: null,    // int
+  circuit_rounds: 1,        // int
 
 
   // Load workout/exercise data from apollo server
@@ -143,7 +144,8 @@ const workoutController = {
           exerciseEquipment: ""
         })
         // Loop through and create the list of workouts to perform
-        for (let i = 0; i < workoutController.workoutData.workout.circuit_rounds; i++) {
+        workoutController.circuit_rounds = workoutController.workoutData.workout.circuit_rounds
+        for (let i = 0; i < workoutController.circuit_rounds; i++) {
           workoutController.workoutData.exerciselogs.forEach(exercise => {
             if (exercise.sets == null || exercise.sets == 0) exercise.sets = 1   // Assume the user meant to have at least 1 set
             for (let j = 0; j < exercise.sets; j++) {
@@ -368,9 +370,12 @@ onBeforeRouteLeave((to, from) => {
       </div>
     </div>
   </div>
-  <div v-if="activeRecord.reps > 0" class="row buttonBottom">
-    <div class="col-1">
+  <div class="row buttonBottom" style="width: 100vw; margin: auto">
+    <div v-if="activeRecord.reps > 0" class="col-4">
       <button type="button" class="btn btn-success btn-lg" @click="workoutController.moveNext()">Continue</button>
+    </div>
+    <div class="col-4">
+      <p>Exercise: {{ workoutController.activeExercise }} out of {{ workoutController.workoutQueue.length }}</p>
     </div>
   </div>
 
