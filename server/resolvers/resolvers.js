@@ -252,13 +252,13 @@ const resolvers = {
         })
     },
     startExerciseLog: (parent, { id = null }) => {
-      return querySQLDB("UPDATE workoutlogexercise SET datestarted = NOW() WHERE id = ?", [id])
+      return querySQLDB("UPDATE workoutlogexercise SET datestarted = ifnull(datestarted, NOW()) WHERE id = ?", [id])
         .then(function () {
           return querySQLDB("SELECT * FROM workoutlogexercise WHERE id = ?", [id]).then(result => result[0])
         })
     },
     endExerciseLog: (parent, { span = null, id = null }) => {
-      return querySQLDB("UPDATE workoutlogexercise SET span = ?, datecompleted = NOW() WHERE id = ?", [span, id])
+      return querySQLDB("UPDATE workoutlogexercise SET span = ifnull(span + ?, ?), datecompleted = NOW() WHERE id = ?", [span, span, id])
         .then(function () {
           return querySQLDB("SELECT * FROM workoutlogexercise WHERE id = ?", [id]).then(result => result[0])
         })
