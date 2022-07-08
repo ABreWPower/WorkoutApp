@@ -38,7 +38,7 @@ const newWorkoutClick = () => {
 <template>
   <form class="d-flex">
     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-    <button class="btn btn-outline-primary" type="submit">Search</button>
+    <!-- <button class="btn btn-outline-primary" type="submit">Search</button> -->
   </form>
   <!-- height: calc(100% vertical height - Nav bar (56px) - Search bar (38px) - New workout btn (38px) - IDK-DIK (16px) - Card margin (0.5rem) - Toolbar margin (0.5rem) -->
   <div v-bind="$attrs" style="position: relative; height: calc(100vh - 56px - 38px - 38px - 16px - 0.5rem - 0.5rem); margin-top: 0.5rem; overflow: auto">
