@@ -267,38 +267,50 @@ const workoutController = {
   },
   startSpeechToText() {
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-    recognition = new window.SpeechRecognition()
-    recognition.lang = "en-US"
-    recognition.interimResults = false
-    recognition.continuous = true
-    continueRecognition = true
+    if (recognition === null) {
+      recognition = new window.SpeechRecognition()
+      recognition.lang = "en-US"
+      recognition.continuous = false
+      recognition.maxAlternatives = 1
+      recognition.interimResults = false
+      recognition.continuous = true
+      continueRecognition = true
 
-    // event current voice reco word
-    recognition.addEventListener("result", event => {
-      var text = Array.from(event.results)
-        .map(result => result[0])
-        .map(result => result.transcript)
-        .join("")
-      console.log("result:", text)
-      //check for phrases inside our result text
-      let phrases = [
-        "continue workout",
-        "workout continue",
-        "next exercise",
-        "next workout",
-        "i'm gonna die"
-      ]
-      if (phrases.find(phrases => text.search(phrases) != -1)) {
-        recognition.stop()
-        continueRecognition = false
-        workoutController.moveNext()
-      }
-    })
-    // end of transcription
-    recognition.addEventListener("end", () => {
-      recognition.stop()
-      if (continueRecognition) recognition.start()
-    })
+      // event current voice reco word
+      recognition.addEventListener("result", event => {
+        var text = Array.from(event.results)
+          .map(result => result[0])
+          .map(result => result.transcript)
+          .join("")
+        console.log("result:", event.results[0].isFinal, text)
+        //check for phrases inside our result text
+        let phrases = [
+          "continue exercise",
+          "continue workout",
+          "continue work out",
+          "workout continue",
+          "work out continue",
+          "exercise continue",
+          "next exercise",
+          "text exercise",
+          "next workout",
+          "text workout",
+          "next work out",
+          "text work out",
+          "i'm gonna die"
+        ]
+        if (phrases.find(phrases => text.search(phrases) != -1)) {        
+          continueRecognition = false
+          recognition.abort()
+          workoutController.moveNext()
+        }
+      })
+      // end of transcription
+      recognition.addEventListener("end", () => {
+        // recognition.abort()
+        if (continueRecognition) recognition.start()
+      })
+    }
     recognition.start()
   }
 }
@@ -336,7 +348,7 @@ onBeforeRouteLeave((to, from) => {
   clearInterval(workoutController.timerIntervalID)
   continueRecognition = false
   if (recognition != null) {
-    recognition.stop()
+    recognition.abort()
   }
 })
 

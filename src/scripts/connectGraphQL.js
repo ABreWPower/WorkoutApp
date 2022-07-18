@@ -5,9 +5,9 @@ import { persistCache, LocalStorageWrapper } from 'apollo3-cache-persist';
 const cache = new InMemoryCache()
 export let forceNetworkJQL = true
 
-let apolloUri = "https://5ipdns9qfj.execute-api.us-east-1.amazonaws.com/dev/"
-if(window.location.hostname === "localhost") {
-  apolloUri = "http://localhost:4000/"
+let apolloUri = `http://${window.location.hostname}:4000/`
+if(window.location.hostname === "workoutapp.adamwickersham.com") {
+  apolloUri = "https://5ipdns9qfj.execute-api.us-east-1.amazonaws.com/dev/"
 }
 
 persistCache({
