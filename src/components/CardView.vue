@@ -73,7 +73,8 @@ const cardClick = () => {
       <div class="col-8">
         <div class="card-body">
           <h5 class="card-title">{{ name }}</h5>
-          <p class="card-text overflow-hidden" style="text-overflow: ellipsis; -webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box">Description: {{ description }}</p>
+          <p v-if="workoutid != null" class="card-text overflow-hidden" style="text-overflow: ellipsis; -webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box">Description: {{ description }}</p>
+          <p v-if="exerciseid != null" class="card-text overflow-hidden" style="text-overflow: ellipsis; -webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box">Instructions: {{ description }}</p>
         </div>
       </div>
     </div>
