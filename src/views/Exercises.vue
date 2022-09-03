@@ -71,10 +71,10 @@ client.query({
   fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
 })
 .then(result => {
-  console.log("results", result)
+  // console.log("results", result)
   exercises.value = structuredClone(result.data.exercises)
   exercisesFiltered.value = exercises.value
-  console.log("exercises", exercises)
+  // console.log("exercises", exercises)
 })
 
 // Debounce and search function for exercises and the data returned from the database
@@ -85,9 +85,9 @@ function debounce(functionName, delay, ...args) {
 }
 
 function search(searchFor) {
-  console.log("we are seearching ", searchFor)
+  // console.log("we are seearching ", searchFor)
   exercisesFiltered.value = exercises.value.filter(function(element) {
-    console.log("elelemtn", element.name, element.name == searchFor)
+    // console.log("elelemtn", element.name, element.name == searchFor)
     let name = element.name.toLowerCase().includes(searchFor.toLowerCase())
     let instructions = element.instructions.toLowerCase().includes(searchFor.toLowerCase())
     let musclegroups = element.musclegroups.filter(subelement => subelement.name.toLowerCase().includes(searchFor.toLowerCase())).length
@@ -98,7 +98,7 @@ function search(searchFor) {
 
 let searchValue = ref("")
 watch(searchValue, () => {
-  console.log("my watcher changed")
+  // console.log("my watcher changed")
   debounce(search, 1000, searchValue.value)
 })
 
@@ -114,7 +114,6 @@ const newExerciseClick = () => {
   <form class="d-flex">
     <!-- TODO need to override the enter key (still refreshing page) -->
     <input class="form-control me-2" type="search" placeholder="Search" v-model="searchValue" />
-    <p>{{ searchValue }}</p>
     <!-- <button class="btn btn-outline-primary" type="submit">Search</button> -->
   </form>
   <!-- height: calc(100% vertical height - Nav bar (56px) - Search bar (38px) - New exercise btn (38px) - IDK-DIK (16px) - Card margin (0.5rem) - Toolbar margin (0.5rem) -->
