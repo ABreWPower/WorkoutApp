@@ -112,7 +112,7 @@ let editClick = function() {
     </div>
   </div>
 
-  <h4>Description</h4>
+  <h4>Instructions</h4>
   <p>
     {{ exercise.instructions }}
   </p>
