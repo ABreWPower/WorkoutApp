@@ -89,7 +89,7 @@ function search(searchFor) {
   exercisesFiltered.value = exercises.value.filter(function(element) {
     // console.log("elelemtn", element.name, element.name == searchFor)
     let name = element.name.toLowerCase().includes(searchFor.toLowerCase())
-    let instructions = element.instructions.toLowerCase().includes(searchFor.toLowerCase())
+    let instructions = element.instructions ? element.instructions.toLowerCase().includes(searchFor.toLowerCase()) : false
     let musclegroups = element.musclegroups.filter(subelement => subelement.name.toLowerCase().includes(searchFor.toLowerCase())).length
     let equipment = element.equipment.filter(subelement => subelement.name.toLowerCase().includes(searchFor.toLowerCase())).length
     return name || instructions || musclegroups || equipment
