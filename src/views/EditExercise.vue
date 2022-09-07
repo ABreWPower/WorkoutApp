@@ -1,5 +1,5 @@
 <script setup>
-import cardView from '../components/CardView.vue'
+import exerciseModel from '../components/ExerciseModel.vue'
 import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
 import { useRoute } from 'vue-router'
 import { empty, gql } from "@apollo/client/core";
@@ -77,13 +77,13 @@ if (routeObj.params.exerciseid != null && exercise.value.name == null) {
     exercise.value = structuredClone(result.data.exercises[0])
     console.log("exercise", exercise)
     console.log("exercise.equipment", result.data.exercises[0].equipment)
-    result.data.exercises[0].equipment.forEach(element => {
-      equipmentCheckChange(element)
-    })
+    // result.data.exercises[0].equipment.forEach(element => {
+    //   equipmentCheckChange(element)
+    // })
     console.log("exercise.musclegroups", result.data.exercises[0].musclegroups)
-    result.data.exercises[0].musclegroups.forEach(element => {
-      muscleGroupCheckChange(element)
-    })
+    // result.data.exercises[0].musclegroups.forEach(element => {
+    //    muscleGroupCheckChange(element)
+    // })
   })
 }
 
@@ -95,6 +95,36 @@ function arrayRemove(arr, value) {
         return element != value; 
     })
 }
+
+// ********************************************
+// Function for both musclegroups and equipment
+// ********************************************
+
+// function getMuscOrEquip(passedQuery, returnObj, returnObjFiltered) {
+//   client.query({
+//     query: passedQuery,
+//     fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+//   })
+//   .then(result => {
+//     // console.log("exercise muscleGroupsList", result.data.musclegroups)
+//     result.data.musclegroups.forEach(element => {
+//       // console.log("muscleGroupsList add", element)
+//       muscleGroupsList.value.push(element)
+//     })
+//   })
+
+//   // Add each clicked item to the exercise.musclegroups
+//   function muscleGroupCheckChange(musclegroup) {
+//     if (exercise.value.musclegroups.includes(musclegroup)) {
+//       // Remove the muscle group from the exercise
+//       exercise.value.musclegroups = arrayRemove(exercise.value.musclegroups, musclegroup)
+//     }
+//     else {
+//       // Add the muscle group to the exercise
+//       exercise.value.musclegroups.push(musclegroup)
+//     }
+//   }
+// }
 
 // *************
 // Muscle Groups
@@ -112,6 +142,7 @@ let getMuscleGroups = gql`
 `
 
 const muscleGroupsList = ref([])
+const muscleGroupsListFiltered = ref([])
 
 client.query({
   query: getMuscleGroups,
@@ -126,14 +157,19 @@ client.query({
 })
 
 // Add each clicked item to the exercise.musclegroups
-function muscleGroupCheckChange(musclegroup) {
-  if (exercise.value.musclegroups.includes(musclegroup)) {
+function muscleGroupCheckChange(muscleGroupID) {
+  console.log("what patricks really wants ", exercise.value.musclegroups)
+  let index = exercise.value.musclegroups.findIndex((el) => el.id == muscleGroupID)
+  if (index != -1) {
     // Remove the muscle group from the exercise
-    exercise.value.musclegroups = arrayRemove(exercise.value.musclegroups, musclegroup)
+    console.log("remove musclegroup ", muscleGroupID)
+    exercise.value.musclegroups.splice(index, 1)
   }
   else {
     // Add the muscle group to the exercise
-    exercise.value.musclegroups.push(musclegroup)
+    console.log("add musclegroup ", muscleGroupID)
+    let addIndex = muscleGroupsList.value.findIndex((el) => el.id == muscleGroupID)
+    exercise.value.musclegroups.push(muscleGroupsList.value[addIndex])
   }
 }
 
@@ -153,6 +189,7 @@ let getEquipment = gql`
 `
 
 const equipmentList = ref([])
+const equipmentListFiltered = ref([])
 
 client.query({
   query: getEquipment,
@@ -257,8 +294,8 @@ const saveExerciseClick = () => {
     <span class="input-group-text" id="exerciseNameLabel">Exercise Name</span>
     <input type="text" class="form-control" id="exerciseName" v-model="exercise.name" aria-label="Exercise Name" aria-describedby="exerciseNameLabel" />
   </div>
-  <img v-if="exercise.picture != null" :src="`/${exercise.picture}`" v-bind:alt="name" class="img-fluid rounded-start w-100" style="max-width: 94vw; padding-top: 15px; padding-bottom: 15px" />
-  <img v-else :src="getImages()" v-bind:alt="name" class="img-fluid rounded-start w-100" style="max-width: 94vw; padding-top: 15px; padding-bottom: 15px" />
+  <img v-if="exercise.picture != null" :src="`/${exercise.picture}`" v-bind:alt="exercise.name" class="img-fluid rounded-start w-100" style="max-width: 94vw; padding-top: 15px; padding-bottom: 15px" />
+  <img v-else :src="getImages()" v-bind:alt="exercise.name" class="img-fluid rounded-start w-100" style="max-width: 94vw; padding-top: 15px; padding-bottom: 15px" />
 
   <div class="row align-items-start" style="padding-bottom: 20px">
     <div class="col">
@@ -276,10 +313,11 @@ const saveExerciseClick = () => {
   </div>
 
   <!-- TODO should we only save if they click a save button?  currently we save and update as soon as they click on an object -->
-  <div style="padding-bottom: 10px">
+  <!-- <div style="padding-bottom: 10px">
     <button class="btn btn-secondary" type="button" id="muscleGroupModalButton" data-bs-toggle="modal" data-bs-target="#muscleGroupModalForm">Select Muscle Groups</button>
-  </div>
-  <div class="modal fade" id="muscleGroupModalForm" tabindex="-1" role="dialog" aria-hidden="true">
+  </div> -->
+  <exercise-model id="muscleGroupModalForm" :type="'Muscle Groups'" :populateList="muscleGroupsList" :checkedList="exercise.musclegroups.flatMap((element) => [element.id])" @checked="muscleGroupCheckChange($event)"></exercise-model>
+  <!-- <div class="modal fade" id="muscleGroupModalForm" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -297,7 +335,7 @@ const saveExerciseClick = () => {
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="" style="padding-bottom: 10px">
     <p>
@@ -309,11 +347,11 @@ const saveExerciseClick = () => {
   </div>
 
   <!-- TODO lock 1 down after the other is filled in Reps/Duration -->
-  <div v-if="reps != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto" style="padding-bottom: 10px">
+  <div v-if="exercise.reps != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto" style="padding-bottom: 10px">
     <span class="input-group-text" id="repsText" style="width: 75px">Reps</span>
     <input type="number" v-model="exercise.reps" class="form-control" aria-describedby="repsText" style="max-width: 75px" />
   </div>
-  <div v-if="duration != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto" style="padding-bottom: 10px">
+  <div v-if="exercise.duration != 0" class="input-group input-group-sm m-1 d-inline-flex align-items-center w-auto" style="padding-bottom: 10px">
     <span class="input-group-text" id="durationText" style="width: 75px">Duration</span>
     <input type="number" v-model="exercise.duration" class="form-control" placeholder="Seconds" aria-describedby="durationText" style="max-width: 75px" />
   </div>
