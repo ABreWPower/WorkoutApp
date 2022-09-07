@@ -113,7 +113,7 @@ const newExerciseClick = () => {
 <template>
   <form class="d-flex">
     <!-- TODO need to override the enter key (still refreshing page) -->
-    <input class="form-control me-2" type="search" placeholder="Search" v-model="searchValue" />
+    <input class="form-control me-2" type="search" placeholder="Search" v-model="searchValue" onkeypress="return event.keyCode != 13" />
     <!-- <button class="btn btn-outline-primary" type="submit">Search</button> -->
   </form>
   <!-- height: calc(100% vertical height - Nav bar (56px) - Search bar (38px) - New exercise btn (38px) - IDK-DIK (16px) - Card margin (0.5rem) - Toolbar margin (0.5rem) -->

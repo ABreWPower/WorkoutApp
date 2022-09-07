@@ -62,7 +62,7 @@ watch(props.populateList, (newValue, oldValue) => {
           </div>
           <div class="modal-body">
             <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" v-model="searchValue" />
+              <input class="form-control me-2" type="search" placeholder="Search" v-model="searchValue" onkeypress="return event.keyCode != 13" />
             </form>
             <div v-for="populate in populateListFiltered" :key="populate.id">
               <input type="checkbox" class="custom-control-input" :id="populate.id" @input="$emit('checked', populate.id)" :checked="props.checkedList.find((el) => el == populate.id) != undefined" />
