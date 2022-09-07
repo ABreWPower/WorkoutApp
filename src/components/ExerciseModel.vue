@@ -37,7 +37,7 @@ function search(searchFor) {
 let searchValue = ref("")
 watch(searchValue, () => {
   // console.log("my watcher changed")
-  debounce(search, 1000, searchValue.value)
+  debounce(search, 200, searchValue.value)
 })
 
 // Need to refresh this each time as it doesn't get data the first time as we are waiting on the GQL to come back
