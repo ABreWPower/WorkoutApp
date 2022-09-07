@@ -20,7 +20,7 @@ const getImages = function () {
 }
 
 const routeObj = useRoute()
-console.log("exercise edit router params", routeObj.params)
+// console.log("exercise edit router params", routeObj.params)
 
 // ********************
 // Data loading section
@@ -37,7 +37,6 @@ const exercise = ref({
 // If we get an exercise object passed in, overwrite the defaults
 if(routeObj.params.exercise !== undefined) {
   exercise.value = JSON.parse(routeObj.params.exercise)
-  console.log("new exercise object", exercise.value)
 }
 
 let getExercise = gql`
@@ -66,24 +65,14 @@ let getExercise = gql`
 ` 
 
 if (routeObj.params.exerciseid != null && exercise.value.name == null) {
-  console.log("page was refreshed, pulling data")
+  // console.log("page was refreshed, pulling data")
   client.query({
     query: getExercise,
     variables: { exercisesId: parseInt(routeObj.params.exerciseid)},
     fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
   })
   .then(result => {
-    console.log("results", result)
     exercise.value = structuredClone(result.data.exercises[0])
-    console.log("exercise", exercise)
-    console.log("exercise.equipment", result.data.exercises[0].equipment)
-    // result.data.exercises[0].equipment.forEach(element => {
-    //   equipmentCheckChange(element)
-    // })
-    console.log("exercise.musclegroups", result.data.exercises[0].musclegroups)
-    // result.data.exercises[0].musclegroups.forEach(element => {
-    //    muscleGroupCheckChange(element)
-    // })
   })
 }
 
@@ -96,35 +85,24 @@ function arrayRemove(arr, value) {
     })
 }
 
-// ********************************************
-// Function for both musclegroups and equipment
-// ********************************************
+// ******************************************************
+// Change Checked options for muscle groups and equipment
+// ******************************************************
 
-// function getMuscOrEquip(passedQuery, returnObj, returnObjFiltered) {
-//   client.query({
-//     query: passedQuery,
-//     fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
-//   })
-//   .then(result => {
-//     // console.log("exercise muscleGroupsList", result.data.musclegroups)
-//     result.data.musclegroups.forEach(element => {
-//       // console.log("muscleGroupsList add", element)
-//       muscleGroupsList.value.push(element)
-//     })
-//   })
-
-//   // Add each clicked item to the exercise.musclegroups
-//   function muscleGroupCheckChange(musclegroup) {
-//     if (exercise.value.musclegroups.includes(musclegroup)) {
-//       // Remove the muscle group from the exercise
-//       exercise.value.musclegroups = arrayRemove(exercise.value.musclegroups, musclegroup)
-//     }
-//     else {
-//       // Add the muscle group to the exercise
-//       exercise.value.musclegroups.push(musclegroup)
-//     }
-//   }
-// }
+function changeCheckedOptions(changeObj, fullList, changeId) {
+  let index = changeObj.findIndex((el) => el.id == changeId)
+  if (index != -1) {
+    // Remove the muscle group from the exercise
+    // console.log("remove musclegroup ", changeId)
+    changeObj.splice(index, 1)
+  }
+  else {
+    // Add the muscle group to the exercise
+    // console.log("add musclegroup ", changeId)
+    let addIndex = fullList.findIndex((el) => el.id == changeId)
+    changeObj.push(fullList[addIndex])
+  }
+}
 
 // *************
 // Muscle Groups
@@ -142,36 +120,17 @@ let getMuscleGroups = gql`
 `
 
 const muscleGroupsList = ref([])
-const muscleGroupsListFiltered = ref([])
 
 client.query({
   query: getMuscleGroups,
   fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
 })
 .then(result => {
-  console.log("exercise muscleGroupsList", result.data.musclegroups)
   result.data.musclegroups.forEach(element => {
     // console.log("muscleGroupsList add", element)
     muscleGroupsList.value.push(element)
   })
 })
-
-// Add each clicked item to the exercise.musclegroups
-function muscleGroupCheckChange(muscleGroupID) {
-  console.log("what patricks really wants ", exercise.value.musclegroups)
-  let index = exercise.value.musclegroups.findIndex((el) => el.id == muscleGroupID)
-  if (index != -1) {
-    // Remove the muscle group from the exercise
-    console.log("remove musclegroup ", muscleGroupID)
-    exercise.value.musclegroups.splice(index, 1)
-  }
-  else {
-    // Add the muscle group to the exercise
-    console.log("add musclegroup ", muscleGroupID)
-    let addIndex = muscleGroupsList.value.findIndex((el) => el.id == muscleGroupID)
-    exercise.value.musclegroups.push(muscleGroupsList.value[addIndex])
-  }
-}
 
 // *********
 // Equipment
@@ -189,31 +148,18 @@ let getEquipment = gql`
 `
 
 const equipmentList = ref([])
-const equipmentListFiltered = ref([])
 
 client.query({
   query: getEquipment,
   fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
 })
 .then(result => {
-  console.log("exercise equipment", result.data.equipment)
+  // console.log("exercise equipment", result.data.equipment)
   result.data.equipment.forEach(element => {
     // console.log("equipmentList add", element)
     equipmentList.value.push(element)
   })
 })
-
-// Add each clicked item to the exercise.musclegroups
-function equipmentCheckChange(piece) {
-  if (exercise.value.equipment.includes(piece)) {
-    // Remove the muscle group from the exercise
-    exercise.value.equipment = arrayRemove(exercise.value.equipment, piece)
-  }
-  else {
-    // Add the muscle group to the exercise
-    exercise.value.equipment.push(piece)
-  }
-}
 
 // **************
 // Saving section
@@ -236,18 +182,18 @@ let updateExercise = gql`
 `
 
 const saveExerciseClick = () => {
-  console.log("before save exercise", exercise.value)
-  console.log("flatmap", exercise.value.musclegroups.flatMap(element => [element.id]))
-  console.log("flatmap", exercise.value.equipment.flatMap(element => [element.id]))
+  // console.log("before save exercise", exercise.value)
+  // console.log("flatmap", exercise.value.musclegroups.flatMap(element => [element.id]))
+  // console.log("flatmap", exercise.value.equipment.flatMap(element => [element.id]))
 
   // Set a mutation to use
   let mutationToUse = null
   if (routeObj.params.exerciseid === undefined) {
-    console.log("no id, setting to use addExercise")
+    // console.log("no id, setting to use addExercise")
     mutationToUse = addExercise
   }
   else {
-    console.log("found id, using updateExercise")
+    // console.log("found id, using updateExercise")
     mutationToUse = updateExercise
   }
 
@@ -267,10 +213,10 @@ const saveExerciseClick = () => {
     }
   })
   .then(result => {
-    console.log("results", result)
+    // console.log("results", result)
     if (routeObj.params.exerciseid === undefined) {
       exercise.value.id = result.data.addExercise.id
-      console.log("exercise id", exercise.value.id)
+      // console.log("exercise id", exercise.value.id)
       router.push({
         name: 'Edit Exercise',
         params: {
@@ -280,12 +226,12 @@ const saveExerciseClick = () => {
       })
     }
     else {
-      console.log("nothing to do with returned id as we already have it")
+      // console.log("nothing to do with returned id as we already have it")
     }
     // TODO probably do something to let user know it succeded
   })
 
-  console.log("after save exercise")
+  // console.log("after save exercise")
 }
 </script>
 
@@ -312,30 +258,12 @@ const saveExerciseClick = () => {
     <textarea type="text" class="form-control textarea" id="exerciseDescription" v-model="exercise.instructions" aria-label="Exercise Description" />
   </div>
 
-  <!-- TODO should we only save if they click a save button?  currently we save and update as soon as they click on an object -->
-  <!-- <div style="padding-bottom: 10px">
-    <button class="btn btn-secondary" type="button" id="muscleGroupModalButton" data-bs-toggle="modal" data-bs-target="#muscleGroupModalForm">Select Muscle Groups</button>
-  </div> -->
-  <exercise-model id="muscleGroupModalForm" :type="'Muscle Groups'" :populateList="muscleGroupsList" :checkedList="exercise.musclegroups.flatMap((element) => [element.id])" @checked="muscleGroupCheckChange($event)"></exercise-model>
-  <!-- <div class="modal fade" id="muscleGroupModalForm" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Select Muscle Group</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div v-for="musclegroup in muscleGroupsList" :key="musclegroup.id">
-            <input type="checkbox" class="custom-control-input" :id="musclegroup.id" @click="muscleGroupCheckChange(musclegroup)" :checked="exercise.musclegroups.findIndex((el) => el.id == musclegroup.id) != -1" />
-            <label class="custom-control-label" :for="musclegroup.id"> {{ musclegroup.name }} </label>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
+  <exercise-model
+    id="muscleGroupModalForm"
+    :type="'Muscle Groups'"
+    :populateList="muscleGroupsList"
+    :checkedList="exercise.musclegroups.flatMap((element) => [element.id])"
+    @checked="changeCheckedOptions(exercise.musclegroups, muscleGroupsList, $event)"></exercise-model>
 
   <div class="" style="padding-bottom: 10px">
     <p>
@@ -356,29 +284,12 @@ const saveExerciseClick = () => {
     <input type="number" v-model="exercise.duration" class="form-control" placeholder="Seconds" aria-describedby="durationText" style="max-width: 75px" />
   </div>
 
-  <!-- TODO should we only save if they click a save button?  currently we save and update as soon as they click on an object -->
-  <div style="padding-bottom: 10px">
-    <button class="btn btn-secondary" type="button" id="equipmentModalButton" data-bs-toggle="modal" data-bs-target="#equipmentModalForm">Select Equipment</button>
-  </div>
-  <div class="modal fade" id="equipmentModalForm" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Select Equipment</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div v-for="piece in equipmentList" :key="piece.id">
-            <input type="checkbox" class="custom-control-input" :id="piece.id + 1000" @click="equipmentCheckChange(piece)" :checked="exercise.equipment.findIndex((el) => el.id == piece.id) != -1" />
-            <label class="custom-control-label" :for="piece.id + 1000" style="padding-bottom: 5px; padding-left: 10px"> {{ piece.name }} </label>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <exercise-model
+    id="equipmentModalForm"
+    :type="'Equipment'"
+    :populateList="equipmentList"
+    :checkedList="exercise.equipment.flatMap((element) => [element.id])"
+    @checked="changeCheckedOptions(exercise.equipment, equipmentList, $event)"></exercise-model>
 
   <div style="padding-bottom: 10px">
     <button type="button" class="btn btn-primary" @click="saveExerciseClick()">Save</button>
