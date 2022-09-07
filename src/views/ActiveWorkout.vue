@@ -190,6 +190,11 @@ const workoutController = {
   // Current exercise over to the active record for use by Vue
   copyActiveRecord: function () {
     activeRecord.value = workoutController.workoutQueue[workoutController.activeExercise]
+    if(activeRecord.value.exerciseName != "Get Ready" && activeRecord.value.exerciseName != "Rest") {
+      console.log("activeRecord", activeRecord.value)
+      new Audio('/src/assets/start.mp3').play()
+    }
+
     activeCountDownTimer.value = activeRecord.value.duration
     if (workoutController.activeExercise != workoutController.workoutQueue.length - 1) {
       nextExerciseRecord.value = workoutController.workoutQueue[workoutController.activeExercise + 1]
@@ -220,6 +225,11 @@ const workoutController = {
   moveNext: function () {
     // console.log("timer", workoutController.timer)
     // console.log("activeCountDownTimer", activeCountDownTimer.value)
+
+    if(activeRecord.value.exerciseName != "Get Ready" && activeRecord.value.exerciseName != "Rest") {
+      console.log("activeRecord", activeRecord.value)
+      new Audio('/src/assets/end.mp3').play()
+    }
 
     let currentExerciseID = parseInt(workoutController.workoutQueue[workoutController.activeExercise].id)
     // console.log("currentExerciseID", currentExerciseID)
@@ -292,6 +302,7 @@ const workoutController = {
           "work out continue",
           "exercise continue",
           "next exercise",
+          "max exercise",
           "text exercise",
           "next workout",
           "text workout",
