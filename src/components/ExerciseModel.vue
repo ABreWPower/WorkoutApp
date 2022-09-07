@@ -1,4 +1,6 @@
 <script setup>
+import { watch, ref, toRef } from "vue"
+
 const props = defineProps({
   type: {
     type: String,
@@ -13,6 +15,36 @@ const props = defineProps({
     required: true,
   }
 })
+
+const populateListFiltered = ref([])
+
+// Debounce and search function for exercises and the data returned from the database
+let timerId
+function debounce(functionName, delay, ...args) {
+  clearTimeout(timerId)
+  timerId = setTimeout(() => {functionName.apply(null, args)}, delay)
+}
+
+function search(searchFor) {
+  // console.log("we are seearching ", searchFor)
+  populateListFiltered.value = props.populateList.filter(function(element) {
+    // console.log("elelemtn", element.name, element.name == searchFor)
+    let name = element.name.toLowerCase().includes(searchFor.toLowerCase())
+    return name
+  })
+}
+
+let searchValue = ref("")
+watch(searchValue, () => {
+  // console.log("my watcher changed")
+  debounce(search, 1000, searchValue.value)
+})
+
+// Need to refresh this each time as it doesn't get data the first time as we are waiting on the GQL to come back
+watch(props.populateList, (newValue, oldValue) => {
+    debounce(search, 1000, searchValue.value)
+})
+
 </script>
 
 <template>
@@ -29,7 +61,10 @@ const props = defineProps({
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <div v-for="populate in populateList" :key="populate.id">
+            <form class="d-flex">
+              <input class="form-control me-2" type="search" placeholder="Search" v-model="searchValue" />
+            </form>
+            <div v-for="populate in populateListFiltered" :key="populate.id">
               <input type="checkbox" class="custom-control-input" :id="populate.id" @input="$emit('checked', populate.id)" :checked="props.checkedList.find((el) => el == populate.id) != undefined" />
               <label class="custom-control-label" :for="populate.id" style="padding-bottom: 5px; padding-left: 10px"> {{ populate.name }} </label>
             </div>
