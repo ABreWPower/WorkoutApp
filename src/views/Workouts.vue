@@ -42,7 +42,7 @@ function search(searchFor) {
   workoutsFiltered.value = workouts.value.filter(function(element) {
     // console.log("elelemtn", element.name, element.name == searchFor)
     let name = element.name.toLowerCase().includes(searchFor.toLowerCase())
-    let description = element.description.toLowerCase().includes(searchFor.toLowerCase())
+    let description = element.description ? element.description.toLowerCase().includes(searchFor.toLowerCase()) : false
     return name || description
   })
 }
