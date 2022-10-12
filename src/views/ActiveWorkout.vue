@@ -98,6 +98,7 @@ const workoutController = {
       query Query($workoutlogsId: ID) {
         workoutlogs(id: $workoutlogsId) {
           id
+          completed
           exerciselogs {
             id
             sets
@@ -105,6 +106,7 @@ const workoutController = {
             duration
             rest
             weight
+            completed
             exercise {
               id
               name
@@ -147,6 +149,7 @@ const workoutController = {
         workoutController.circuit_rounds = workoutController.workoutData.workout.circuit_rounds
         for (let i = 0; i < workoutController.circuit_rounds; i++) {
           workoutController.workoutData.exerciselogs.forEach(exercise => {
+            if (exercise.completed) return
             if (exercise.sets == null || exercise.sets == 0) exercise.sets = 1   // Assume the user meant to have at least 1 set
             for (let j = 0; j < exercise.sets; j++) {
               workoutController.workoutQueue.push({
@@ -212,8 +215,12 @@ const workoutController = {
         exerciseEquipment: "The world"
       }
     }
-    if (activeRecord.value.reps > 0) workoutController.startSpeechToText()
+    if (activeRecord.value.reps > 0) {
+      continueRecognition = true
+      workoutController.startSpeechToText()
+    }
     else {
+      console.log("This should only kick off on a duration exercise")
       continueRecognition = false
       if (recognition != null) {
         recognition.stop()
@@ -310,7 +317,8 @@ const workoutController = {
           "text work out",
           "i'm gonna die"
         ]
-        if (phrases.find(phrases => text.search(phrases) != -1)) {        
+        if (phrases.find(phrases => text.search(phrases) != -1)) {
+          console.log("we found one of the phrases we were looking for")      
           continueRecognition = false
           recognition.abort()
           workoutController.moveNext()
@@ -319,6 +327,7 @@ const workoutController = {
       // end of transcription
       recognition.addEventListener("end", () => {
         // recognition.abort()
+        console.log("recognition end event, continueRecognition: ", continueRecognition)  
         if (continueRecognition) recognition.start()
       })
     }

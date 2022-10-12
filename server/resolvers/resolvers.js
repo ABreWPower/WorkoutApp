@@ -246,7 +246,7 @@ const resolvers = {
         })
     },
     endWorkoutLog: (parent, { id = null }) => {
-      return querySQLDB("UPDATE workoutlog SET datecompleted = NOW() WHERE id = ?", [id])
+      return querySQLDB("UPDATE workoutlog SET datecompleted = ifnull(datecompleted, NOW()) WHERE id = ?", [id])
         .then(function () {
           return querySQLDB("SELECT * FROM workoutlog WHERE id = ?", [id]).then(result => result[0])
         })
@@ -258,7 +258,7 @@ const resolvers = {
         })
     },
     endExerciseLog: (parent, { span = null, id = null }) => {
-      return querySQLDB("UPDATE workoutlogexercise SET span = ifnull(span + ?, ?), datecompleted = NOW() WHERE id = ?", [span, span, id])
+      return querySQLDB("UPDATE workoutlogexercise SET span = ifnull(span + ?, ?), datecompleted = ifnull(datecompleted, NOW()) WHERE id = ?", [span, span, id])
         .then(function () {
           return querySQLDB("SELECT * FROM workoutlogexercise WHERE id = ?", [id]).then(result => result[0])
         })
