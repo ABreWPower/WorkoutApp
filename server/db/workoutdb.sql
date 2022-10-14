@@ -82,7 +82,7 @@ CREATE TABLE `exercise` (
   `reps` int DEFAULT NULL,
   `duration` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,7 +161,11 @@ INSERT INTO `exercise` VALUES (8,'Chinup',NULL,'chinup.jpg','Pull your self up o
 (75,'Isometric Cervical Sidebending at wall with Ball',NULL,'isometric_cervical_sidebending_at_wall_with_ball.jfif','Begin in a standing upright position with the side of your head resting on a small ball against a wall.  Gently try to bend your head sideways into the ball and hold.  This should be repeated for each side of your head.',1,NULL,10),
 (76,'Quadruped band chin tucks',NULL,'quadruped_band_chin_tucks.jfif','Begin in a quadruped position on your hands and knees with a band wrapped around the back of your head. Spread your shoulder blades by pushing your chest away from the floor. In this position perform a chin tuck, try creating a double chin. You have the option of either holding this position or perform repetitions.',2,10,NULL),
 (77,'Band Chest Press',NULL,'band_chest_press.png','Attach a resistance band to a door frame or other stable surface. The base of the band will come to the level of your knees/thighs. Holding each handle, turn away and walk forward. Take a left leg lead stance.  Brace your core as you slowly push the resistance bands in front of you. Do not lock out the elbows. Slowly return to the starting position, focusing the tension in the chest. Once your elbows are at a 90 degree angle, pause and begin again.',1,12,NULL),
-(78,'Band High Row',NULL,'band_high_row.jfif','Attach a resistance band to a door frame or other stable surface. The base of the band will come to the level of your chest. Holding each handle and walk backwards. Pull your elbows back until your they are even with your shoulders. Return to the starting position.',1,12,NULL);
+(78,'Band High Row',NULL,'band_high_row.jfif','Attach a resistance band to a door frame or other stable surface. The base of the band will come to the level of your chest. Holding each handle and walk backwards. Pull your elbows back until your they are even with your shoulders. Return to the starting position.',1,12,NULL),
+(79,'Cervical Retraction Prone On Elbows',NULL,'cervical_retraction_prone_on_elbows.jpg','Start laying down then raise your body onto to your elbows.  Ensure your elbows are below your shoulders. Gently tuck your chin and then raise your head back up.  This can be completed with weights on your head.',1,10,NULL),
+(80,'Cervical Sidebending Prone On Elbows',NULL,'cervical_sidebending_prone_on_elbows.jpg','Start laying on your side then raise your body onto to  on of your elbows. Ensure your elbow are below your shoulders. Gently lower your head towards the ground and then raise your head back up. This can be completed with weights on your head.',1,10,NULL),
+(81,'Supine Chin Tuck',NULL,'supine_chin_tuck.jfif','Lay on your back and lift your head off the ground.  Gently lower your head back down.',1,10,NULL),
+(82,'Band Standing Single Arm Shoulder External Rotation In Abduction',NULL,'band_standing_single_arm_shoulder_external_rotation_in_abduction.jpg','Slowly rotate your arm upward until the palm is facing forward and reaching overhead',1,10,NULL);
 /*!40000 ALTER TABLE `exercise` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -265,17 +269,21 @@ INSERT INTO `exercise_equipment` VALUES (4,1),
 (45,19),
 (61,21),
 (62,21),
+(79,23),
+(81,23),
 (66,24),
 (67,24),
 (68,24),
 (69,24),
 (70,24),
+(80,24),
 (73,25),
 (74,25),
 (75,25),
 (76,26),
 (77,26),
-(78,26);
+(78,26),
+(82,26);
 /*!40000 ALTER TABLE `exercise_equipment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -351,6 +359,7 @@ INSERT INTO `exercise_musclegroup` VALUES (1,1),
 (74,8),
 (77,8),
 (78,8),
+(82,8),
 (21,9),
 (22,9),
 (23,9),
@@ -361,6 +370,7 @@ INSERT INTO `exercise_musclegroup` VALUES (1,1),
 (73,9),
 (74,9),
 (76,9),
+(82,9),
 (8,10),
 (21,10),
 (22,10),
@@ -405,7 +415,10 @@ INSERT INTO `exercise_musclegroup` VALUES (1,1),
 (73,14),
 (74,14),
 (75,14),
-(76,14);
+(76,14),
+(79,14),
+(80,14),
+(81,14);
 /*!40000 ALTER TABLE `exercise_musclegroup` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -493,7 +506,7 @@ CREATE TABLE `workout` (
   PRIMARY KEY (`id`),
   KEY `fk_workout_users1_idx` (`userid`),
   CONSTRAINT `fk_workout_users1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -513,7 +526,9 @@ INSERT INTO `workout` VALUES (1,1,'Workout 1',NULL,'Lots of workouts',1,NULL),
 (9,1,'SenMoCor Lvl 1 Ex 3 + Ex 2 + Ex 1',NULL,'SenMoCor Level 1 exercise 3, exercise 2 and exercise 1 back to back, then 10 sets of each',10,NULL),
 (10,1,'Neck PT pt2 Morning',NULL,'Shoulder parts of the second round of PT',1,NULL),
 (11,1,'Neck PT pt2 Afternoon',NULL,'Neck part of second round of PT',1,NULL),
-(12,1,'Neck PT pt2 Night',NULL,'Both shoulder and neck workouts for part 2 of PT',1,NULL);
+(12,1,'Neck PT pt2 Night',NULL,'Both shoulder and neck workouts for part 2 of PT',1,NULL),
+(13,1,'Neck PT pt3 1',NULL,'Third set of exercises for PT',3,NULL),
+(14,1,'Neck PT pt3 2',NULL,'Third set of exercises for PT',1,NULL);
 /*!40000 ALTER TABLE `workout` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -538,7 +553,7 @@ CREATE TABLE `workout_exercise` (
   KEY `fk_workout_has_exercise_workout_idx` (`workoutid`),
   CONSTRAINT `fk_workout_has_exercise_exercise1` FOREIGN KEY (`exerciseid`) REFERENCES `exercise` (`id`),
   CONSTRAINT `fk_workout_has_exercise_workout` FOREIGN KEY (`workoutid`) REFERENCES `workout` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=224 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=254 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -629,7 +644,19 @@ INSERT INTO `workout_exercise` VALUES (6,2,7,NULL,NULL,NULL,NULL,NULL),
 (220,12,74,15,1,NULL,5,23),
 (221,12,75,NULL,4,10,5,24),
 (222,12,73,15,1,NULL,5,25),
-(223,12,75,NULL,2,10,5,26);
+(223,12,75,NULL,2,10,5,26),
+(227,13,79,10,1,NULL,5,0),
+(228,13,80,10,1,NULL,5,1),
+(229,13,80,10,1,NULL,30,2),
+(245,14,74,NULL,1,20,5,0),
+(246,14,73,NULL,1,20,20,1),
+(247,14,74,NULL,1,20,5,2),
+(248,14,73,NULL,1,20,20,3),
+(249,14,74,NULL,1,20,5,4),
+(250,14,73,NULL,1,20,NULL,5),
+(251,14,82,10,6,NULL,20,6),
+(252,14,25,10,3,NULL,20,7),
+(253,14,26,10,3,NULL,20,8);
 /*!40000 ALTER TABLE `workout_exercise` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -715,4 +742,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-05 19:50:46
+-- Dump completed on 2022-10-14 19:41:37
