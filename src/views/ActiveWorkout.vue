@@ -113,6 +113,9 @@ const workoutController = {
               picture
               video
               instructions
+              reps
+              duration
+              rest
               equipment {
                 name
                 icon
