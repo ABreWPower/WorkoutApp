@@ -198,7 +198,7 @@ const workoutController = {
     activeRecord.value = workoutController.workoutQueue[workoutController.activeExercise]
     if(activeRecord.value.exerciseName != "Get Ready" && activeRecord.value.exerciseName != "Rest") {
       console.log("activeRecord", activeRecord.value)
-      new Audio('/src/assets/start.mp3').play()
+      new Audio('/start.mp3').play()
     }
 
     activeCountDownTimer.value = activeRecord.value.duration
@@ -238,7 +238,7 @@ const workoutController = {
 
     if(activeRecord.value.exerciseName != "Get Ready" && activeRecord.value.exerciseName != "Rest") {
       console.log("activeRecord", activeRecord.value)
-      new Audio('/src/assets/end.mp3').play()
+      new Audio('/end.mp3').play()
     }
 
     let currentExerciseID = parseInt(workoutController.workoutQueue[workoutController.activeExercise].id)
