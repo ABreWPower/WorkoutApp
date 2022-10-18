@@ -34,6 +34,7 @@ let getExercise = gql`
       difficulty
       reps
       duration
+      rest
       equipment {
         id
         name
