@@ -9,6 +9,9 @@ import router from "../router/router.js"
 const routeObj = useRoute()
 console.log("exercise router params", routeObj.params)
 
+// *********************************************
+// Code to support adding exercise to a workout
+// *********************************************
 let workout = null
 if(routeObj.params.workout !== undefined) {
   workout = JSON.parse(routeObj.params.workout)
@@ -37,6 +40,10 @@ if (routeObj.params.mode == "AddExerciseToWorkout") {
     }
   }
 }
+
+// ****************************************
+// Get exercises and save them to variable
+// ****************************************
 
 let getExercises = gql`
   query Query {
@@ -78,6 +85,39 @@ client.query({
   // console.log("exercises", exercises)
 })
 
+// ***************************************
+// Get workouts and save them to variable
+// ***************************************
+
+let getWorkouts = gql`
+  query Query {
+    workouts {
+      id
+      name
+      picture
+      description
+    }
+  }
+` 
+
+const workouts = ref([])
+const workoutsFiltered = ref([])
+
+client.query({
+  query: getWorkouts,
+  fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+})
+.then(result => {
+  // console.log("results", result)
+  workouts.value = structuredClone(result.data.workouts)
+  workoutsFiltered.value = workouts.value
+  // console.log("workouts", workouts)
+})
+
+// *************************
+// Search and debounce code
+// *************************
+
 // Debounce and search function for exercises and the data returned from the database
 let timerId
 function debounce(functionName, delay, ...args) {
@@ -95,6 +135,12 @@ function search(searchFor) {
     let equipment = element.equipment.filter(subelement => subelement.name.toLowerCase().includes(searchFor.toLowerCase())).length
     return name || instructions || musclegroups || equipment
   })
+  workoutsFiltered.value = workouts.value.filter(function(element) {
+    // console.log("elelemtn", element.name, element.name == searchFor)
+    let name = element.name.toLowerCase().includes(searchFor.toLowerCase())
+    let description = element.description ? element.description.toLowerCase().includes(searchFor.toLowerCase()) : false
+    return name || description
+  })
 }
 
 let searchValue = ref("")
@@ -103,7 +149,9 @@ watch(searchValue, () => {
   debounce(search, 1000, searchValue.value)
 })
 
-// Click handler
+// *******************************
+// Click handler for new exercise
+// *******************************
 const newExerciseClick = () => {
     // console.log("before new exercise")
     router.push({ name: 'Add Exercise' })
@@ -117,18 +165,40 @@ const newExerciseClick = () => {
     <input class="form-control me-2" type="search" placeholder="Search" v-model="searchValue" onkeypress="return event.keyCode != 13" />
     <!-- <button class="btn btn-outline-primary" type="submit">Search</button> -->
   </form>
-  <!-- height: calc(100% vertical height - Nav bar (56px) - Search bar (38px) - New exercise btn (38px) - IDK-DIK (16px) - Card margin (0.5rem) - Toolbar margin (0.5rem) -->
-  <div v-bind="$attrs" style="position: relative; height: calc(100vh - 56px - 38px - 38px - 16px - 0.5rem - 0.5rem); margin-top: 0.5rem; overflow: auto">
+
+  <div v-if="routeObj.params.mode == 'AddExerciseToWorkout'">
+    <hr />
+    <h1>Exercises</h1>
+  </div>
+  <!-- height: calc(100% vertical height - Nav bar (56px) - Search bar (38px) - New exercise btn (38px) - HRs (50px) - IDK-DIK (16px) - Card margin (0.5rem) - Toolbar margin (0.5rem) -->
+  <div v-bind="$attrs" style="position: relative; height: calc(100vh / 2 - 56px - 38px - 38px - 16px - 50px - 0.5rem - 0.5rem); margin-top: 0.5rem; overflow: auto">
     <div v-for="exercise in exercisesFiltered" :key="exercise">
       <card-view v-if="routeObj.params.mode != 'AddExerciseToWorkout'" :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :description="exercise.instructions" :exerciseid="exercise.id"></card-view>
       <card-view v-else :name="exercise.name" :picture="exercise.picture" :video="exercise.video" :description="exercise.instructions" :exerciseid="exercise.id" :click-handler="cardClickHandler(exercise)"></card-view>
     </div>
   </div>
-  <button type="button" class="btn btn-outline-secondary" @click="newExerciseClick()">New Exercise</button>
+  <div v-if="routeObj.params.mode == 'AddExerciseToWorkout'">
+    <hr />
+    <h1>Workouts</h1>
+    <div v-bind="$attrs" style="position: relative; height: calc(100vh / 2 - 56px - 38px - 38px - 16px - 50px - 0.5rem - 0.5rem); margin-top: 0.5rem; overflow: auto">
+      <div v-for="workout in workoutsFiltered" :key="workout" class="card-view">
+        <card-view :name="workout.name" :picture="workout.picture" :description="workout.description" :workoutid="workout.id"></card-view>
+      </div>
+    </div>
+  </div>
+  <!-- TODO make button only show up if not come from workout -->
+  <button v-if="routeObj.params.mode != 'AddExerciseToWorkout'" type="button" class="btn btn-outline-secondary" @click="newExerciseClick()">New Exercise</button>
 </template>
 
 <style scoped>
 div.card-view:last-child div.card {
   margin-bottom: 0 !important;
+}
+hr {
+  position: relative;
+  top: 20px;
+  border: none;
+  height: 12px;
+  margin-bottom: 50px;
 }
 </style>
