@@ -235,6 +235,7 @@ function exerciseMove(fromIndex, offset) {
   <div v-for="(exercise, index) in workout.exercises" :key="exercise.id">
     <workout-edit-exercise-card-view
       :name="exercise.name"
+      :typeIsWorkout="exercise.description ? true : false"
       :picture="exercise.picture"
       :sets="exercise.sets"
       :setsReadOnly="circuitCheckboxValue"

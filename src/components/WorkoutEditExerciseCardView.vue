@@ -48,6 +48,12 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  typeIsWorkout:
+  {
+    type: Boolean,
+    required: false,
+    default: false,
+  }
 })
 
 defineEmits(['update:sets', 'update:reps', 'update:duration', 'update:rest'])
@@ -66,7 +72,8 @@ const getImages = function () {
     <div class="card mb-3">
       <div class="row g-0">
         <div class="col-fluid-4">
-          <h3 class="card-title">{{ props.name }}</h3>
+          <h3 v-if="typeIsWorkout" class="card-title">Workout: {{ props.name }}</h3>
+          <h3 v-if="!typeIsWorkout" class="card-title">Exercise: {{ props.name }}</h3>
           <!-- <img v-bind:src="getImages(picture)" v-bind:alt="name" class="img-fluid rounded-start smallpics" /> -->
           <img v-if="picture != null" :src="`/${picture}`" v-bind:alt="name" class="img-fluid rounded-start smallpics" />
           <img v-else :src="getImages()" v-bind:alt="name" class="img-fluid rounded-start smallpics" />
@@ -84,7 +91,7 @@ const getImages = function () {
               <input
                 type="number"
                 :value="props.sets"
-                :readonly="setsReadOnly"
+                :readonly="setsReadOnly || typeIsWorkout"
                 @input="$emit('update:sets', $event.target.value)"
                 class="form-control"
                 aria-label="Number of sets to complete for this exercise: {{ name }}"
@@ -96,6 +103,7 @@ const getImages = function () {
               <input
                 type="number"
                 :value="props.reps"
+                :readonly="typeIsWorkout"
                 @input="$emit('update:reps', $event.target.value)"
                 class="form-control"
                 aria-label="Number of reps to complete each set for this exercise: {{ name }}"
@@ -107,6 +115,7 @@ const getImages = function () {
               <input
                 type="number"
                 :value="props.duration"
+                :readonly="typeIsWorkout"
                 @input="$emit('update:duration', $event.target.value)"
                 class="form-control"
                 aria-label="How long to complete each set for this exercise: {{ name }}"
@@ -119,7 +128,7 @@ const getImages = function () {
               <input
                 type="number"
                 :value="props.rest"
-                :readonly="restReadOnly"
+                :readonly="restReadOnly || typeIsWorkout"
                 @input="$emit('update:rest', $event.target.value)"
                 class="form-control"
                 aria-label="Number of time to rest for this exercise: {{ name }}"
