@@ -1,27 +1,19 @@
--- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.29, for Linux (x86_64)
 --
--- Host: workoutdb.cluster-calr2vgnmar3.us-east-1.rds.amazonaws.com    Database: workoutapp
+-- Host: localhost    Database: workoutapp
 -- ------------------------------------------------------
--- Server version	5.7.12
+-- Server version	8.0.29-0ubuntu0.21.10.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
-
---
--- GTID state at the beginning of the backup 
---
-
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '';
 
 --
 -- Table structure for table `equipment`
@@ -31,9 +23,9 @@ DROP TABLE IF EXISTS `equipment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `equipment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `icon` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `icon` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -56,14 +48,14 @@ DROP TABLE IF EXISTS `exercise`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `exercise` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `video` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `picture` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `instructions` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `difficulty` int(11) DEFAULT NULL,
-  `reps` int(11) DEFAULT NULL,
-  `duration` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `video` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `picture` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `instructions` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `difficulty` int DEFAULT NULL,
+  `reps` int DEFAULT NULL,
+  `duration` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -86,8 +78,8 @@ DROP TABLE IF EXISTS `exercise_equipment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `exercise_equipment` (
-  `exerciseid` int(11) NOT NULL,
-  `equipmentid` int(11) NOT NULL,
+  `exerciseid` int NOT NULL,
+  `equipmentid` int NOT NULL,
   PRIMARY KEY (`exerciseid`,`equipmentid`),
   KEY `fk_exercise_has_equipment_equipment1_idx` (`equipmentid`),
   KEY `fk_exercise_has_equipment_exercise1_idx` (`exerciseid`),
@@ -114,8 +106,8 @@ DROP TABLE IF EXISTS `exercise_musclegroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `exercise_musclegroup` (
-  `exerciseid` int(11) NOT NULL,
-  `musclegroupid` int(11) NOT NULL,
+  `exerciseid` int NOT NULL,
+  `musclegroupid` int NOT NULL,
   PRIMARY KEY (`exerciseid`,`musclegroupid`),
   KEY `fk_exercise_has_musclegroup_musclegroup1_idx` (`musclegroupid`),
   KEY `fk_exercise_has_musclegroup_exercise1_idx` (`exerciseid`),
@@ -142,9 +134,9 @@ DROP TABLE IF EXISTS `musclegroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `musclegroup` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `picture` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `picture` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -167,10 +159,10 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -193,13 +185,13 @@ DROP TABLE IF EXISTS `workout`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `workout` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userid` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `picture` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `description` varchar(2048) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `circuit_rounds` int(11) DEFAULT NULL,
-  `circuit_rest` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `userid` int NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `picture` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `description` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `circuit_rounds` int DEFAULT NULL,
+  `circuit_rest` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_workout_users1_idx` (`userid`),
   CONSTRAINT `fk_workout_users1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
@@ -224,14 +216,14 @@ DROP TABLE IF EXISTS `workout_exercise`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `workout_exercise` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `workoutid` int(11) NOT NULL,
-  `exerciseid` int(11) NOT NULL,
-  `reps` int(10) unsigned DEFAULT NULL,
-  `sets` int(10) unsigned DEFAULT NULL,
-  `duration` int(10) unsigned DEFAULT NULL,
-  `rest` int(10) unsigned DEFAULT NULL,
-  `sort` int(10) unsigned DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `workoutid` int NOT NULL,
+  `exerciseid` int NOT NULL,
+  `reps` int unsigned DEFAULT NULL,
+  `sets` int unsigned DEFAULT NULL,
+  `duration` int unsigned DEFAULT NULL,
+  `rest` int unsigned DEFAULT NULL,
+  `sort` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_workout_has_exercise_exercise1_idx` (`exerciseid`),
   KEY `fk_workout_has_exercise_workout_idx` (`workoutid`),
@@ -251,6 +243,32 @@ INSERT INTO `workout_exercise` VALUES (6,2,7,NULL,NULL,NULL,NULL,NULL),(7,2,8,NU
 UNLOCK TABLES;
 
 --
+-- Table structure for table `workout_workout`
+--
+
+DROP TABLE IF EXISTS `workout_workout`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `workout_workout` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `workoutid` int NOT NULL,
+  `sort` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_workout_workout_workout1_idx` (`workoutid`),
+  CONSTRAINT `fk_workout_workout_workout1` FOREIGN KEY (`workoutid`) REFERENCES `workout` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `workout_workout`
+--
+
+LOCK TABLES `workout_workout` WRITE;
+/*!40000 ALTER TABLE `workout_workout` DISABLE KEYS */;
+/*!40000 ALTER TABLE `workout_workout` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `workoutlog`
 --
 
@@ -258,9 +276,9 @@ DROP TABLE IF EXISTS `workoutlog`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `workoutlog` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `workoutid` int(11) NOT NULL,
-  `userid` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `workoutid` int NOT NULL,
+  `userid` int NOT NULL,
   `datestarted` datetime DEFAULT NULL,
   `datecompleted` datetime DEFAULT NULL,
   `completed` tinyint(1) GENERATED ALWAYS AS ((`datecompleted` is not null)) VIRTUAL,
@@ -290,19 +308,19 @@ DROP TABLE IF EXISTS `workoutlogexercise`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `workoutlogexercise` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `workoutlogid` int(11) NOT NULL,
-  `exerciseid` int(11) NOT NULL,
-  `sets` int(11) DEFAULT NULL,
-  `reps` int(11) DEFAULT NULL,
-  `duration` int(11) DEFAULT NULL,
-  `rest` int(11) DEFAULT NULL,
-  `weight` int(11) DEFAULT NULL,
-  `sort` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `workoutlogid` int NOT NULL,
+  `exerciseid` int NOT NULL,
+  `sets` int DEFAULT NULL,
+  `reps` int DEFAULT NULL,
+  `duration` int DEFAULT NULL,
+  `rest` int DEFAULT NULL,
+  `weight` int DEFAULT NULL,
+  `sort` int DEFAULT NULL,
   `datestarted` datetime DEFAULT NULL,
   `datecompleted` datetime DEFAULT NULL,
-  `span` int(11) DEFAULT NULL,
-  `actualspan` int(11) GENERATED ALWAYS AS ((`span` - (`sets` * `rest`))) VIRTUAL,
+  `span` int DEFAULT NULL,
+  `actualspan` int GENERATED ALWAYS AS ((`span` - (`sets` * `rest`))) VIRTUAL,
   `completed` tinyint(1) GENERATED ALWAYS AS ((`datecompleted` is not null)) VIRTUAL,
   PRIMARY KEY (`id`),
   KEY `fk_workoutlogexercise_workoutlog1_idx` (`workoutlogid`),
@@ -321,15 +339,6 @@ LOCK TABLES `workoutlogexercise` WRITE;
 INSERT INTO `workoutlogexercise` (`id`, `workoutlogid`, `exerciseid`, `sets`, `reps`, `duration`, `rest`, `weight`, `sort`, `datestarted`, `datecompleted`, `span`) VALUES (1,1,8,1,12,NULL,8,NULL,1,'2022-07-06 00:15:34','2022-07-06 00:22:59',40),(2,1,20,1,NULL,5,NULL,NULL,0,'2022-07-05 23:50:50','2022-07-05 23:51:00',10),(52,13,79,1,10,NULL,5,NULL,0,'2022-10-14 20:00:56','2022-10-14 20:01:42',90),(53,13,80,1,10,NULL,30,NULL,2,'2022-10-14 20:02:20','2022-10-14 20:03:27',255),(54,13,80,1,10,NULL,5,NULL,1,'2022-10-14 20:01:42','2022-10-14 20:02:20',74),(55,14,74,1,NULL,20,5,NULL,0,'2022-10-14 23:47:28','2022-10-14 23:48:10',25),(56,14,73,1,NULL,20,20,NULL,3,NULL,NULL,NULL),(57,14,74,1,NULL,20,5,NULL,2,NULL,NULL,NULL),(58,14,73,1,NULL,20,20,NULL,1,'2022-10-14 23:48:10',NULL,NULL),(59,14,73,1,NULL,20,NULL,NULL,5,NULL,NULL,NULL),(60,14,25,3,10,NULL,20,NULL,7,NULL,NULL,NULL),(61,14,82,6,10,NULL,20,NULL,6,NULL,NULL,NULL),(62,14,74,1,NULL,20,5,NULL,4,NULL,NULL,NULL),(63,14,26,3,10,NULL,20,NULL,8,NULL,NULL,NULL),(64,15,74,1,NULL,20,5,NULL,0,'2022-10-14 23:48:35','2022-10-14 23:49:00',25),(65,15,73,1,NULL,20,20,NULL,1,'2022-10-14 23:49:00','2022-10-14 23:49:57',40),(66,15,74,1,NULL,20,5,NULL,2,'2022-10-14 23:49:57','2022-10-14 23:50:22',25),(67,15,73,1,NULL,20,20,NULL,3,'2022-10-14 23:50:22','2022-10-14 23:51:02',40),(68,15,74,1,NULL,20,5,NULL,4,'2022-10-14 23:51:02','2022-10-14 23:51:27',25),(69,15,82,6,10,NULL,20,NULL,6,'2022-10-14 23:52:11',NULL,NULL),(70,15,73,1,NULL,20,NULL,NULL,5,'2022-10-14 23:51:27','2022-10-14 23:52:11',25),(71,15,26,3,10,NULL,20,NULL,8,NULL,'2022-10-15 00:07:54',790),(72,15,25,3,10,NULL,20,NULL,7,NULL,NULL,NULL),(73,16,10,1,NULL,NULL,NULL,NULL,2,NULL,NULL,NULL),(74,16,11,1,NULL,NULL,NULL,NULL,3,NULL,NULL,NULL),(75,16,8,1,NULL,NULL,NULL,NULL,0,'2022-10-16 14:10:47',NULL,NULL),(76,16,9,1,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL),(77,17,76,3,10,NULL,30,NULL,0,'2022-10-16 14:11:13',NULL,NULL),(78,17,74,1,15,NULL,5,NULL,1,NULL,NULL,NULL),(79,17,73,1,15,NULL,5,NULL,3,NULL,NULL,NULL),(80,17,75,4,NULL,10,5,NULL,2,NULL,NULL,NULL),(81,17,75,4,NULL,10,5,NULL,6,NULL,NULL,NULL),(82,17,73,1,15,NULL,5,NULL,7,NULL,NULL,NULL),(83,17,74,1,15,NULL,5,NULL,9,NULL,NULL,NULL),(84,17,75,4,NULL,10,5,NULL,10,NULL,NULL,NULL),(85,17,73,1,15,NULL,5,NULL,11,NULL,NULL,NULL),(86,17,75,4,NULL,10,5,NULL,12,NULL,NULL,NULL),(87,17,75,4,NULL,10,5,NULL,8,NULL,NULL,NULL),(88,17,75,4,NULL,10,5,NULL,4,NULL,NULL,NULL),(89,17,74,1,15,NULL,5,NULL,5,NULL,NULL,NULL),(90,18,74,1,NULL,20,5,NULL,0,'2022-10-16 14:11:14','2022-10-16 14:11:39',25),(91,18,73,1,NULL,20,20,NULL,1,'2022-10-16 14:11:39','2022-10-16 14:12:19',40),(92,18,74,1,NULL,20,5,NULL,2,'2022-10-16 14:12:19','2022-10-16 14:12:44',25),(93,18,73,1,NULL,20,20,NULL,3,'2022-10-16 14:12:44','2022-10-16 14:13:24',40),(94,18,73,1,NULL,20,NULL,NULL,5,'2022-10-16 14:13:49','2022-10-16 14:14:14',25),(95,18,82,6,10,NULL,20,NULL,6,'2022-10-16 14:14:14',NULL,NULL),(96,18,74,1,NULL,20,5,NULL,4,'2022-10-16 14:13:24','2022-10-16 14:13:49',25),(97,18,26,3,10,NULL,20,NULL,8,NULL,NULL,NULL),(98,18,25,3,10,NULL,20,NULL,7,NULL,NULL,NULL),(99,19,74,1,NULL,20,5,NULL,0,'2022-10-16 14:44:59',NULL,NULL),(100,19,26,3,10,NULL,20,NULL,8,NULL,NULL,NULL),(101,19,82,6,10,NULL,20,NULL,6,NULL,NULL,NULL),(102,19,73,1,NULL,20,20,NULL,3,NULL,NULL,NULL),(103,19,73,1,NULL,20,NULL,NULL,5,NULL,NULL,NULL),(104,19,73,1,NULL,20,20,NULL,1,NULL,NULL,NULL),(105,19,74,1,NULL,20,5,NULL,2,NULL,NULL,NULL),(106,19,25,3,10,NULL,20,NULL,7,NULL,NULL,NULL),(107,19,74,1,NULL,20,5,NULL,4,NULL,NULL,NULL),(108,20,74,1,NULL,20,5,NULL,0,'2022-10-17 23:13:42','2022-10-17 23:14:07',25),(109,20,74,1,NULL,20,5,NULL,2,'2022-10-17 23:14:47','2022-10-17 23:15:13',25),(110,20,73,1,NULL,20,20,NULL,1,'2022-10-17 23:14:07','2022-10-17 23:14:47',40),(111,20,73,1,NULL,20,20,NULL,3,'2022-10-17 23:15:13','2022-10-17 23:15:53',40),(112,20,73,1,NULL,20,NULL,NULL,5,'2022-10-17 23:16:17','2022-10-17 23:17:34',25),(113,20,74,1,NULL,20,5,NULL,4,'2022-10-17 23:15:53','2022-10-17 23:16:17',25),(114,20,25,3,10,NULL,20,NULL,7,'2022-10-17 23:24:45','2022-10-17 23:27:30',165),(115,20,82,6,10,NULL,20,NULL,6,'2022-10-17 23:17:34','2022-10-17 23:24:45',431),(116,20,26,3,10,NULL,20,NULL,8,'2022-10-17 23:27:30','2022-10-17 23:30:29',179),(117,21,73,1,NULL,20,20,NULL,1,NULL,NULL,NULL),(118,21,74,1,NULL,20,5,NULL,0,NULL,NULL,NULL),(119,21,74,1,NULL,20,5,NULL,2,NULL,NULL,NULL),(120,21,73,1,NULL,20,20,NULL,3,NULL,NULL,NULL),(121,21,74,1,NULL,20,5,NULL,4,NULL,NULL,NULL),(122,21,82,6,10,NULL,20,NULL,6,NULL,NULL,NULL),(123,21,26,3,10,NULL,20,NULL,8,NULL,NULL,NULL),(124,21,25,3,10,NULL,20,NULL,7,NULL,NULL,NULL),(125,21,73,1,NULL,20,NULL,NULL,5,NULL,NULL,NULL),(126,22,73,1,NULL,20,20,NULL,3,'2022-10-19 19:11:01','2022-10-19 19:11:41',40),(127,22,73,1,NULL,20,20,NULL,5,'2022-10-19 19:12:11','2022-10-19 19:12:51',40),(128,22,25,3,10,NULL,10,NULL,7,'2022-10-19 19:18:41',NULL,NULL),(129,22,74,1,NULL,20,10,NULL,4,'2022-10-19 19:11:41','2022-10-19 19:12:11',30),(130,22,82,6,10,NULL,10,NULL,6,'2022-10-19 19:12:51','2022-10-19 19:18:41',350),(131,22,74,1,NULL,20,10,NULL,2,'2022-10-19 19:10:31','2022-10-19 19:11:01',30),(132,22,26,3,10,NULL,20,NULL,8,NULL,'2022-10-19 19:23:25',278),(133,22,74,1,NULL,20,10,NULL,0,'2022-10-19 19:09:21','2022-10-19 19:09:51',30),(134,22,73,1,NULL,20,20,NULL,1,'2022-10-19 19:09:51','2022-10-19 19:10:31',40);
 /*!40000 ALTER TABLE `workoutlogexercise` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'workoutapp'
---
-
---
--- Dumping routines for database 'workoutapp'
---
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -340,4 +349,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-21 23:24:55
+-- Dump completed on 2022-10-22  0:56:13
