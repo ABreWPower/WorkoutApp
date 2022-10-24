@@ -5,7 +5,7 @@ import { persistCache, LocalStorageWrapper } from 'apollo3-cache-persist';
 const cache = new InMemoryCache({
   typePolicies: {
     Exercise: {
-      keyFields: ["id", "reps", "duration", "rest"]
+      keyFields: ["id", "reps", "duration", "rest", "type"]
     }
   }
 })

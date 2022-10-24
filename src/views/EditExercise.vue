@@ -43,6 +43,7 @@ let getExercise = gql`
   query Query($exercisesId: ID) {
     exercises(id: $exercisesId) {
       id
+      type
       name
       video
       picture

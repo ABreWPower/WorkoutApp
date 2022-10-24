@@ -23,6 +23,7 @@ type Workout {
 
 type Exercise {
   id: ID!
+  type: String
   name: String!
   video: String
   picture: String
@@ -101,6 +102,7 @@ type Query {
   equipment: [Equipment]
   musclegroups: [MuscleGroup]
   exercises(id: ID): [Exercise]
+  exerciseandworkout: [Exercise]
   workoutlogs(id: ID): [WorkoutLog]
 }
 

@@ -15,8 +15,9 @@ console.log("exercise router params", routeObj.params)
 
 let getExercises = gql`
   query Query {
-    exercises {
+    exerciseandworkout {
       id
+      type
       name
       video
       picture
@@ -41,48 +42,24 @@ let getExercises = gql`
 
 const exercises = ref([])
 const exercisesFiltered = ref([])
+const workouts = ref([])
+const workoutsFiltered = ref([])
 
 client.query({
   query: getExercises,
   fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
 })
 .then(result => {
-  // console.log("results", result)
-  exercises.value = structuredClone(result.data.exercises)
+  console.log("results", result)
+  exercises.value = structuredClone(result.data.exerciseandworkout).filter(exercise => exercise.type == 'exercise')
   exercisesFiltered.value = exercises.value
+  workouts.value = structuredClone(result.data.exerciseandworkout).filter(exercise => exercise.type == 'workout')
+  workoutsFiltered.value = workouts.value
   // console.log("exercises", exercises)
 })
 
-// ***************************************
-// Get workouts and save them to variable
-// ***************************************
 
-let getWorkouts = gql`
-  query Query {
-    workouts {
-      id
-      name
-      picture
-      description
-    }
-  }
-` 
 
-const workouts = ref([])
-const workoutsFiltered = ref([])
-
-if (routeObj.params.mode == "AddExerciseToWorkout") {
-  client.query({
-    query: getWorkouts,
-    fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
-  })
-  .then(result => {
-    // console.log("results", result)
-    workouts.value = structuredClone(result.data.workouts)
-    workoutsFiltered.value = workouts.value
-    // console.log("workouts", workouts)
-  })
-}
 // *************************
 // Search and debounce code
 // *************************
@@ -107,8 +84,8 @@ function search(searchFor) {
   workoutsFiltered.value = workouts.value.filter(function(element) { // TODO should filter out the current workout that we are working on
     // console.log("elelemtn", element.name, element.name == searchFor)
     let name = element.name.toLowerCase().includes(searchFor.toLowerCase())
-    let description = element.description ? element.description.toLowerCase().includes(searchFor.toLowerCase()) : false
-    return name || description
+    let instructions = element.instructions ? element.instructions.toLowerCase().includes(searchFor.toLowerCase()) : false
+    return name || instructions
   })
 }
 
@@ -183,7 +160,7 @@ if (routeObj.params.mode == "AddExerciseToWorkout") {
     <h1>Workouts</h1>
     <div v-bind="$attrs" style="position: relative; height: calc(100vh / 2 - 56px - 38px - 38px - 16px - 50px - 0.5rem - 0.5rem); margin-top: 0.5rem; overflow: auto">
       <div v-for="workout in workoutsFiltered" :key="workout" class="card-view">
-        <card-view :name="workout.name" :picture="workout.picture" :description="workout.description" :workoutid="workout.id" :click-handler="cardClickHandler(workout)"></card-view>
+        <card-view :name="workout.name" :picture="workout.picture" :description="workout.instructions" :workoutid="workout.id" :click-handler="cardClickHandler(workout)"></card-view>
       </div>
     </div>
   </div>

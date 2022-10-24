@@ -15,6 +15,23 @@ const resolvers = {
       if (args.id == undefined) args.id = null
       return querySQLDB("SELECT * FROM exercise WHERE id like IFNULL(?, '%')", [args.id]).then(result => result)
     },
+    exerciseandworkout: () => {
+      return querySQLDB(`SELECT
+        id,
+        'exercise' AS type,
+        exercise.name,
+        picture,
+        instructions
+      FROM exercise
+      UNION
+      SELECT
+        id,
+        'workout' AS type,
+        workout.name,
+        picture,
+        workout.description
+      FROM workout`)
+    },
     workoutlogs: (parent, args) => {
       if (args.id == undefined) args.id = null
       return querySQLDB("SELECT * FROM workoutlog WHERE id like IFNULL(?, '%')", [args.id]).then(result => result)

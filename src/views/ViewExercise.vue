@@ -22,6 +22,7 @@ let getExercise = gql`
   query Query {
     exercises(id: ${routeObj.params.exerciseid}) {
       id
+      type
       name
       video
       picture

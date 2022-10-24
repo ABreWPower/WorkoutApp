@@ -26,6 +26,7 @@ let getWorkout = gql`
       }
       exercises {
         id
+        type
         name
         instructions
         picture
