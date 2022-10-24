@@ -58,23 +58,44 @@ const resolvers = {
     },
     exercises(parent) {
       return querySQLDB(`SELECT
-          exercise.id,
-          'exercise' as type,
-          exercise.name,
-          exercise.video,
-          exercise.picture,
-          exercise.instructions,
-          exercise.difficulty,
-          workout_exercise.reps,
-          ifnull(workout_exercise.sets, 1) AS sets,
-          workout_exercise.duration,
-          workout_exercise.rest,
-          ifnull(workout_exercise.duration, workout_exercise.reps * 4) + ifnull(workout_exercise.rest, 5) AS duration_calculated
-        FROM exercise
-          INNER JOIN workout_exercise ON exercise.id = workout_exercise.exerciseid
-          INNER JOIN workout ON workout_exercise.workoutid = workout.id
-        WHERE workout.id = ?
-        ORDER BY workout_exercise.sort`, [parent.id])
+      exercise.id,
+      'exercise' as type,
+      exercise.name,
+      exercise.video,
+      exercise.picture,
+      exercise.instructions,
+      exercise.difficulty,
+      workout_exercise.reps,
+      ifnull(workout_exercise.sets, 1) AS sets,
+      workout_exercise.duration,
+      workout_exercise.rest,
+      ifnull(workout_exercise.duration, workout_exercise.reps * 4) + ifnull(workout_exercise.rest, 5) AS duration_calculated,
+        workout_exercise.sort
+    FROM exercise
+      INNER JOIN workout_exercise ON exercise.id = workout_exercise.exerciseid
+      INNER JOIN workout ON workout_exercise.workoutid = workout.id
+    WHERE workout.id = ?
+    UNION
+    SELECT
+      workout.id,
+      'workout' as type,
+      workout.name,
+      null AS video,
+      picture,
+      workout.description AS instructions,
+      null AS difficulty,		-- calulcate??
+      null AS reps,
+      null AS sets,
+      (SELECT sum((ifnull(workout_exercise.duration, workout_exercise.reps * 4) + ifnull(workout_exercise.rest, 5)) * ifnull(workout_exercise.sets, 1)) AS duration_calculated
+      FROM workout_exercise
+        INNER JOIN workout w1 ON w1.id = workout_exercise.workoutid
+      WHERE w1.id = workout.id) AS duration,
+      null AS rest,
+      null AS duration_calculated,
+      workout_workout.sort
+    FROM workout
+      INNER JOIN workout_workout ON workout_workout.workoutid = workout.id AND workout_workout.super_workoutid = ?
+    ORDER BY sort ASC`, [parent.id, parent.id])
     },
     difficulty(parent) {
       return querySQLDB(`SELECT exercise.difficulty AS difficulty
@@ -163,7 +184,10 @@ const resolvers = {
         .then(function () {
           console.log("workout id is: ", workoutid)
           // delete all element containing workout id
-          return querySQLDB("DELETE from workout_exercise WHERE workoutid = ?", [workoutid])
+          deletes = []
+          deletes.push(querySQLDB("DELETE from workout_exercise WHERE workoutid = ?", [workoutid]))
+          deletes.push(querySQLDB("DELETE from workout_workout WHERE super_workoutid = ?", [workoutid]))
+          return Promise.all(deletes)
         })
         .then(function () {
           // then re-add the new ones
