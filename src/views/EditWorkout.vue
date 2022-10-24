@@ -46,6 +46,7 @@ let getWorkoutFromID = gql`
       circuit_rounds
       exercises {
         id
+        type
         name
         picture
         instructions
@@ -131,6 +132,7 @@ const saveWorkoutClick = () => {
       user: workout.value.user,
       exercises: workout.value.exercises.flatMap((element, index) => [{
         id: parseInt(element.id),
+        type: element.type,
         reps: element.reps,
         sets: circuitCheckboxValue.value ? 1: element.sets,
         duration: element.duration,
@@ -235,7 +237,7 @@ function exerciseMove(fromIndex, offset) {
   <div v-for="(exercise, index) in workout.exercises" :key="exercise.id">
     <workout-edit-exercise-card-view
       :name="exercise.name"
-      :typeIsWorkout="exercise.description ? true : false"
+      :typeIsWorkout="exercise.type == 'workout' ? true : false"
       :picture="exercise.picture"
       :sets="exercise.sets"
       :setsReadOnly="circuitCheckboxValue"

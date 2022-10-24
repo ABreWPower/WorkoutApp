@@ -40,6 +40,7 @@ type Exercise {
 
 input WorkoutExerciseInput {
   id: Int!
+  type: String!
   reps: Int
   sets: Int
   duration: Int

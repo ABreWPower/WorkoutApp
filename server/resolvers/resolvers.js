@@ -59,16 +59,17 @@ const resolvers = {
     exercises(parent) {
       return querySQLDB(`SELECT
           exercise.id,
-            exercise.name,
-            exercise.video,
-            exercise.picture,
-            exercise.instructions,
-            exercise.difficulty,
-            workout_exercise.reps,
-            ifnull(workout_exercise.sets, 1) AS sets,
-            workout_exercise.duration,
-            workout_exercise.rest,
-            ifnull(workout_exercise.duration, workout_exercise.reps * 4) + ifnull(workout_exercise.rest, 5) AS duration_calculated
+          'exercise' as type,
+          exercise.name,
+          exercise.video,
+          exercise.picture,
+          exercise.instructions,
+          exercise.difficulty,
+          workout_exercise.reps,
+          ifnull(workout_exercise.sets, 1) AS sets,
+          workout_exercise.duration,
+          workout_exercise.rest,
+          ifnull(workout_exercise.duration, workout_exercise.reps * 4) + ifnull(workout_exercise.rest, 5) AS duration_calculated
         FROM exercise
           INNER JOIN workout_exercise ON exercise.id = workout_exercise.exerciseid
           INNER JOIN workout ON workout_exercise.workoutid = workout.id
@@ -145,7 +146,8 @@ const resolvers = {
                 element[columnName] = null
               }
             })
-            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest, sort) VALUES (?, ?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest, element.sort]))
+            if (element.type == 'exercise') inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest, sort) VALUES (?, ?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest, element.sort]))
+            else inserts.push(querySQLDB("INSERT INTO workout_workout (super_workoutid, workoutid, sort) VALUES (?, ?, ?)", [workoutid, element.id, element.sort]))
           })
           // return promise all
           return Promise.all(inserts)
@@ -172,7 +174,8 @@ const resolvers = {
                 element[columnName] = null
               }
             })
-            inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest, sort) VALUES (?, ?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest, element.sort]))
+            if (element.type == 'exercise') inserts.push(querySQLDB("INSERT into workout_exercise (workoutid, exerciseid, reps, sets, duration, rest, sort) VALUES (?, ?, ?, ?, ?, ?, ?)", [workoutid, element.id, element.reps, element.sets, element.duration, element.rest, element.sort]))
+            else inserts.push(querySQLDB("INSERT INTO workout_workout (super_workoutid, workoutid, sort) VALUES (?, ?, ?)", [workoutid, element.id, element.sort]))
           })
           // return promise all
           return Promise.all(inserts)
