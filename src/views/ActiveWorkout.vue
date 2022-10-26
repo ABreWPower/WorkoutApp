@@ -109,6 +109,7 @@ const workoutController = {
             completed
             exercise {
               id
+              type
               name
               picture
               video

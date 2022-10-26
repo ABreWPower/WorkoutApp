@@ -90,6 +90,7 @@ type ExerciseLog {
 
 input ExerciseLogInput {
   exerciseid: Int!
+  type: String!
   sets: Int
   reps: Int
   duration: Int

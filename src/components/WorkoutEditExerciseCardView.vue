@@ -141,6 +141,7 @@ const getImages = function () {
               <input
                 type="number"
                 :value="props.weight"
+                :readonly="typeIsWorkout"
                 @input="$emit('update:weight', $event.target.value)"
                 class="form-control"
                 aria-label="Number of weight for this exercise: {{ name }}"

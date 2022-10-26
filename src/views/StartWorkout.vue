@@ -34,6 +34,7 @@ let getWorkoutFromID = gql`
       description
       exercises {
         id
+        type
         name
         picture
         instructions
@@ -87,6 +88,7 @@ let startClick = function() {
       workoutid: parseInt(workout.value.id),
       exerciselogs: workout.value.exercises.flatMap(element => [{
         exerciseid: parseInt(element.id),
+        type: element.type,
         reps: element.reps,
         sets: element.sets,
         duration: element.duration,
@@ -131,6 +133,7 @@ let startClick = function() {
   <div v-bind="$attrs" v-for="exercise in workout.exercises" :key="exercise.id">
     <workout-edit-exercise-card-view
       :name="exercise.name"
+      :typeIsWorkout="exercise.type == 'workout' ? true : false"
       :picture="exercise.picture"
       :sets="exercise.sets"
       @update:sets="exercise.sets = parseInt($event)"
