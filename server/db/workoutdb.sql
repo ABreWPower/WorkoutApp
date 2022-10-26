@@ -320,7 +320,7 @@ CREATE TABLE `workoutlogexercise` (
   `duration` int DEFAULT NULL,
   `rest` int DEFAULT NULL,
   `weight` int DEFAULT NULL,
-  `sort` int DEFAULT NULL,
+  `sort` float DEFAULT NULL,
   `datestarted` datetime DEFAULT NULL,
   `datecompleted` datetime DEFAULT NULL,
   `span` int DEFAULT NULL,
@@ -353,4 +353,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-24 15:54:58
+-- Dump completed on 2022-10-26  0:30:55
