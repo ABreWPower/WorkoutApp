@@ -1,6 +1,6 @@
 <script setup>
 import workoutEditExerciseCardView from '../components/WorkoutEditExerciseCardView.vue'
-import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
+import { client } from "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { useRoute } from 'vue-router'
 import { ref } from "vue"
@@ -22,9 +22,9 @@ const workout = ref({
 const circuitCheckboxValue = ref(false)
 
 // If we get an workout object passed in, overwrite the defaults
-if(routeObj.params.workout !== undefined) {
+if (routeObj.params.workout !== undefined) {
   workout.value = JSON.parse(routeObj.params.workout)
-  if (workout.value.circuit_rounds === undefined || workout.value.circuit_rounds == null || workout.value.circuit_rounds == 0 ) {
+  if (workout.value.circuit_rounds === undefined || workout.value.circuit_rounds == null || workout.value.circuit_rounds == 0) {
     workout.value.circuit_rounds = 1
   }
   if (workout.value.circuit_rounds > 1) {
@@ -62,26 +62,26 @@ let getWorkoutFromID = gql`
 // If the object has property of id != null and name = null then we should assume the page was reloaded and need to pull down the data
 // if (workout.id != null && workout.name == null) {
 if (routeObj.params.workoutid != null && workout.value.name == null) {
-  client.query({
+  let workoutWatchQuery = client.watchQuery({
     query: getWorkoutFromID,
-    variables: { workoutsId: parseInt(routeObj.params.workoutid)},
-    fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+    variables: { workoutsId: parseInt(routeObj.params.workoutid) }
   })
-  .then(result => {
-    console.log("results", result)
-    console.log("result.data.workouts[0]", result.data.workouts[0])
-    workout.value = JSON.parse(JSON.stringify(result.data.workouts[0]))
-    if (workout.value.circuit_rounds === undefined || workout.value.circuit_rounds == null || workout.value.circuit_rounds == 0 ) {
-      workout.value.circuit_rounds = 1
-    }
-    if (workout.value.circuit_rounds > 1) {
-      circuitCheckboxValue.value = true
-    }    
-    if (workout.value.circuitRoundRest === undefined) {
-      workout.value.circuitRoundRest = workout.value.exercises[workout.value.exercises.length - 1].rest
-    }
-    console.log("workout after load from server", workout.value)
-  })
+
+  workoutWatchQuery.result().then(populateWorkouts)
+    .then(workoutWatchQuery.refetch().then(populateWorkouts))
+}
+
+function populateWorkouts(result) {
+  workout.value = JSON.parse(JSON.stringify(result.data.workouts[0]))
+  if (workout.value.circuit_rounds === undefined || workout.value.circuit_rounds == null || workout.value.circuit_rounds == 0) {
+    workout.value.circuit_rounds = 1
+  }
+  if (workout.value.circuit_rounds > 1) {
+    circuitCheckboxValue.value = true
+  }
+  if (workout.value.circuitRoundRest === undefined) {
+    workout.value.circuitRoundRest = workout.value.exercises[workout.value.exercises.length - 1].rest
+  }
 }
 
 // **************
@@ -118,7 +118,7 @@ const saveWorkoutClick = () => {
   }
 
   if (circuitCheckboxValue) {
-    workout.value.exercises[workout.value.exercises.length -1].rest = parseInt(workout.value.circuitRoundRest)
+    workout.value.exercises[workout.value.exercises.length - 1].rest = parseInt(workout.value.circuitRoundRest)
   }
 
   client.mutate({
@@ -128,37 +128,37 @@ const saveWorkoutClick = () => {
       name: workout.value.name,
       picture: workout.value.picture,
       description: workout.value.description,
-      circuit_rounds: circuitCheckboxValue.value ? parseInt(workout.value.circuit_rounds): 1,
+      circuit_rounds: circuitCheckboxValue.value ? parseInt(workout.value.circuit_rounds) : 1,
       user: workout.value.user,
       exercises: workout.value.exercises.flatMap((element, index) => [{
         id: parseInt(element.id),
         type: element.type,
         reps: element.reps,
-        sets: circuitCheckboxValue.value ? 1: element.sets,
+        sets: circuitCheckboxValue.value ? 1 : element.sets,
         duration: element.duration,
         rest: element.rest,
-        sort: index 
+        sort: index
       }])
     }
   })
-  .then(result => {
-    console.log("results", result)
-    if (workout.value.id == null) {
-      workout.value.id = result.data.addWorkout.id
-      console.log("workout id", workout.value.id)
-      router.push({
-        name: 'Edit Workout',
-        params: {
-          workout: JSON.stringify(workout.value),
-          workoutid: workout.value.id
-        }
-      })
-    }
-    else {
-      console.log("nothing to do with returned id as we already have it")
-    }
-    // TODO probably do something to let user know it succeded
-  })
+    .then(result => {
+      console.log("results", result)
+      if (workout.value.id == null) {
+        workout.value.id = result.data.addWorkout.id
+        console.log("workout id", workout.value.id)
+        router.push({
+          name: 'Edit Workout',
+          params: {
+            workout: JSON.stringify(workout.value),
+            workoutid: workout.value.id
+          }
+        })
+      }
+      else {
+        console.log("nothing to do with returned id as we already have it")
+      }
+      // TODO probably do something to let user know it succeded
+    })
 
   console.log("after save workout")
 }
@@ -171,7 +171,7 @@ const addExerciseClick = () => {
   console.log("add exercise click")
   console.log("workout", workout.value)
 
-  router.push({ 
+  router.push({
     name: 'Exercises',
     params: {
       mode: "AddExerciseToWorkout",
@@ -181,7 +181,7 @@ const addExerciseClick = () => {
 }
 
 function exerciseMove(fromIndex, offset) {
-  if(fromIndex + offset < 0 || fromIndex + offset >= workout.value.exercises.length) {
+  if (fromIndex + offset < 0 || fromIndex + offset >= workout.value.exercises.length) {
     return
   }
   let arr = workout.value.exercises
@@ -235,23 +235,7 @@ function exerciseMove(fromIndex, offset) {
   </div>
 
   <div v-for="(exercise, index) in workout.exercises" :key="exercise.id">
-    <workout-edit-exercise-card-view
-      :name="exercise.name"
-      :typeIsWorkout="exercise.type == 'workout' ? true : false"
-      :picture="exercise.picture"
-      :sets="exercise.sets"
-      :setsReadOnly="circuitCheckboxValue"
-      @update:sets="exercise.sets = parseInt($event)"
-      :reps="exercise.reps"
-      @update:reps="exercise.reps = parseInt($event)"
-      :duration="exercise.duration"
-      @update:duration="exercise.duration = parseInt($event)"
-      :rest="exercise.rest"
-      :restReadOnly="index == workout.exercises.length - 1 && circuitCheckboxValue"
-      @update:rest="exercise.rest = parseInt($event)"
-      @delete="workout.exercises.splice(workout.exercises.indexOf(exercise), 1)"
-      @move:up="exerciseMove(index, -1)"
-      @move:down="exerciseMove(index, 1)">
+    <workout-edit-exercise-card-view :name="exercise.name" :typeIsWorkout="exercise.type == 'workout' ? true : false" :picture="exercise.picture" :sets="exercise.sets" :setsReadOnly="circuitCheckboxValue" @update:sets="exercise.sets = parseInt($event)" :reps="exercise.reps" @update:reps="exercise.reps = parseInt($event)" :duration="exercise.duration" @update:duration="exercise.duration = parseInt($event)" :rest="exercise.rest" :restReadOnly="index == workout.exercises.length - 1 && circuitCheckboxValue" @update:rest="exercise.rest = parseInt($event)" @delete="workout.exercises.splice(workout.exercises.indexOf(exercise), 1)" @move:up="exerciseMove(index, -1)" @move:down="exerciseMove(index, 1)">
     </workout-edit-exercise-card-view>
   </div>
 

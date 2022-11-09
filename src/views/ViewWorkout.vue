@@ -1,7 +1,7 @@
 <script setup>
 import cardView from '../components/CardView.vue'
 import { useRoute } from 'vue-router'
-import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
+import { client } from "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { ref } from "vue"
 import router from "../router/router.js"
@@ -42,19 +42,24 @@ let getWorkout = gql`
 const workout = ref([])
 const equipment = ref([])
 
-client.query({
+let workoutWatchQuery = client.watchQuery({
   query: getWorkout,
-  variables: {workoutsId: routeObj.params.workoutid},
-  fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
-})
-.then(result => {
-  workout.value = structuredClone(result.data.workouts[0])
-  result.data.workouts[0].equipment.forEach(element => {
-    equipment.value.push(element)
-  })
+  variables: { workoutsId: routeObj.params.workoutid }
 })
 
-let startClick = function() {
+workoutWatchQuery.result().then(populateWorkouts)
+  .then(workoutWatchQuery.refetch().then(populateWorkouts))
+
+function populateWorkouts(result) {
+  workout.value = structuredClone(result.data.workouts[0])
+  result.data.workouts[0].equipment.forEach(element => {
+    if (!equipment.value.includes(element)) {
+      equipment.value.push(element)
+    }
+  })
+}
+
+let startClick = function () {
   console.log("startClick")
   console.log("workoutid", workout.value.id)
   router.push({
@@ -66,7 +71,7 @@ let startClick = function() {
   })
 }
 
-let editClick = function() {
+let editClick = function () {
   console.log("editClick")
   console.log("workoutid", workout.value.id)
   router.push({
@@ -117,4 +122,5 @@ let editClick = function() {
 </template>
 
 <style scoped>
+
 </style>

@@ -1,6 +1,6 @@
 <script setup>
 import cardView from '../components/CardView.vue'
-import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
+import { client } from "../scripts/connectGraphQL.js"
 import { useRoute } from 'vue-router'
 import { gql } from "@apollo/client/core";
 import { watch, ref } from "vue"
@@ -13,7 +13,7 @@ console.log("exercise router params", routeObj.params)
 // Get exercises and save them to variable
 // ****************************************
 
-let getExercises = gql`
+let getExerciseAndWorkout = gql`
   query Query {
     exerciseandworkout {
       id
@@ -38,27 +38,27 @@ let getExercises = gql`
       }
     }
   }
-` 
+`
 
 const exercises = ref([])
 const exercisesFiltered = ref([])
 const workouts = ref([])
 const workoutsFiltered = ref([])
 
-client.query({
-  query: getExercises,
-  fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+
+let ExerciseAndWorkoutWatchQuery = client.watchQuery({
+  query: getExerciseAndWorkout
 })
-.then(result => {
-  console.log("results", result)
+
+ExerciseAndWorkoutWatchQuery.result().then(populateExercises)
+  .then(ExerciseAndWorkoutWatchQuery.refetch().then(populateExercises))
+
+function populateExercises(result) {
   exercises.value = structuredClone(result.data.exerciseandworkout).filter(exercise => exercise.type == 'exercise')
   exercisesFiltered.value = exercises.value
   workouts.value = structuredClone(result.data.exerciseandworkout).filter(exercise => exercise.type == 'workout')
   workoutsFiltered.value = workouts.value
-  // console.log("exercises", exercises)
-})
-
-
+}
 
 // *************************
 // Search and debounce code
@@ -68,12 +68,12 @@ client.query({
 let timerId
 function debounce(functionName, delay, ...args) {
   clearTimeout(timerId)
-  timerId = setTimeout(() => {functionName.apply(null, args)}, delay)
+  timerId = setTimeout(() => { functionName.apply(null, args) }, delay)
 }
 
 function search(searchFor) {
   // console.log("we are seearching ", searchFor)
-  exercisesFiltered.value = exercises.value.filter(function(element) {
+  exercisesFiltered.value = exercises.value.filter(function (element) {
     // console.log("elelemtn", element.name, element.name == searchFor)
     let name = element.name.toLowerCase().includes(searchFor.toLowerCase())
     let instructions = element.instructions ? element.instructions.toLowerCase().includes(searchFor.toLowerCase()) : false
@@ -81,7 +81,7 @@ function search(searchFor) {
     let equipment = element.equipment.filter(subelement => subelement.name.toLowerCase().includes(searchFor.toLowerCase())).length
     return name || instructions || musclegroups || equipment
   })
-  workoutsFiltered.value = workouts.value.filter(function(element) { // TODO should filter out the current workout that we are working on
+  workoutsFiltered.value = workouts.value.filter(function (element) { // TODO should filter out the current workout that we are working on
     // console.log("elelemtn", element.name, element.name == searchFor)
     let name = element.name.toLowerCase().includes(searchFor.toLowerCase())
     let instructions = element.instructions ? element.instructions.toLowerCase().includes(searchFor.toLowerCase()) : false
@@ -99,16 +99,16 @@ watch(searchValue, () => {
 // Click handler for new exercise
 // *******************************
 const newExerciseClick = () => {
-    // console.log("before new exercise")
-    router.push({ name: 'Add Exercise' })
-    // console.log("after router push for new exercise")
+  // console.log("before new exercise")
+  router.push({ name: 'Add Exercise' })
+  // console.log("after router push for new exercise")
 }
 
 // *********************************************
 // Code to support adding exercise to a workout
 // *********************************************
 let workout = null
-if(routeObj.params.workout !== undefined) {
+if (routeObj.params.workout !== undefined) {
   workout = JSON.parse(routeObj.params.workout)
   console.log("workout", workout)
 }
@@ -117,9 +117,9 @@ var cardClickHandler = undefined
 if (routeObj.params.mode == "AddExerciseToWorkout") {
   console.log("Set Card Click Handler")
   // Click handler is for when we come from workout edit page and should only be set if a workout was passed in
-  cardClickHandler = function(exercise) {  
+  cardClickHandler = function (exercise) {
     console.log("Card Click Handler")
-    return function() {
+    return function () {
       console.log("card click", exercise)
       workout.exercises.push(exercise)
       console.log("workout", workout)
@@ -172,6 +172,7 @@ if (routeObj.params.mode == "AddExerciseToWorkout") {
 div.card-view:last-child div.card {
   margin-bottom: 0 !important;
 }
+
 hr {
   position: relative;
   top: 20px;

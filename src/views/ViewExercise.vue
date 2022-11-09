@@ -1,7 +1,7 @@
 <script setup>
 import cardView from '../components/CardView.vue'
 import { useRoute } from 'vue-router'
-import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
+import { client, forceNetworkJQL } from "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { ref } from "vue"
 import router from "../router/router.js"
@@ -43,36 +43,35 @@ let getExercise = gql`
       }
     }
   }
-` 
+`
 
 const exercise = ref([])
 const equipment = ref([])
 const musclegroups = ref([])
 let imageURI = ""
 
-client.query({
-  query: getExercise,
-  fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
-})
-.then(result => {
-  console.log("results", result)
-  exercise.value = structuredClone(result.data.exercises[0])
-  console.log("exercise", exercise)
-  console.log("exercise.equipment", result.data.exercises[0].equipment)
-  result.data.exercises[0].equipment.forEach(element => {
-    console.log("equipment", element)
-    equipment.value.push(element.name)
-  })
-  console.log("exercise.musclegroups", result.data.exercises[0].musclegroups)
-  result.data.exercises[0].musclegroups.forEach(element => {
-    console.log("musclegroups", element)
-    musclegroups.value.push(element.name)
-  })
+let exerciseWatchQuery = client.watchQuery({
+  query: getExercise
 })
 
-let editClick = function() {
-  console.log("editClick")
-  console.log("exerciseid", exercise.value.id)
+exerciseWatchQuery.result().then(populateExercises)
+  .then(exerciseWatchQuery.refetch().then(populateExercises))
+
+function populateExercises(result) {
+  exercise.value = structuredClone(result.data.exercises[0])
+  result.data.exercises[0].equipment.forEach(element => {
+    if (!equipment.value.includes(element.name)) {
+      equipment.value.push(element.name)
+    }
+  })
+  result.data.exercises[0].musclegroups.forEach(element => {
+    if (!musclegroups.value.includes(element.name)) {
+      musclegroups.value.push(element.name)
+    }
+  })
+}
+
+let editClick = function () {
   router.push({
     name: 'Edit Exercise',
     params: {
@@ -123,4 +122,5 @@ let editClick = function() {
 </template>
 
 <style scoped>
+
 </style>

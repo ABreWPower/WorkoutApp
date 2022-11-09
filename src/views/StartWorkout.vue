@@ -1,6 +1,6 @@
 <script setup>
 import workoutEditExerciseCardView from '../components/WorkoutEditExerciseCardView.vue'
-import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
+import { client } from "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { useRoute } from 'vue-router'
 import { ref } from "vue"
@@ -20,7 +20,7 @@ const workout = ref({
 })
 
 // If we get an workout object passed in, overwrite the defaults
-if(routeObj.params.workout !== undefined) {
+if (routeObj.params.workout !== undefined) {
   workout.value = JSON.parse(routeObj.params.workout)
   console.log("new workout object", workout.value)
 }
@@ -50,17 +50,17 @@ let getWorkoutFromID = gql`
 // If the object has property of id != null and name = null then we should assume the page was reloaded and need to pull down the data
 // if (workout.id != null && workout.name == null) {
 if (routeObj.params.workoutid != null && workout.value.name == null) {
-  client.query({
+  let workoutWatchQuery = client.watchQuery({
     query: getWorkoutFromID,
-    variables: { workoutsId: parseInt(routeObj.params.workoutid)},
-    fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+    variables: { workoutsId: parseInt(routeObj.params.workoutid) }
   })
-  .then(result => {
-    console.log("results", result)
-    console.log("result.data.workouts[0]", result.data.workouts[0])
-    workout.value = JSON.parse(JSON.stringify(result.data.workouts[0]))
-    console.log("workout after load from server", workout.value)
-  })
+
+  workoutWatchQuery.result().then(populateWorkouts)
+    .then(workoutWatchQuery.refetch().then(populateWorkouts))
+}
+
+function populateWorkouts(result) {
+  workout.value = JSON.parse(JSON.stringify(result.data.workouts[0]))
 }
 
 // **************
@@ -78,7 +78,7 @@ let startWorkoutLog = gql`
   }
 `
 
-let startClick = function() {
+let startClick = function () {
   console.log("startClick")
 
   // TODO save the workoutlog 
@@ -97,21 +97,21 @@ let startClick = function() {
       }])
     }
   })
-  .then(result => {
-    console.log("results", result)
-    console.log("result.data.startWorkoutLog.id", result.data.startWorkoutLog.id)
-    console.log("result.data.startWorkoutLog.exerciselogs", result.data.startWorkoutLog.exerciselogs)
+    .then(result => {
+      console.log("results", result)
+      console.log("result.data.startWorkoutLog.id", result.data.startWorkoutLog.id)
+      console.log("result.data.startWorkoutLog.exerciselogs", result.data.startWorkoutLog.exerciselogs)
 
       router.push({
         name: 'Active Workout',
-        params: {          
+        params: {
           workoutlogid: result.data.startWorkoutLog.id
         }
       })
 
       console.log("after start workout save and push")
       // TODO something if it fails
-  })
+    })
 
 }
 
@@ -131,21 +131,7 @@ let startClick = function() {
 
   <!-- I think part of the problem is we are only pulling back a number not the whole object -->
   <div v-bind="$attrs" v-for="exercise in workout.exercises" :key="exercise.id">
-    <workout-edit-exercise-card-view
-      :name="exercise.name"
-      :typeIsWorkout="exercise.type == 'workout' ? true : false"
-      :picture="exercise.picture"
-      :sets="exercise.sets"
-      @update:sets="exercise.sets = parseInt($event)"
-      :reps="exercise.reps"
-      @update:reps="exercise.reps = parseInt($event)"
-      :duration="exercise.duration"
-      @update:duration="exercise.duration = parseInt($event)"
-      :rest="exercise.rest"
-      @update:rest="exercise.rest = parseInt($event)"
-      :weight="exercise.weight"
-      @update:weight="exercise.weight = parseInt($event)"
-      :startWorkout="true">
+    <workout-edit-exercise-card-view :name="exercise.name" :typeIsWorkout="exercise.type == 'workout' ? true : false" :picture="exercise.picture" :sets="exercise.sets" @update:sets="exercise.sets = parseInt($event)" :reps="exercise.reps" @update:reps="exercise.reps = parseInt($event)" :duration="exercise.duration" @update:duration="exercise.duration = parseInt($event)" :rest="exercise.rest" @update:rest="exercise.rest = parseInt($event)" :weight="exercise.weight" @update:weight="exercise.weight = parseInt($event)" :startWorkout="true">
     </workout-edit-exercise-card-view>
   </div>
 
@@ -155,4 +141,5 @@ let startClick = function() {
 </template>
 
 <style scoped>
+
 </style>

@@ -1,5 +1,5 @@
 <script setup>
-import { client, forceNetworkJQL } from "../scripts/connectGraphQL.js"
+import { client } from "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { useRoute, onBeforeRouteLeave } from 'vue-router'
 import { ref, watch } from "vue"
@@ -131,8 +131,7 @@ const workoutController = {
     `
     client.query({
       query: getActiveWorkoutData,
-      variables: { workoutlogsId: this.workoutLogId },
-      fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+      variables: { workoutlogsId: this.workoutLogId }
     })
       .then(result => {
         // console.log("loadWorkout result", result)

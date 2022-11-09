@@ -1,9 +1,9 @@
 <script setup>
 import exerciseModel from '../components/ExerciseModel.vue'
-import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
+import { client, forceNetworkJQL } from "../scripts/connectGraphQL.js"
 import { useRoute } from 'vue-router'
 import { empty, gql } from "@apollo/client/core";
-import { ref, onMounted  } from "vue"
+import { ref, onMounted } from "vue"
 import router from "../router/router.js"
 
 import Workout1Pic from "/pic1.jpg"
@@ -12,7 +12,7 @@ import Workout3Pic from "/pic3.jpg"
 
 let image = null
 const getImages = function () {
-  if(image === null) {
+  if (image === null) {
     let images = [Workout1Pic, Workout2Pic, Workout3Pic]
     image = images[Math.floor(Math.random() * images.length)]
   }
@@ -35,7 +35,7 @@ const exercise = ref({
 })
 
 // If we get an exercise object passed in, overwrite the defaults
-if(routeObj.params.exercise !== undefined) {
+if (routeObj.params.exercise !== undefined) {
   exercise.value = JSON.parse(routeObj.params.exercise)
 }
 
@@ -64,27 +64,29 @@ let getExercise = gql`
       }
     }
   }
-` 
+`
 
+//Edit existing record vs adding a new one
 if (routeObj.params.exerciseid != null && exercise.value.name == null) {
-  // console.log("page was refreshed, pulling data")
-  client.query({
+  let exerciseWatchQuery = client.watchQuery({
     query: getExercise,
-    variables: { exercisesId: parseInt(routeObj.params.exerciseid)},
-    fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+    variables: { exercisesId: parseInt(routeObj.params.exerciseid) }
   })
-  .then(result => {
-    exercise.value = structuredClone(result.data.exercises[0])
-  })
+  exerciseWatchQuery.result().then(populateExercise)
+    .then(exerciseWatchQuery.refetch().then(populateExercise))
+}
+
+function populateExercise(result) {
+  exercise.value = structuredClone(result.data.exercises[0])
 }
 
 // **********************
 // Array Removal Function
 // **********************
-function arrayRemove(arr, value) { 
-    return arr.filter( function(element) {
-        return element != value; 
-    })
+function arrayRemove(arr, value) {
+  return arr.filter(function (element) {
+    return element != value;
+  })
 }
 
 // ******************************************************
@@ -127,12 +129,12 @@ client.query({
   query: getMuscleGroups,
   fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
 })
-.then(result => {
-  result.data.musclegroups.forEach(element => {
-    // console.log("muscleGroupsList add", element)
-    muscleGroupsList.value.push(element)
+  .then(result => {
+    result.data.musclegroups.forEach(element => {
+      // console.log("muscleGroupsList add", element)
+      muscleGroupsList.value.push(element)
+    })
   })
-})
 
 // *********
 // Equipment
@@ -155,13 +157,13 @@ client.query({
   query: getEquipment,
   fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
 })
-.then(result => {
-  // console.log("exercise equipment", result.data.equipment)
-  result.data.equipment.forEach(element => {
-    // console.log("equipmentList add", element)
-    equipmentList.value.push(element)
+  .then(result => {
+    // console.log("exercise equipment", result.data.equipment)
+    result.data.equipment.forEach(element => {
+      // console.log("equipmentList add", element)
+      equipmentList.value.push(element)
+    })
   })
-})
 
 // **************
 // Saving section
@@ -214,24 +216,24 @@ const saveExerciseClick = () => {
       musclegroups: exercise.value.musclegroups.flatMap(element => [parseInt(element.id)])
     }
   })
-  .then(result => {
-    // console.log("results", result)
-    if (routeObj.params.exerciseid === undefined) {
-      exercise.value.id = result.data.addExercise.id
-      // console.log("exercise id", exercise.value.id)
-      router.push({
-        name: 'Edit Exercise',
-        params: {
-          exercise: JSON.stringify(exercise.value),
-          exerciseid: exercise.value.id
-        }
-      })
-    }
-    else {
-      // console.log("nothing to do with returned id as we already have it")
-    }
-    // TODO probably do something to let user know it succeded
-  })
+    .then(result => {
+      // console.log("results", result)
+      if (routeObj.params.exerciseid === undefined) {
+        exercise.value.id = result.data.addExercise.id
+        // console.log("exercise id", exercise.value.id)
+        router.push({
+          name: 'Edit Exercise',
+          params: {
+            exercise: JSON.stringify(exercise.value),
+            exerciseid: exercise.value.id
+          }
+        })
+      }
+      else {
+        // console.log("nothing to do with returned id as we already have it")
+      }
+      // TODO probably do something to let user know it succeded
+    })
 
   // console.log("after save exercise")
 }
@@ -260,12 +262,7 @@ const saveExerciseClick = () => {
     <textarea type="text" class="form-control textarea" id="exerciseDescription" v-model="exercise.instructions" aria-label="Exercise Description" />
   </div>
 
-  <exercise-model
-    id="muscleGroupModalForm"
-    :type="'Muscle Groups'"
-    :populateList="muscleGroupsList"
-    :checkedList="exercise.musclegroups.flatMap((element) => [element.id])"
-    @checked="changeCheckedOptions(exercise.musclegroups, muscleGroupsList, $event)"></exercise-model>
+  <exercise-model id="muscleGroupModalForm" :type="'Muscle Groups'" :populateList="muscleGroupsList" :checkedList="exercise.musclegroups.flatMap((element) => [element.id])" @checked="changeCheckedOptions(exercise.musclegroups, muscleGroupsList, $event)"></exercise-model>
 
   <div class="" style="padding-bottom: 10px">
     <p>
@@ -286,12 +283,7 @@ const saveExerciseClick = () => {
     <input type="number" v-model="exercise.duration" class="form-control" placeholder="Seconds" aria-describedby="durationText" style="max-width: 75px" />
   </div>
 
-  <exercise-model
-    id="equipmentModalForm"
-    :type="'Equipment'"
-    :populateList="equipmentList"
-    :checkedList="exercise.equipment.flatMap((element) => [element.id])"
-    @checked="changeCheckedOptions(exercise.equipment, equipmentList, $event)"></exercise-model>
+  <exercise-model id="equipmentModalForm" :type="'Equipment'" :populateList="equipmentList" :checkedList="exercise.equipment.flatMap((element) => [element.id])" @checked="changeCheckedOptions(exercise.equipment, equipmentList, $event)"></exercise-model>
 
   <div style="padding-bottom: 10px">
     <button type="button" class="btn btn-primary" @click="saveExerciseClick()">Save</button>
