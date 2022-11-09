@@ -1,6 +1,6 @@
 <script setup>
 import cardView from '../components/CardView.vue'
-import { client, forceNetworkJQL } from  "../scripts/connectGraphQL.js"
+import { client } from "../scripts/connectGraphQL.js"
 import { gql } from "@apollo/client/core";
 import { watch, ref } from "vue"
 import router from "../router/router.js"
@@ -14,32 +14,38 @@ let getWorkouts = gql`
       description
     }
   }
-` 
+`
 
 const workouts = ref([])
 const workoutsFiltered = ref([])
 
-client.query({
-  query: getWorkouts,
-  fetchPolicy: forceNetworkJQL ? 'network-only' : 'cache-first'
+//create watch query
+//Call watch.result()
+//Call watch.refetch()
+
+let workoutWatchQuery = client.watchQuery({
+  query: getWorkouts
 })
-.then(result => {
-  // console.log("results", result)
+
+workoutWatchQuery.result().then(populateWorkouts)
+  .then(workoutWatchQuery.refetch().then(populateWorkouts))
+
+function populateWorkouts(result) {
   workouts.value = structuredClone(result.data.workouts)
   workoutsFiltered.value = workouts.value
-  // console.log("workouts", workouts)
-})
+}
+
 
 // Debounce and search function for workouts and the data returned from the database
 let timerId
 function debounce(functionName, delay, ...args) {
   clearTimeout(timerId)
-  timerId = setTimeout(() => {functionName.apply(null, args)}, delay)
+  timerId = setTimeout(() => { functionName.apply(null, args) }, delay)
 }
 
 function search(searchFor) {
   // console.log("we are seearching ", searchFor)
-  workoutsFiltered.value = workouts.value.filter(function(element) {
+  workoutsFiltered.value = workouts.value.filter(function (element) {
     // console.log("elelemtn", element.name, element.name == searchFor)
     let name = element.name.toLowerCase().includes(searchFor.toLowerCase())
     let description = element.description ? element.description.toLowerCase().includes(searchFor.toLowerCase()) : false
@@ -54,10 +60,11 @@ watch(searchValue, () => {
 })
 
 const newWorkoutClick = () => {
-    // console.log("before new workout")
-    router.push({ name: 'Add Workout' })
-    // console.log("after router push for new workout")
+  // console.log("before new workout")
+  router.push({ name: 'Add Workout' })
+  // console.log("after router push for new workout")
 }
+
 </script>
 
 <template>

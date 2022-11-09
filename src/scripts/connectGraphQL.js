@@ -23,5 +23,15 @@ persistCache({
 
 export const client = new ApolloClient({
   uri: apolloUri,
-  cache: cache
-});
+  cache: cache,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
+      errorPolicy: 'all'
+    },
+    query: {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all'
+    }
+  }
+})
